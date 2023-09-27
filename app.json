@@ -1,30 +1,28 @@
 {
-  "expo": {
-    "name": "scout-app",
-    "slug": "scout-app",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
-  }
+	"expo": {
+		"android": {
+			"adaptiveIcon": {
+				"backgroundColor": "#ffffff",
+				"foregroundImage": "./assets/adaptive-icon.png"
+			}
+		},
+		"assetBundlePatterns": ["**/*"],
+		"icon": "./assets/icon.png",
+		"ios": {
+			"supportsTablet": true
+		},
+		"name": "scout-app",
+		"orientation": "portrait",
+		"plugins": ["expo-router"],
+		"scheme": "Scout app",
+		"slug": "scout-app",
+		"sourceExts": ["js", "json", "ts", "tsx", "jsx"],
+		"splash": {
+			"backgroundColor": "#ffffff",
+			"image": "./assets/splash.png",
+			"resizeMode": "contain"
+		},
+		"userInterfaceStyle": "light",
+		"version": "1.0.0"
+	}
 }
