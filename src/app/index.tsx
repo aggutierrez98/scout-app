@@ -1,35 +1,34 @@
 import App from "../components/App";
-import { Link, Stack, useRootNavigationState } from "expo-router";
-import { Text, View } from "react-native";
+import { Stack } from "expo-router";
+import { View, Text } from "react-native";
+import { useTheme } from "react-native-paper";
 
 export default function Page() {
-	// const navigationState = useRootNavigationState();
+  const theme = useTheme();
 
-	// if (!navigationState?.key) {
-	// 	// Temporary fix for router not being ready.
-	// 	return;
-	// }
+  return (
+    <View
+      style={[
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        { backgroundColor: theme.colors.backdrop },
+      ]}
+    >
+      <Stack.Screen
+        options={{
+          title: "Home",
+          headerTintColor: theme.colors.primary,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Text>Home Screen</Text>
 
-	return (
-		<View
-			style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-		>
-			{/* <Stack.Screen
-				options={{
-					// https://reactnavigation.org/docs/headers#setting-the-header-title
-					title: "My home",
-					// https://reactnavigation.org/docs/headers#adjusting-header-styles
-					headerStyle: { backgroundColor: "#f4511e" },
-					headerTintColor: "#fff",
-					headerTitleStyle: {
-						fontWeight: "bold",
-					},
-					// https://reactnavigation.org/docs/headers#replacing-the-title-with-a-custom-component
-				}}
-			/> */}
-			<Text>Home Screen</Text>
-
-			<App />
-		</View>
-	);
+      <App />
+    </View>
+  );
 }

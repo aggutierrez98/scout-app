@@ -2,12 +2,12 @@
     "[json]": {
         "editor.defaultFormatter": "biomejs.biome"
     },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "biomejs.biome",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
-    "[typescript]": {
-        "editor.defaultFormatter": "biomejs.biome",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
     "editor.defaultFormatter": "biomejs.biome",

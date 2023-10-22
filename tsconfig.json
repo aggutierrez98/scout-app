@@ -1,10 +1,11 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "baseUrl": "src",
     "strict": true,
+    "module": "esnext",
     "typeRoots": [
       "./src/types"
-    ]
+    ],
   },
-  "extends": "expo/tsconfig.base"
 }

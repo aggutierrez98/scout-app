@@ -4,12 +4,14 @@
 			"adaptiveIcon": {
 				"backgroundColor": "#ffffff",
 				"foregroundImage": "./assets/adaptive-icon.png"
-			}
+			},
+			"userInterfaceStyle": "automatic"
 		},
 		"assetBundlePatterns": ["**/*"],
 		"icon": "./assets/icon.png",
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+			"userInterfaceStyle": "automatic"
 		},
 		"name": "scout-app",
 		"orientation": "portrait",
@@ -22,7 +24,7 @@
 			"image": "./assets/splash.png",
 			"resizeMode": "contain"
 		},
-		"userInterfaceStyle": "light",
+		"userInterfaceStyle": "automatic",
 		"version": "1.0.0"
 	}
 }

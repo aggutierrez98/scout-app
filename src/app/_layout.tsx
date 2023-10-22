@@ -1,31 +1,36 @@
-import { Stack } from "expo-router/stack";
-import { PaperProvider, DefaultTheme } from "react-native-paper";
+import { lightTheme, darkTheme } from "../customTheme";
+import { useColorScheme } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { MenuProvider } from "../context/MenuContext";
+import MainLayout from "./MainLayout";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { EditProvider } from "../context/EditContext";
+
+const queryClient = new QueryClient();
+
+// if (__DEV__) {
+//   import("react-query-native-devtools")
+//     .then(({ addPlugin }) => {
+//       addPlugin({ queryClient });
+//     })
+//     .catch((err) => {
+//       console.log({ err });
+//     });
+// }
 
 export default function Layout() {
-	const theme = {
-		...DefaultTheme,
-		colors: {
-			...DefaultTheme.colors,
-			primary: "green",
-			secondary: "red",
-		},
-	};
+  const colorScheme = useColorScheme();
+  const paperTheme = colorScheme === "dark" ? darkTheme : lightTheme;
 
-	return (
-		<PaperProvider theme={theme}>
-			<Stack
-				screenOptions={{
-					headerStyle: {
-						backgroundColor: "#f4511e",
-					},
-					headerTintColor: "#fff",
-					headerTitleStyle: {
-						fontWeight: "bold",
-					},
-				}}
-			>
-				{/* <Stack.Screen name="/" options={{}} /> */}
-			</Stack>
-		</PaperProvider>
-	);
+  return (
+    <PaperProvider theme={paperTheme}>
+      <QueryClientProvider client={queryClient}>
+        <MenuProvider>
+          <EditProvider>
+            <MainLayout />
+          </EditProvider>
+        </MenuProvider>
+      </QueryClientProvider>
+    </PaperProvider>
+  );
 }
