@@ -1,9 +1,10 @@
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { API_URL } from "@env";
 import { Scout } from "types/interfaces/scout";
-const QUERY_LIMIT = 15;
 import { getArrSearchParam } from "utils/getArraySearchParam";
+import * as SecureStore from "expo-secure-store";
+const QUERY_LIMIT = 15;
 
 interface QueryParams {
   sexo: string;
@@ -34,39 +35,47 @@ export const fetchScouts = async (
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
 
+    const token = await SecureStore.getItemAsync("secure_token");
+
     const { data, status } = await axios.get(
       `${API_URL}/scout?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}`,
       {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
     return data as Scout[];
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
 
 export const fetchScout = async (id: string) => {
   try {
+    const token = await SecureStore.getItemAsync("secure_token");
+
     // // const json = await scoutsApi.get("scout").json();
     const { data, status } = await axios.get(`${API_URL}/scout/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return data as Scout;
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
 
 export const useScouts = (queryParams: QueryParams) =>
-  useInfiniteQuery(
-    [
+  useInfiniteQuery({
+    queryKey: [
       "scouts",
       `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
         queryParams.patrullas
@@ -74,15 +83,14 @@ export const useScouts = (queryParams: QueryParams) =>
         queryParams.progresiones
       }-funcion=${queryParams.funciones}`,
     ],
-    ({ pageParam }) => fetchScouts(pageParam, queryParams),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const nextPage =
-          lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
-        return nextPage;
-      },
-    }
-  );
+    queryFn: ({ pageParam }) => fetchScouts(pageParam, queryParams),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage =
+        lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
+      return nextPage;
+    },
+    initialPageParam: 1,
+  });
 
 export const useScout = (id: string) =>
-  useQuery(["scout", "id"], () => fetchScout(id));
+  useQuery({ queryKey: ["scout", "id"], queryFn: () => fetchScout(id) });

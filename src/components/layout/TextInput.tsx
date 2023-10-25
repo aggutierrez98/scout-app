@@ -40,7 +40,7 @@ export const CustomTextInput = ({
         label={label}
         placeholder={placeholder}
         error={hasError}
-        style={[{ backgroundColor: colors.background }, styles.input]}
+        style={{ backgroundColor: colors.background, ...styles.input }}
         outlineStyle={{}}
         {...inputProps}
       />

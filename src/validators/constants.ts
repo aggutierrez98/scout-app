@@ -50,3 +50,11 @@ export const VALID_METODOS_PAGO = [
   "TRANSFERENCIA",
   "OTRO",
 ] as const;
+
+export const VALID_ROLES = [
+  "ADMIN",
+  "JEFE",
+  "EDUCADOR",
+  "COLABORADOR",
+  "EXTERNO",
+] as const;

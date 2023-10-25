@@ -1,42 +1,33 @@
 import {
   ActivityIndicator,
+  Avatar,
   Divider,
   List,
   MD3Colors,
   Surface,
   Text,
+  TouchableRipple,
 } from "react-native-paper";
 import ListItem from "../ListItem";
 import { useScouts } from "../../client/scouts";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { FlatList } from "react-native";
 import { Scout } from "types/interfaces/scout";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
+import { useRenewLogin, useUsers } from "client/auth";
+import { User } from "types/interfaces/auth";
 
 interface Props {
   searchQuery: string;
 }
 
-export default function ScoutsList({ searchQuery }: Props) {
+export default function UsersList({ searchQuery }: Props) {
   const router = useRouter();
-
-  const {
-    sexo: { sexo },
-    progresion: { progresionesSelected },
-    patrulla: { patrullasSelected },
-    funcion: { funcionesSelected },
-  } = useMenuContext();
-
-  const { data, isError, fetchNextPage, hasNextPage, isLoading } = useScouts({
-    patrullas: patrullasSelected,
-    sexo,
-    progresiones: progresionesSelected,
-    funciones: funcionesSelected,
+  const { data, isError, fetchNextPage, hasNextPage, isLoading } = useUsers({
     searchQuery,
   });
-
-  const flattenData: Scout[] = data?.pages.flatMap((page) => page!) || [];
+  const flattenData: User[] = data?.pages.flatMap((page) => page!) || [];
 
   const loadNextPageData = () => {
     if (hasNextPage) {
@@ -53,19 +44,27 @@ export default function ScoutsList({ searchQuery }: Props) {
     >
       <FlatList
         data={flattenData}
-        keyExtractor={(scout) => scout.id}
-        renderItem={({ item }: { item: Scout }) => (
+        keyExtractor={(user) => user.id}
+        renderItem={({ item }: { item: User }) => (
           <Fragment key={item.id}>
-            <ListItem
-              title={`${item.apellido} ${item.nombre}`}
-              icon={item.sexo === "M" ? "human-male" : "human-female"}
-              iconColor={
-                item.sexo === "F" ? MD3Colors.tertiary70 : MD3Colors.primary70
-              }
-              action={() => {
-                router.push(`/(drawer)/(tabs)/scouts/${item.id}`);
+            <TouchableRipple
+              onPress={() => {
+                router.push(`/(drawer)/users/${item.id}`);
               }}
-            />
+              rippleColor="rgba(0, 0, 0, .12)"
+            >
+              <List.Item
+                title={`${item.username}`}
+                style={{ alignItems: "center" }}
+                titleStyle={{ fontSize: 20 }}
+                left={() => (
+                  <Avatar.Text
+                    size={30}
+                    label={item.username.slice(0, 2).toLocaleUpperCase()}
+                  />
+                )}
+              />
+            </TouchableRipple>
             <Divider />
           </Fragment>
         )}

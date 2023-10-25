@@ -1,10 +1,10 @@
-import { useDebouncedValue } from "hooks/useDebounceValue";
-import ScoutsList from "../../components/scouts/ScoutsList";
-import { useState } from "react";
-import { SafeAreaView } from "react-native";
 import { Searchbar, useTheme } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useDebouncedValue } from "hooks/useDebounceValue";
+import { useState } from "react";
+import ScoutsList from "components/scouts/ScoutsList";
 
-export default function ScoutsPage() {
+export default function pago() {
   const theme = useTheme();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
@@ -19,7 +19,7 @@ export default function ScoutsPage() {
         {
           flex: 1,
           padding: 10,
-          paddingTop: 0,
+          paddingTop: -40,
           backgroundColor: theme.colors.backdrop,
         },
       ]}
@@ -28,9 +28,6 @@ export default function ScoutsPage() {
         placeholder="Buscar"
         onChangeText={onChangeSearch}
         value={searchQuery}
-        style={{
-          height: 55,
-        }}
       />
 
       <ScoutsList searchQuery={debouncedSearchQuery} />

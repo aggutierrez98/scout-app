@@ -1,34 +1,33 @@
-import App from "../components/App";
-import { Stack } from "expo-router";
-import { View, Text } from "react-native";
-import { useTheme } from "react-native-paper";
+import { useRenewLogin } from "client/auth";
+import { LoadingScreen } from "components/layout/LoadingScreen";
+import { Redirect } from "expo-router";
 
-export default function Page() {
-  const theme = useTheme();
+export default function Login() {
+  const { isLoading, data: userData } = useRenewLogin();
+
+  // // const queryCache = new QueryCache({
+  // //   onError: (error) => {
+  // //     console.log(error);
+  // //   },
+  // //   onSuccess: (data) => {
+  // //     console.log(data);
+  // //   },
+  // //   onSettled: (data, error) => {
+  // //     console.log(data, error);
+  // //   },
+  // // });
+
+  // // const query = queryCache.find({ queryKey: ["user"] });
+  // // console.log({ query });
 
   return (
-    <View
-      style={[
-        {
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        { backgroundColor: theme.colors.backdrop },
-      ]}
-    >
-      <Stack.Screen
-        options={{
-          title: "Home",
-          headerTintColor: theme.colors.primary,
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      />
-      <Text>Home Screen</Text>
-
-      <App />
-    </View>
+    <>
+      {isLoading && <LoadingScreen />}
+      {userData ? (
+        <Redirect href="/(drawer)/(tabs)/scouts" />
+      ) : (
+        <Redirect href="/login" />
+      )}
+    </>
   );
 }

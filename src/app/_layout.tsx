@@ -2,11 +2,13 @@ import { lightTheme, darkTheme } from "../customTheme";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { MenuProvider } from "../context/MenuContext";
-import MainLayout from "./MainLayout";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditProvider } from "../context/EditContext";
+import { Slot } from "expo-router";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  // queryCache: {}
+});
 
 // if (__DEV__) {
 //   import("react-query-native-devtools")
@@ -27,7 +29,7 @@ export default function Layout() {
       <QueryClientProvider client={queryClient}>
         <MenuProvider>
           <EditProvider>
-            <MainLayout />
+            <Slot />
           </EditProvider>
         </MenuProvider>
       </QueryClientProvider>
