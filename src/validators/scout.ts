@@ -15,11 +15,16 @@ export const IdSchema = z.string().regex(nanoIdRegex);
 export const EditScoutSchema = z.object({
   localidad: z.string().max(100).regex(lettersReg),
   direccion: z.string().max(100),
-  telefono: z.string().min(10).max(15).regex(numberReg).optional(),
-  mail: z.union([z.string().email(), z.literal("")]),
   religion: z.enum(VALID_RELIGIONS),
-  patrulla: IdSchema.max(10),
   funcion: z.enum(VALID_FUNCTIONS),
-  progresion: z.enum(VALID_PROGRESSIONS),
-  // progresionActual: z.enum(VALID_PROGRESSIONS),
+  patrullaId: z.union([IdSchema.max(10).optional(), z.literal("")]),
+  telefono: z.union([
+    z.string().min(8).max(15).regex(numberReg).optional(),
+    z.literal(""),
+  ]),
+  mail: z.union([z.string().email(), z.literal("")]),
+  progresionActual: z.union([
+    z.enum(VALID_PROGRESSIONS).optional(),
+    z.literal(""),
+  ]),
 });

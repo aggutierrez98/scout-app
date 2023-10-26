@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, ToastAndroid } from "react-native";
 import {
   ActivityIndicator,
   Appbar,
@@ -24,15 +24,20 @@ type UserParams = {
   user: string;
 };
 
+type FormValues = {
+  role: typeof VALID_ROLES;
+  active: boolean;
+};
+
 export default function UserPage() {
   const theme = useTheme();
   const { goBack } = useNavigation();
   const { user: userId } = useLocalSearchParams<UserParams>();
   if (!userId) return null;
   const { data, isLoading } = useUser(userId);
-  const { mutate } = useModifyUser();
+  const { mutateAsync } = useModifyUser();
 
-  const formMethods = useForm({
+  const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditUserSchema),
   });
@@ -41,10 +46,6 @@ export default function UserPage() {
     label: role,
     value: role,
   }));
-
-  const onSubmit = (data: any) => {
-    mutate({ data, id: userId });
-  };
 
   if (isLoading)
     return (
@@ -120,7 +121,18 @@ export default function UserPage() {
               mode="contained"
               contentStyle={{ flexDirection: "row-reverse" }}
               style={{ marginTop: 20 }}
-              onPress={formMethods.handleSubmit(onSubmit)}
+              onPress={formMethods.handleSubmit(async (data) => {
+                const resp = await mutateAsync({ data, id: userId });
+
+                if (resp) {
+                  ToastAndroid.showWithGravity(
+                    "Usuario modificado con exito!",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                  );
+                  goBack();
+                }
+              })}
             >
               Guardar
             </Button>

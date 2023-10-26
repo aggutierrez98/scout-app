@@ -1,28 +1,22 @@
 import { Dimensions, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Divider,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { Button, Divider, Text, useTheme } from "react-native-paper";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { useLogin } from "client/auth";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
-import { Redirect } from "expo-router";
 import { LoadingScreen } from "components/layout/LoadingScreen";
+
+type FormValues = {
+  username: string;
+  password: string;
+};
 
 export default function LoginForm() {
   const theme = useTheme();
   const [hidePass, setHidePass] = useState(true);
-  const formMethods = useForm({ mode: "onBlur" });
+  const formMethods = useForm<FormValues>({ mode: "onBlur" });
   const { mutate, status, isSuccess } = useLogin(formMethods.setError);
-
-  if (isSuccess) {
-    return <Redirect href="/(drawer)/(tabs)/scouts" />;
-  }
 
   return (
     <>
@@ -74,8 +68,7 @@ export default function LoginForm() {
               justifyContent: "center",
             }}
             style={{ marginTop: 20 }}
-            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-            onPress={formMethods.handleSubmit((data: any) => mutate(data))}
+            onPress={formMethods.handleSubmit((data) => mutate(data))}
             labelStyle={{
               fontSize: 17,
               fontWeight: "bold",

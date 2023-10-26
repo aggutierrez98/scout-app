@@ -1,15 +1,18 @@
-import { Appbar, Searchbar, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView } from "react-native";
+import { Appbar, Portal, Searchbar, useTheme } from "react-native-paper";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useState } from "react";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import UsersList from "components/auth/UsersList";
+import { useNavigation } from "expo-router";
+import { CommonActions } from "@react-navigation/native";
 
 export default function users() {
   const theme = useTheme();
   const { data } = useRenewLogin();
+  const { dispatch, getState } = useNavigation();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
   };
@@ -38,10 +41,20 @@ export default function users() {
           }}
         >
           <Appbar.Content title="Usuarios" />
+
+          <Appbar.Action
+            icon="plus"
+            onPress={() => {
+              dispatch({
+                ...CommonActions.navigate("newUser"),
+                target: getState().key,
+              });
+            }}
+          />
         </Appbar.Header>
 
         {data ? (
-          <ScrollView
+          <View
             style={[
               {
                 flex: 1,
@@ -56,7 +69,7 @@ export default function users() {
             />
 
             <UsersList searchQuery={debouncedSearchQuery} />
-          </ScrollView>
+          </View>
         ) : (
           <LoadingScreen />
         )}

@@ -1,13 +1,7 @@
-import { ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Divider,
-  Text,
-  useTheme,
-} from "react-native-paper";
-import { useLocalSearchParams } from "expo-router";
-import { useScout } from "client/scouts";
+import { ScrollView, ToastAndroid } from "react-native";
+import { Button, Divider, Text, useTheme } from "react-native-paper";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useEditScout, useScout } from "client/scouts";
 import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
@@ -21,19 +15,32 @@ import {
 import { CustomDropDown } from "components/layout/SelectInput";
 import { usePatrullas } from "client/patrulla";
 import { DescriptiveText } from "components/layout/DescriptiveText";
+import { LoadingScreen } from "components/layout/LoadingScreen";
 
 type ScoutParams = {
   scout: string;
 };
 
+type FormValues = {
+  telefono: string;
+  mail: string;
+  direccion: string;
+  localidad: string;
+  religion: string;
+  funcion: string;
+  patrullaId: string;
+  progresion: string;
+};
 export default function ScoutPage() {
   const theme = useTheme();
   const { scout: scoutId } = useLocalSearchParams<ScoutParams>();
   if (!scoutId) return null;
   const { data, isLoading } = useScout(scoutId);
   const { data: patrullas, isLoading: isLoadingPatrullas } = usePatrullas();
+  const { mutateAsync, isPending } = useEditScout();
+  const { goBack } = useNavigation();
 
-  const formMethods = useForm({
+  const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditScoutSchema),
   });
@@ -65,26 +72,19 @@ export default function ScoutPage() {
       };
     }) ?? [];
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
-
-  if (isLoading || isLoadingPatrullas)
-    return (
-      <ActivityIndicator animating style={{ marginTop: 25 }} size={"large"} />
-    );
-
   return (
     <ScrollView
       style={[
         {
           flex: 1,
-          padding: 10,
+          padding: 20,
           paddingTop: 0,
           backgroundColor: theme.colors.backdrop,
         },
       ]}
     >
+      {(isLoading || isLoadingPatrullas || isPending) && <LoadingScreen />}
+
       <Text style={{ fontSize: 25 }}>
         {data?.apellido} {data?.nombre}
       </Text>
@@ -157,7 +157,7 @@ export default function ScoutPage() {
             />
 
             <CustomDropDown
-              name="patrulla"
+              name="patrullaId"
               label="Patrulla"
               list={patrullasList}
               defaultValue={data?.patrullaId ?? ""}
@@ -174,8 +174,23 @@ export default function ScoutPage() {
               icon="send"
               mode="contained"
               contentStyle={{ flexDirection: "row-reverse" }}
-              style={{ marginTop: 10 }}
-              onPress={formMethods.handleSubmit(onSubmit)}
+              style={{ marginVertical: 10 }}
+              onPress={formMethods.handleSubmit(async (data) => {
+                Object.keys(data).forEach((key) => {
+                  if (data[key as keyof FormValues] === "") {
+                    (data[key as keyof FormValues] as unknown) = null;
+                  }
+                });
+                const resp = await mutateAsync({ id: scoutId, data });
+                if (resp) {
+                  ToastAndroid.showWithGravity(
+                    "Scout modificado con exito!",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                  );
+                  goBack();
+                }
+              })}
             >
               Guardar
             </Button>

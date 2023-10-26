@@ -27,7 +27,7 @@ export default function UsersList({ searchQuery }: Props) {
   const { data, isError, fetchNextPage, hasNextPage, isLoading } = useUsers({
     searchQuery,
   });
-  const flattenData: User[] = data?.pages.flatMap((page) => page!) || [];
+  const flattenData: User[] = data?.pages.flatMap((page) => page || []) || [];
 
   const loadNextPageData = () => {
     if (hasNextPage) {

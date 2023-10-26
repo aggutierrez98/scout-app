@@ -36,7 +36,7 @@ export default function ScoutsList({ searchQuery }: Props) {
     searchQuery,
   });
 
-  const flattenData: Scout[] = data?.pages.flatMap((page) => page!) || [];
+  const flattenData: Scout[] = data?.pages.flatMap((page) => page || []) || [];
 
   const loadNextPageData = () => {
     if (hasNextPage) {

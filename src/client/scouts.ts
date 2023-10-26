@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { API_URL } from "@env";
 import { Scout } from "types/interfaces/scout";
@@ -14,8 +14,19 @@ interface QueryParams {
   funciones: string[];
 }
 
+export interface EditScoutParams {
+  funcion: string;
+  religion: string;
+  direccion: string;
+  localidad: string;
+  progresion?: string;
+  patrullaId?: string;
+  telefono?: string;
+  email?: string;
+}
+
 export const fetchScouts = async (
-  pageParam = 1,
+  pageParam: number,
   { patrullas, progresiones, funciones, searchQuery, sexo }: QueryParams
 ) => {
   try {
@@ -94,3 +105,61 @@ export const useScouts = (queryParams: QueryParams) =>
 
 export const useScout = (id: string) =>
   useQuery({ queryKey: ["scout", "id"], queryFn: () => fetchScout(id) });
+
+export const fetchAllScouts = async () => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+
+    // // const json = await scoutsApi.get("scout").json();
+    const { data, status } = await axios.get(`${API_URL}/scout/all`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data as {
+      id: string;
+      nombre: string;
+    }[];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const editScout = async (
+  scoutId: string,
+  scoutData: EditScoutParams
+) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+
+    // // const json = await scoutsApi.get("scout").json();
+    const { data, status } = await axios.put(
+      `${API_URL}/scout/${scoutId}`,
+      scoutData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data as Scout;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const useAllScouts = () =>
+  useQuery({ queryKey: ["scouts", "all"], queryFn: () => fetchAllScouts() });
+
+export const useEditScout = () =>
+  useMutation({
+    mutationFn: ({ id, data }: { id: string; data: EditScoutParams }) =>
+      editScout(id, data),
+    mutationKey: ["users", "id"],
+  });

@@ -8,7 +8,7 @@ import {
 import { API_URL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import { LoginResponse } from "types/interfaces/scout";
-import { FieldValues, UseFormSetError } from "react-hook-form";
+import { UseFormSetError } from "react-hook-form";
 import { User } from "types/interfaces/auth";
 import { VALID_ROLES } from "validators/constants";
 const QUERY_LIMIT = 15;
@@ -19,7 +19,7 @@ interface ApiError {
 }
 
 interface QueryParams {
-  searchQuery: string;
+  searchQuery?: string;
 }
 
 interface ModifyParams {
@@ -27,8 +27,15 @@ interface ModifyParams {
   role: typeof VALID_ROLES;
 }
 
+interface CreateParams {
+  username: string;
+  password: string;
+  scoutId: string;
+  // role: typeof VALID_ROLES
+}
+
 export const fetchUsers = async (
-  pageParam = 1,
+  pageParam: number,
   { searchQuery }: QueryParams
 ) => {
   try {
@@ -72,6 +79,23 @@ export const fetchUser = async (id: string) => {
   }
 };
 
+export const createUser = async (userData: CreateParams) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+
+    const { data } = await axios.put(`${API_URL}/auth/create`, userData, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data as User;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 export const modifyUser = async (id: string, userData: ModifyParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -126,7 +150,12 @@ export const renewLogin = async () => {
 export const useRenewLogin = () =>
   useQuery({ queryKey: ["user"], queryFn: renewLogin, retry: false });
 
-export const useLogin = (setError: UseFormSetError<FieldValues>) => {
+export const useLogin = (
+  setError: UseFormSetError<{
+    username: string;
+    password: string;
+  }>
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -194,51 +223,15 @@ export const useUsers = (queryParams: QueryParams) =>
 export const useUser = (id: string) =>
   useQuery({ queryKey: ["users", "id"], queryFn: () => fetchUser(id) });
 
-// export const useModifyUser = (setError: UseFormSetError<FieldValues>) => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: loginUser,
-//     onSuccess: async ({ token, ...data }: LoginResponse) => {
-//       // localStorage.setItem("token", data.data.token);
-//       // localStorage.setItem("token-init-date", new Date().getTime());
-//       await SecureStore.setItemAsync("secure_token", token);
-
-//       queryClient.setQueryData(["user"], () => {
-//         return {
-//           id: data.id,
-//           username: data.username,
-//           name: `${data.scout.apellido} ${data.scout.nombre}`,
-//           rol: data.role,
-//           funcion: data.scout.funcion,
-//           dni: data.scout.dni,
-//           sexo: data.scout.sexo,
-//           telefono: data.scout.telefono,
-//           mail: data.scout.mail,
-//         };
-//       });
-//     },
-
-//     onError: (data: AxiosError) => {
-//       if (data.response) {
-//         // const message = (data.response.data as ApiError).message;
-
-//         setError("username", {
-//           type: "credentials",
-//           message: "Credenciales invalidas",
-//         });
-//         setError("password", {
-//           type: "credentials",
-//           message: "Credenciales invalidas",
-//         });
-//       }
-//     },
-//   });
-// };
-
 export const useModifyUser = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: string; data: ModifyParams }) =>
       modifyUser(id, data),
+    mutationKey: ["users", "id"],
+  });
+
+export const useCreateUser = () =>
+  useMutation({
+    mutationFn: (data: CreateParams) => createUser(data),
     mutationKey: ["users", "id"],
   });

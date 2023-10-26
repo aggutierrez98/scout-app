@@ -48,13 +48,13 @@ export default function AppLayout() {
             }}
           />
         )}
-
         <Appbar.Content title={capitalizeFirstLetter(pageTitle)} />
-
+        {segments.length > 2 && pageTitle !== "scouts" && (
+          <Appbar.Action icon="plus" onPress={() => {}} />
+        )}
         {segments.length > 3 && (
           <Appbar.Action icon="pencil" onPress={() => changeIsEditing()} />
         )}
-
         {segments.length === 3 && (
           <Appbar.Action
             icon="chevron-down"
@@ -62,7 +62,6 @@ export default function AppLayout() {
             ref={touchable}
           />
         )}
-
         <FiltersMenu parentRef={touchable} />
       </Appbar.Header>
 
