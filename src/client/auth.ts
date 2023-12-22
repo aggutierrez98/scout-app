@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import {
+  QueryCache,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -140,15 +141,22 @@ export const renewLogin = async () => {
     }
     return null;
   } catch (error) {
+    await SecureStore.deleteItemAsync("secure_token");
     return null;
-    // if (import.meta.env.DEV === true) {
-    //   console.log(error.response.data.msg);
-    // }
   }
 };
 
 export const useRenewLogin = () =>
-  useQuery({ queryKey: ["user"], queryFn: renewLogin, retry: false });
+  useQuery({
+    queryKey: ["user"],
+    queryFn: renewLogin,
+    retry: false,
+    throwOnError(error, query) {
+      const queryClient = useQueryClient();
+      queryClient.resetQueries();
+      return false;
+    },
+  });
 
 export const useLogin = (
   setError: UseFormSetError<{

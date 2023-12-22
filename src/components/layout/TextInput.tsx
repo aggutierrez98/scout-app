@@ -44,7 +44,6 @@ export const CustomTextInput = ({
         outlineStyle={{}}
         {...inputProps}
       />
-
       <HelperText style={styles.errorText} type="error" visible={hasError}>
         {error?.message?.toString()}
         {/* {name} ingresado es invalido */}

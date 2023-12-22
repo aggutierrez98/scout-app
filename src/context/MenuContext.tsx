@@ -1,14 +1,30 @@
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { usePatrullas } from "client/patrulla";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { VALID_FUNCTIONS, VALID_PROGRESSIONS } from "validators/constants";
+import {
+  VALID_FUNCTIONS,
+  VALID_METODOS_PAGO,
+  VALID_PROGRESSIONS,
+} from "validators/constants";
+
+type MenuMode = "scouts" | "pagos" | "documentos";
 
 export interface MenuContextProps {
   showMenu: boolean;
-  toogleMenu: (arg?: boolean) => void;
+  menuMode: MenuMode;
+  toogleMenu: (arg: boolean, arg2: MenuMode) => void;
   sexo: {
     sexo: string;
     handleSexoChange: (arg: string) => void;
     sexoList: {
+      value: string;
+      label: string;
+    }[];
+  };
+  metodoPago: {
+    metodoPago: string;
+    handleMetodoPagoChange: (arg: string) => void;
+    metodosPagoList: {
       value: string;
       label: string;
     }[];
@@ -37,6 +53,12 @@ export interface MenuContextProps {
       label: string;
     }[];
   };
+  tiempo: {
+    tiempoDesde: Date;
+    tiempoHasta: Date;
+    setTiempoDesde: (arg: Date) => void;
+    setTiempoHasta: (arg: Date) => void;
+  };
 }
 
 const MenuContext = createContext({} as MenuContextProps);
@@ -49,7 +71,13 @@ export const MenuProvider = ({
   const { data } = usePatrullas();
 
   const [showMenu, setShowMenu] = useState(false);
+  const [menuMode, setMenuMode] = useState<MenuMode>("scouts");
   const [sexo, setSexo] = useState<string>("");
+  const [metodoPago, setMetodoPago] = useState<string>("");
+  const dateActual: Date = new Date(Date.now());
+  const [tiempoDesde, setTiempoDesde] = useState(dateActual);
+  const [tiempoHasta, setTiempoHasta] = useState(dateActual);
+
   const sexoList = [
     {
       label: "Ambos",
@@ -64,6 +92,13 @@ export const MenuProvider = ({
       value: "F",
     },
   ];
+
+  const metodosPagoList = VALID_METODOS_PAGO.map((metodoPago: string) => ({
+    label: metodoPago,
+    value: metodoPago,
+  }));
+  metodosPagoList.unshift({ label: "TODOS", value: "" });
+
   const [patrullasSelected, setPatrullasSelected] = useState<string[]>([]);
   const patrullaList =
     data?.map((patrulla) => ({
@@ -85,8 +120,9 @@ export const MenuProvider = ({
     value: funcion,
   }));
 
-  const toogleMenu = (show?: boolean) => {
+  const toogleMenu = (show: boolean, mode: MenuMode) => {
     setShowMenu(show ? show : !showMenu);
+    setMenuMode(mode);
   };
 
   const handlePatrullaChange = (arg: string) => {
@@ -118,15 +154,26 @@ export const MenuProvider = ({
     setSexo(arg);
   };
 
+  const handleMetodoPagoChange = (arg: string) => {
+    setMetodoPago(arg);
+  };
+
   return (
     <MenuContext.Provider
       value={{
         showMenu,
+        menuMode,
         toogleMenu,
         sexo: {
           sexo,
           sexoList,
           handleSexoChange,
+        },
+        tiempo: {
+          tiempoDesde,
+          tiempoHasta,
+          setTiempoDesde,
+          setTiempoHasta,
         },
         progresion: {
           progresionesSelected,
@@ -142,6 +189,11 @@ export const MenuProvider = ({
           funcionesSelected,
           funcionesList,
           handleFuncionChange,
+        },
+        metodoPago: {
+          metodoPago,
+          metodosPagoList,
+          handleMetodoPagoChange,
         },
       }}
     >

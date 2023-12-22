@@ -9,7 +9,6 @@ export default function pago() {
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
   };
-
   const [searchQuery, setsearchQuery] = useState("");
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
 

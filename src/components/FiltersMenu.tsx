@@ -10,6 +10,7 @@ import {
 } from "react-native-paper";
 import { useMenuContext } from "../context/MenuContext";
 import Popover from "react-native-popover-view";
+import { CustomRangeDatePicker } from "./layout/RangeDatePicker";
 
 export default function FiltersMenu({
   parentRef,
@@ -19,6 +20,7 @@ export default function FiltersMenu({
   const theme = useTheme();
   const {
     showMenu,
+    metodoPago: { metodoPago, metodosPagoList, handleMetodoPagoChange },
     sexo: { handleSexoChange, sexo, sexoList },
     progresion: {
       progresionesSelected,
@@ -27,7 +29,9 @@ export default function FiltersMenu({
     },
     funcion: { funcionesList, funcionesSelected, handleFuncionChange },
     patrulla: { patrullasSelected, patrullaList, handlePatrullaChange },
+    tiempo: { setTiempoDesde, setTiempoHasta, tiempoDesde, tiempoHasta },
     toogleMenu,
+    menuMode,
   } = useMenuContext();
 
   return (
@@ -36,7 +40,7 @@ export default function FiltersMenu({
         verticalOffset={-10}
         from={parentRef}
         isVisible={showMenu}
-        onRequestClose={() => toogleMenu(false)}
+        onRequestClose={() => toogleMenu(false, "pagos")}
         popoverStyle={{
           backgroundColor: theme.colors.background,
           padding: 20,
@@ -98,13 +102,41 @@ export default function FiltersMenu({
             ))}
           </List.Accordion>
 
-          <List.Subheader>Sexo</List.Subheader>
+          {menuMode === "scouts" && (
+            <List.Section>
+              <List.Subheader>Sexo</List.Subheader>
+              <SegmentedButtons
+                value={sexo}
+                onValueChange={handleSexoChange}
+                buttons={sexoList}
+              />
+            </List.Section>
+          )}
 
-          <SegmentedButtons
-            value={sexo}
-            onValueChange={handleSexoChange}
-            buttons={sexoList}
-          />
+          {menuMode === "pagos" && (
+            <>
+              <List.Section>
+                <List.Subheader>Metodos de pago</List.Subheader>
+                <SegmentedButtons
+                  value={metodoPago}
+                  onValueChange={handleMetodoPagoChange}
+                  buttons={metodosPagoList}
+                />
+              </List.Section>
+
+              <List.Section>
+                <List.Subheader style={{ marginTop: 10 }}>
+                  Seleccionar fechas
+                </List.Subheader>
+                <CustomRangeDatePicker
+                  startValue={new Date(tiempoDesde)}
+                  endValue={new Date(tiempoHasta)}
+                  setStartValue={setTiempoDesde}
+                  setEndValue={setTiempoHasta}
+                />
+              </List.Section>
+            </>
+          )}
         </List.AccordionGroup>
       </Popover>
     </React.Fragment>

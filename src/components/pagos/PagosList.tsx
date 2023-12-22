@@ -1,43 +1,46 @@
 import {
   ActivityIndicator,
   Divider,
+  IconButton,
   List,
-  MD3Colors,
   Surface,
   Text,
+  TouchableRipple,
 } from "react-native-paper";
-import ListItem from "../ListItem";
-import { useScouts } from "../../client/scouts";
 import { Fragment } from "react";
 import { FlatList } from "react-native";
-import { Scout } from "types/interfaces/scout";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
+import { usePagos } from "client/pago";
+import { Pago } from "types/interfaces/pago";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 
 interface Props {
   searchQuery: string;
 }
 
-export default function ScoutsList({ searchQuery }: Props) {
+export default function PagosList({ searchQuery }: Props) {
   const router = useRouter();
 
   const {
-    sexo: { sexo },
+    tiempo: { tiempoDesde, tiempoHasta },
+    metodoPago: { metodoPago },
     progresion: { progresionesSelected },
     patrulla: { patrullasSelected },
     funcion: { funcionesSelected },
   } = useMenuContext();
 
-  const { data, fetchNextPage, hasNextPage, isLoading } = useScouts({
+  const { data, isError, fetchNextPage, hasNextPage, isLoading } = usePagos({
     patrullas: patrullasSelected,
-    sexo,
+    metodoPago,
     progresiones: progresionesSelected,
     funciones: funcionesSelected,
+    tiempoDesde,
+    tiempoHasta,
     searchQuery,
   });
 
-  const flattenData: Scout[] = data?.pages.flatMap((page) => page || []) || [];
+  const flattenData: Pago[] = data?.pages.flatMap((page) => page || []) || [];
 
   const loadNextPageData = () => {
     if (hasNextPage) {
@@ -48,7 +51,6 @@ export default function ScoutsList({ searchQuery }: Props) {
   return (
     <>
       {isLoading && <LoadingScreen />}
-
       <List.Section
         style={{
           marginBottom: 50,
@@ -58,19 +60,28 @@ export default function ScoutsList({ searchQuery }: Props) {
         <FlatList
           data={flattenData}
           keyExtractor={(scout) => scout.id}
-          renderItem={({ item }: { item: Scout }) => (
+          renderItem={({ item }: { item: Pago }) => (
             <Fragment key={item.id}>
-              <ListItem
-                title={`${item.apellido} ${item.nombre}`}
-                icon={item.sexo === "M" ? "human-male" : "human-female"}
-                iconColor={
-                  item.sexo === "F" ? MD3Colors.tertiary70 : MD3Colors.primary70
-                }
-                action={() => {
-                  router.push(`/(drawer)/(tabs)/scouts/${item.id}`);
+              <TouchableRipple
+                onPress={() => {
+                  router.push(`/(drawer)/(tabs)/pagos/${item.id}`);
                 }}
-              />
-              <Divider />
+              >
+                <List.Item
+                  title={`${item.fechaPago} - ${item.concepto}`}
+                  right={(props) => (
+                    <IconButton
+                      style={{ margin: 0 }}
+                      icon="delete"
+                      size={20}
+                      onPress={() => {
+                        console.log("delete", item.id);
+                      }}
+                    />
+                  )}
+                />
+              </TouchableRipple>
+              <Divider style={{ marginVertical: -5 }} />
             </Fragment>
           )}
           onEndReached={loadNextPageData}

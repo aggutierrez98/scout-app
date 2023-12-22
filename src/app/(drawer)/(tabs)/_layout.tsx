@@ -3,6 +3,7 @@ import {
   Tabs,
   useNavigation,
   usePathname,
+  useRouter,
   useSegments,
 } from "expo-router";
 
@@ -29,6 +30,7 @@ export default function AppLayout() {
   const { toogleMenu } = useMenuContext();
   const { changeIsEditing } = useEditContext();
   const touchable = useRef(null);
+  const { back } = useRouter();
 
   return (
     <>
@@ -44,21 +46,31 @@ export default function AppLayout() {
         {segments.length > 3 && (
           <Appbar.BackAction
             onPress={() => {
-              goBack();
+              back();
             }}
           />
         )}
         <Appbar.Content title={capitalizeFirstLetter(pageTitle)} />
-        {segments.length > 2 && pageTitle !== "scouts" && (
-          <Appbar.Action icon="plus" onPress={() => {}} />
+        {segments.length === 3 && pageTitle !== "scouts" && (
+          <Appbar.Action
+            icon="plus"
+            onPress={() => {
+              // navigation.dispatch({
+              //   ...CommonActions.navigate("newUser"),
+              //   target: getState().key,
+              // });
+            }}
+          />
         )}
-        {segments.length > 3 && (
+        {segments.length > 3 && pageTitle === "scouts" && (
           <Appbar.Action icon="pencil" onPress={() => changeIsEditing()} />
         )}
         {segments.length === 3 && (
           <Appbar.Action
             icon="chevron-down"
-            onPressIn={() => toogleMenu()}
+            onPressIn={() =>
+              toogleMenu(true, pageTitle as "scouts" | "documentos" | "pagos")
+            }
             ref={touchable}
           />
         )}

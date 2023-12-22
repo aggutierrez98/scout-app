@@ -1,8 +1,17 @@
+import PagosList from "components/pagos/PagosList";
+import { useDebouncedValue } from "hooks/useDebounceValue";
+import { useState } from "react";
 import { View, Text } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Searchbar, useTheme } from "react-native-paper";
 
 export default function pagos() {
   const theme = useTheme();
+  const onChangeSearch = (searchText: string) => {
+    setsearchQuery(searchText);
+  };
+  const [searchQuery, setsearchQuery] = useState("");
+  const debouncedSearchQuery = useDebouncedValue(searchQuery);
+
   return (
     <View
       style={[
@@ -13,7 +22,13 @@ export default function pagos() {
         },
       ]}
     >
-      <Text>Pagos</Text>
+      <Searchbar
+        placeholder="Buscar"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
+
+      <PagosList searchQuery={debouncedSearchQuery} />
     </View>
   );
 }
