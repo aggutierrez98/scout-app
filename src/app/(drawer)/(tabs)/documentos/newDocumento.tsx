@@ -1,54 +1,52 @@
 import { Button, Text, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
-import { CustomTextInput } from "components/layout/TextInput";
-import { Redirect, useNavigation } from "expo-router";
+import { Redirect } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { VALID_METODOS_PAGO, VALID_ROLES } from "validators/constants";
 import { useAllScouts } from "client/scouts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePagoSchema } from "validators/pago";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useCreatePago } from "client/pago";
+import { useCreateDocumento, useDocumentsData } from "client/documento";
+import { CreateDocumentoSchema } from "validators/documento";
 
 type FormValues = {
   scoutId: string;
-  fechaPago: Date;
-  concepto: string;
-  metodoPago: string;
-  monto: string;
+  documentoId: string;
+  fechaPresentacion: Date;
 };
 
-export default function newPago() {
+export default function newDocumento() {
   const theme = useTheme();
   const { data } = useRenewLogin();
   const { toogleSnackBar } = useSnackBarContext();
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
-    resolver: zodResolver(CreatePagoSchema),
+    resolver: zodResolver(CreateDocumentoSchema),
   });
 
-  const { isSuccess, status, mutateAsync } = useCreatePago();
+  const { isSuccess, status, mutateAsync } = useCreateDocumento();
   const { data: users } = useAllScouts();
-
-  const metodosList = VALID_METODOS_PAGO.map((metodo) => ({
-    label: metodo,
-    value: metodo,
-  }));
-
-  if (isSuccess) {
-    return <Redirect href="/(drawer)/pagos" />;
-  }
+  const { data: documentsData } = useDocumentsData();
 
   const scoutsList =
     users?.map(({ id, nombre }) => ({
       label: nombre,
       value: id,
     })) || [];
+  const documentsList =
+    documentsData?.map(({ id, nombre }) => ({
+      label: nombre,
+      value: id,
+    })) || [];
+
+  if (isSuccess) {
+    return <Redirect href="/(drawer)/pagos" />;
+  }
 
   return (
     <>
@@ -78,32 +76,16 @@ export default function newPago() {
               variant="titleLarge"
               style={{ marginTop: -5, marginBottom: 10 }}
             >
-              Crear pago
+              Crear documento
             </Text>
 
             <FormProvider {...formMethods}>
-              <CustomTextInput
-                name="concepto"
-                label="Concepto"
-                placeholder="Ingrese concepto"
-                style={{ marginTop: 10 }}
-              />
-
-              <CustomTextInput
-                name="monto"
-                label="Monto"
-                placeholder="Ingrese monto"
-                keyboardType="numeric"
-                style={{ marginTop: 10 }}
-              />
-
               <CustomDropDown
-                name="metodoPago"
-                label="Metodo de pago"
-                list={metodosList}
+                name="documentoId"
+                label="Documento presentado"
+                list={documentsList}
                 defaultValue={""}
               />
-
               <CustomDropDown
                 name="scoutId"
                 label="Scout asociado"
@@ -112,8 +94,8 @@ export default function newPago() {
               />
 
               <CustomDatePicker
-                name="fechaPago"
-                label="Fecha de pago"
+                name="fechaPresentacion"
+                label="Fecha de entrega del documento"
                 defaultValue={new Date()}
               />
 

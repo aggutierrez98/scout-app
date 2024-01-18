@@ -1,7 +1,9 @@
 import { Redirect } from "expo-router";
 import {
   Divider,
+  Portal,
   Drawer as RNPDrawer,
+  Snackbar,
   Text,
   useTheme,
   withTheme,
@@ -12,8 +14,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LogoIcon from "components/layout/AppLogoIcon";
 import { View } from "react-native";
 import { CommonActions } from "@react-navigation/native";
+import { useSnackBarContext } from "context/SnackBarContext";
 
 function AppLayout() {
+  const { snackBarText, snackBarMode, visibleSnack, onDismissSnackBar } =
+    useSnackBarContext();
   const { colors } = useTheme();
   const { data: userData } = useRenewLogin();
   const logout = useLogout();
@@ -124,6 +129,26 @@ function AppLayout() {
           }}
         />
       </Drawer>
+
+      <Snackbar
+        visible={visibleSnack}
+        rippleColor={colors.primary}
+        onDismiss={onDismissSnackBar}
+        duration={2000}
+        elevation={2}
+        style={{
+          backgroundColor:
+            snackBarMode === "error" ? colors.error : colors.onTertiary,
+        }}
+        action={{
+          label: "Cerrar",
+          onPress: () => {
+            onDismissSnackBar();
+          },
+        }}
+      >
+        {snackBarText}
+      </Snackbar>
     </>
   );
 }

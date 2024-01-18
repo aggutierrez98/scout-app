@@ -1,7 +1,7 @@
 import PagosList from "components/pagos/PagosList";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { Searchbar, useTheme } from "react-native-paper";
 
 export default function pagos() {
@@ -18,7 +18,8 @@ export default function pagos() {
         {
           flex: 1,
           padding: 10,
-          backgroundColor: theme.colors.backdrop,
+          paddingTop: -40,
+          backgroundColor: theme.colors.background,
         },
       ]}
     >

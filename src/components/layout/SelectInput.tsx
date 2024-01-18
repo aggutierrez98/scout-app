@@ -2,6 +2,7 @@ import { View, StyleSheet, ViewStyle, TextStyle } from "react-native";
 import { useController } from "react-hook-form";
 import DropDown from "react-native-paper-dropdown";
 import { useState } from "react";
+import { HelperText } from "react-native-paper";
 
 interface Props {
   name: string;
@@ -32,11 +33,15 @@ export const CustomDropDown = ({
   dropDownItemTextStyle,
 }: Props) => {
   const [showDropDown, setShowDropDown] = useState(false);
-  const { field } = useController({ name, defaultValue });
+  const {
+    field,
+    fieldState: { error },
+  } = useController({ name, defaultValue });
 
   const handleDDChange = (value: string) => {
     field.onChange(value);
   };
+  const hasError = Boolean(!!error);
 
   return (
     <View style={{ marginVertical: 7 }}>
@@ -59,6 +64,10 @@ export const CustomDropDown = ({
           ...dropDownItemTextStyle,
         }}
       />
+      <HelperText type="error" visible={hasError}>
+        {error?.message?.toString()}
+        {/* {name} ingresado es invalido */}
+      </HelperText>
     </View>
   );
 };

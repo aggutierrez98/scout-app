@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Text, View } from "react-native";
-import { IconButton, List, useTheme } from "react-native-paper";
+import { HelperText, IconButton, List, useTheme } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
 import { CalendarDate } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 
@@ -48,6 +48,7 @@ export const CustomDatePicker = ({ name, label, defaultValue }: Props) => {
     },
     [setShow, field.onChange]
   );
+  const hasError = Boolean(!!error);
 
   return (
     <View style={{ marginVertical: 5 }}>
@@ -101,6 +102,11 @@ export const CustomDatePicker = ({ name, label, defaultValue }: Props) => {
           onConfirm={onConfirm}
         />
       )}
+
+      <HelperText type="error" visible={hasError}>
+        {error?.message?.toString()}
+        {/* {name} ingresado es invalido */}
+      </HelperText>
     </View>
   );
 };

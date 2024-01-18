@@ -1,4 +1,9 @@
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
@@ -12,8 +17,17 @@ interface QueryParams {
   patrullas: string[];
   progresiones: string[];
   funciones: string[];
+  rendido: "si" | "no" | "";
   tiempoDesde: Date;
   tiempoHasta: Date;
+}
+
+interface CreateParams {
+  concepto: string;
+  monto: string;
+  metodoPago: string;
+  scoutId: string;
+  fechaPago: Date;
 }
 
 export interface EditPagoParams {
@@ -33,6 +47,7 @@ export const fetchPagos = async (
     funciones,
     searchQuery,
     metodoPago,
+    rendido,
     tiempoDesde,
     tiempoHasta,
   }: QueryParams
@@ -53,11 +68,14 @@ export const fetchPagos = async (
     const patrullasStr = getArrSearchParam(patrullas, "patrullas");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
+    const rendidoStr = rendido
+      ? `&rendido=${rendido === "si" ? "true" : "false"}`
+      : "";
 
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await axios.get(
-      `${API_URL}/pago?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}`,
+      `${API_URL}/pago?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +143,11 @@ export const usePagos = (queryParams: QueryParams) =>
         queryParams.patrullas
       }-metodoPago=${queryParams.metodoPago}-progresion=${
         queryParams.progresiones
-      }-funcion=${queryParams.funciones}`,
+      }-funcion=${queryParams.funciones}
+      -rendido=${queryParams.rendido}
+      -tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${
+        queryParams.tiempoHasta
+      }`,
     ],
     queryFn: ({ pageParam }) => fetchPagos(pageParam, queryParams),
     getNextPageParam: (lastPage, allPages) => {
@@ -145,3 +167,61 @@ export const useEditPago = () =>
       editPago(id, data),
     mutationKey: ["pago", "id"],
   });
+
+export const deletePago = async (id: string) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+    const { data } = await axios.delete(`${API_URL}/pago/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data as Pago;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const useDeletePago = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id }: { id: string }) => deletePago(id),
+    mutationKey: ["delete-pago", "id"],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pagos"] });
+    },
+  });
+};
+
+export const createPago = async (pagoData: CreateParams) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+
+    const { data } = await axios.post(`${API_URL}/pago`, pagoData, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data as Pago;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const useCreatePago = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateParams) => createPago(data),
+    mutationKey: ["pagos"],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pagos"] });
+    },
+  });
+};

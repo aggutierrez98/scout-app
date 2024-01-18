@@ -106,18 +106,21 @@ export const useScouts = (queryParams: QueryParams) =>
 export const useScout = (id: string) =>
   useQuery({ queryKey: ["scout", "id"], queryFn: () => fetchScout(id) });
 
-export const fetchAllScouts = async () => {
+export const fetchAllScouts = async (onlyEducadores?: boolean) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();
-    const { data, status } = await axios.get(`${API_URL}/scout/all`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.get(
+      `${API_URL}/scout/all${onlyEducadores ? "Educadores" : "Scouts"}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return data as {
       id: string;
       nombre: string;
@@ -154,8 +157,11 @@ export const editScout = async (
   }
 };
 
-export const useAllScouts = () =>
-  useQuery({ queryKey: ["scouts", "all"], queryFn: () => fetchAllScouts() });
+export const useAllScouts = (onlyEducadores?: boolean) =>
+  useQuery({
+    queryKey: ["scouts", "all"],
+    queryFn: () => fetchAllScouts(onlyEducadores),
+  });
 
 export const useEditScout = () =>
   useMutation({

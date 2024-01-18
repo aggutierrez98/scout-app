@@ -27,7 +27,7 @@ export default function users() {
           {
             flex: 1,
             padding: 10,
-            backgroundColor: theme.colors.backdrop,
+            backgroundColor: theme.colors.background,
           },
         ]}
       >

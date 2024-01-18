@@ -19,7 +19,7 @@ export default function pago() {
           flex: 1,
           padding: 10,
           paddingTop: -40,
-          backgroundColor: theme.colors.backdrop,
+          backgroundColor: theme.colors.background,
         },
       ]}
     >

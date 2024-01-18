@@ -1,4 +1,4 @@
-import { ScrollView, ToastAndroid } from "react-native";
+import { ScrollView } from "react-native";
 import { Button, Divider, Text, useTheme } from "react-native-paper";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEditScout, useScout } from "client/scouts";
@@ -16,6 +16,7 @@ import { CustomDropDown } from "components/layout/SelectInput";
 import { usePatrullas } from "client/patrulla";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
+import { useSnackBarContext } from "context/SnackBarContext";
 
 type ScoutParams = {
   scout: string;
@@ -33,6 +34,7 @@ type FormValues = {
 };
 export default function ScoutPage() {
   const theme = useTheme();
+  const { toogleSnackBar } = useSnackBarContext();
   const { scout: scoutId } = useLocalSearchParams<ScoutParams>();
   if (!scoutId) return null;
   const { data, isLoading } = useScout(scoutId);
@@ -79,7 +81,7 @@ export default function ScoutPage() {
           flex: 1,
           padding: 20,
           paddingTop: 0,
-          backgroundColor: theme.colors.backdrop,
+          backgroundColor: theme.colors.background,
         },
       ]}
     >
@@ -183,13 +185,9 @@ export default function ScoutPage() {
                 });
                 const resp = await mutateAsync({ id: scoutId, data });
                 if (resp) {
-                  ToastAndroid.showWithGravity(
-                    "Scout modificado con exito!",
-                    ToastAndroid.SHORT,
-                    ToastAndroid.CENTER
-                  );
+                  toogleSnackBar("Scout modificado con exito!", "success");
                   goBack();
-                }
+                } else toogleSnackBar("Error al modificar el scout", "error");
               })}
             >
               Guardar

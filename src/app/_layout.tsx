@@ -5,6 +5,7 @@ import { MenuProvider } from "../context/MenuContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditProvider } from "../context/EditContext";
 import { Slot } from "expo-router";
+import { SnackBarProvider } from "context/SnackBarContext";
 
 const queryClient = new QueryClient({
   // queryCache: {}
@@ -27,11 +28,13 @@ export default function Layout() {
   return (
     <PaperProvider theme={paperTheme}>
       <QueryClientProvider client={queryClient}>
-        <MenuProvider>
-          <EditProvider>
-            <Slot />
-          </EditProvider>
-        </MenuProvider>
+        <SnackBarProvider>
+          <MenuProvider>
+            <EditProvider>
+              <Slot />
+            </EditProvider>
+          </MenuProvider>
+        </SnackBarProvider>
       </QueryClientProvider>
     </PaperProvider>
   );

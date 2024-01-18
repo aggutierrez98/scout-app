@@ -1,5 +1,5 @@
-import { ScrollView, ToastAndroid } from "react-native";
-import { Button, Divider, useTheme } from "react-native-paper";
+import { ScrollView } from "react-native";
+import { Button, Divider, useTheme, Appbar } from "react-native-paper";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useScout } from "client/scouts";
 import { useForm, FormProvider } from "react-hook-form";
@@ -13,6 +13,7 @@ import { CustomSwitchInput } from "components/layout/SwitchInput";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { EditPagoSchema } from "validators/pago";
 import { DescriptiveText } from "components/layout/DescriptiveText";
+import { useSnackBarContext } from "context/SnackBarContext";
 
 type PagoParams = {
   pago: string;
@@ -32,6 +33,7 @@ export default function PagoPage() {
   const { pago: pagoId } = useLocalSearchParams<PagoParams>();
   if (!pagoId) return null;
 
+  const { toogleSnackBar } = useSnackBarContext();
   const { data, isLoading } = usePago(pagoId);
   const { data: scoutData, isLoading: isLoadingScout } = useScout(
     data?.scoutId ?? ""
@@ -58,7 +60,7 @@ export default function PagoPage() {
           flex: 1,
           padding: 20,
           paddingTop: 0,
-          backgroundColor: theme.colors.backdrop,
+          backgroundColor: theme.colors.background,
         },
       ]}
     >
@@ -113,13 +115,9 @@ export default function PagoPage() {
           onPress={formMethods.handleSubmit(async (data) => {
             const resp = await mutateAsync({ id: pagoId, data });
             if (resp) {
-              ToastAndroid.showWithGravity(
-                "Pago modificado con exito!",
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER
-              );
+              toogleSnackBar("Pago modificado con exito!", "success");
               goBack();
-            }
+            } else toogleSnackBar("Error al modificar el pago", "error");
           })}
         >
           Guardar

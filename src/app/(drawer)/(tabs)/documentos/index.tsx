@@ -1,19 +1,35 @@
-import ScoutsList from "components/scouts/ScoutsList";
-import { Stack, router } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
-import { Appbar, useTheme } from "react-native-paper";
+import { Searchbar, useTheme } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useDebouncedValue } from "hooks/useDebounceValue";
+import { useState } from "react";
+import DocumentsList from "components/documentos/DocumentsList";
 
 export default function documentos() {
   const theme = useTheme();
+  const onChangeSearch = (searchText: string) => {
+    setsearchQuery(searchText);
+  };
+  const [searchQuery, setsearchQuery] = useState("");
+  const debouncedSearchQuery = useDebouncedValue(searchQuery);
+
   return (
-    <View
+    <SafeAreaView
       style={[
         {
           flex: 1,
           padding: 10,
-          backgroundColor: theme.colors.backdrop,
+          paddingTop: -40,
+          backgroundColor: theme.colors.background,
         },
       ]}
-    ></View>
+    >
+      <Searchbar
+        placeholder="Buscar"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
+
+      <DocumentsList searchQuery={debouncedSearchQuery} />
+    </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import { ScrollView, ToastAndroid } from "react-native";
+import { ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Appbar,
@@ -19,6 +19,7 @@ import { LoadingScreen } from "components/layout/LoadingScreen";
 import { StatusBar } from "expo-status-bar";
 import { CustomSwitchInput } from "components/layout/SwitchInput";
 import { EditUserSchema } from "validators/auth";
+import { useSnackBarContext } from "context/SnackBarContext";
 
 type UserParams = {
   user: string;
@@ -30,6 +31,7 @@ type FormValues = {
 };
 
 export default function UserPage() {
+  const { toogleSnackBar } = useSnackBarContext();
   const theme = useTheme();
   const { goBack } = useNavigation();
   const { user: userId } = useLocalSearchParams<UserParams>();
@@ -59,7 +61,7 @@ export default function UserPage() {
           flex: 1,
           padding: 10,
           paddingTop: 0,
-          backgroundColor: theme.colors.backdrop,
+          backgroundColor: theme.colors.background,
         },
       ]}
     >
@@ -125,13 +127,9 @@ export default function UserPage() {
                 const resp = await mutateAsync({ data, id: userId });
 
                 if (resp) {
-                  ToastAndroid.showWithGravity(
-                    "Usuario modificado con exito!",
-                    ToastAndroid.SHORT,
-                    ToastAndroid.CENTER
-                  );
+                  toogleSnackBar("Usuario modificado con exito!", "success");
                   goBack();
-                }
+                } else toogleSnackBar("Error al modificar el usuario", "error");
               })}
             >
               Guardar

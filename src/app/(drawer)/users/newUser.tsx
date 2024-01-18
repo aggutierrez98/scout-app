@@ -21,7 +21,7 @@ type FormValues = {
   scoutId: string;
 };
 
-export default function users() {
+export default function newUser() {
   const theme = useTheme();
   const { data } = useRenewLogin();
   const { goBack } = useNavigation();
@@ -31,7 +31,7 @@ export default function users() {
     resolver: zodResolver(CreateUserSchema),
   });
   const { isSuccess, mutate, status } = useCreateUser();
-  const { data: users } = useAllScouts();
+  const { data: users } = useAllScouts(true);
   const rolList = VALID_ROLES.map((role) => ({
     label: role,
     value: role,
@@ -54,7 +54,7 @@ export default function users() {
           {
             flex: 1,
             padding: 10,
-            backgroundColor: theme.colors.backdrop,
+            backgroundColor: theme.colors.background,
           },
         ]}
       >

@@ -5,6 +5,7 @@ import {
   usePathname,
   useRouter,
   useSegments,
+  router,
 } from "expo-router";
 
 import { Appbar, BottomNavigation, useTheme } from "react-native-paper";
@@ -26,7 +27,7 @@ export default function AppLayout() {
   const segments = useSegments();
   const pathname = usePathname();
   const pageTitle = pathname.split("/")[1];
-  const { goBack } = useNavigation();
+  const { goBack, dispatch, getState, navigate } = useNavigation();
   const { toogleMenu } = useMenuContext();
   const { changeIsEditing } = useEditContext();
   const touchable = useRef(null);
@@ -51,14 +52,25 @@ export default function AppLayout() {
           />
         )}
         <Appbar.Content title={capitalizeFirstLetter(pageTitle)} />
+
         {segments.length === 3 && pageTitle !== "scouts" && (
           <Appbar.Action
             icon="plus"
             onPress={() => {
-              // navigation.dispatch({
-              //   ...CommonActions.navigate("newUser"),
-              //   target: getState().key,
-              // });
+              if (pageTitle === "pagos") {
+                dispatch(
+                  CommonActions.navigate({
+                    name: "newPago",
+                  })
+                );
+              }
+              if (pageTitle === "documentos") {
+                dispatch(
+                  CommonActions.navigate({
+                    name: "newDocumento",
+                  })
+                );
+              }
             }}
           />
         )}
@@ -91,7 +103,7 @@ export default function AppLayout() {
             <View>
               <BottomNavigation.Bar
                 style={{
-                  backgroundColor: theme.colors.backdrop,
+                  backgroundColor: theme.colors.background,
                 }}
                 navigationState={stateFin}
                 onTabPress={({ route, preventDefault }) => {

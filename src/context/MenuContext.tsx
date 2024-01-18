@@ -1,4 +1,5 @@
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { useDocumentsData } from "client/documento";
 import { usePatrullas } from "client/patrulla";
 import { createContext, useContext, useState, ReactNode } from "react";
 import {
@@ -29,6 +30,14 @@ export interface MenuContextProps {
       label: string;
     }[];
   };
+  rendido: {
+    rendido: string;
+    handleRendidoChange: (arg: string) => void;
+  };
+  vence: {
+    vence: string;
+    handleVenceChange: (arg: string) => void;
+  };
   progresion: {
     progresionesSelected: string[];
     handleProgresionChange: (arg: string) => void;
@@ -41,6 +50,14 @@ export interface MenuContextProps {
     patrullasSelected: string[];
     handlePatrullaChange: (arg: string) => void;
     patrullaList: {
+      value: string;
+      label: string;
+    }[];
+  };
+  documento: {
+    documentosSelected: string[];
+    handleDocumentoChange: (arg: string) => void;
+    documentosList: {
       value: string;
       label: string;
     }[];
@@ -59,6 +76,10 @@ export interface MenuContextProps {
     setTiempoDesde: (arg: Date) => void;
     setTiempoHasta: (arg: Date) => void;
   };
+  trueFalseList: {
+    value: string;
+    label: string;
+  }[];
 }
 
 const MenuContext = createContext({} as MenuContextProps);
@@ -68,14 +89,19 @@ export const MenuProvider = ({
 }: {
   children: ReactNode[] | ReactNode;
 }) => {
-  const { data } = usePatrullas();
+  const { data: patrullasData } = usePatrullas();
+  const { data: documentosData } = useDocumentsData();
 
   const [showMenu, setShowMenu] = useState(false);
   const [menuMode, setMenuMode] = useState<MenuMode>("scouts");
   const [sexo, setSexo] = useState<string>("");
+  const [rendido, setRendido] = useState("");
+  const [vence, setVence] = useState("");
   const [metodoPago, setMetodoPago] = useState<string>("");
   const dateActual: Date = new Date(Date.now());
-  const [tiempoDesde, setTiempoDesde] = useState(dateActual);
+  const date3MesesAntes: Date = new Date(Date.now());
+  date3MesesAntes.setMonth(date3MesesAntes.getMonth() - 5);
+  const [tiempoDesde, setTiempoDesde] = useState(date3MesesAntes);
   const [tiempoHasta, setTiempoHasta] = useState(dateActual);
 
   const sexoList = [
@@ -99,11 +125,24 @@ export const MenuProvider = ({
   }));
   metodosPagoList.unshift({ label: "TODOS", value: "" });
 
+  const trueFalseList = [
+    { label: "Ambos", value: "" },
+    { label: "Si", value: "si" },
+    { label: "No", value: "no" },
+  ];
+
   const [patrullasSelected, setPatrullasSelected] = useState<string[]>([]);
   const patrullaList =
-    data?.map((patrulla) => ({
+    patrullasData?.map((patrulla) => ({
       label: patrulla.nombre,
       value: patrulla.id,
+    })) || [];
+
+  const [documentosSelected, setDocumentosSelected] = useState<string[]>([]);
+  const documentosList =
+    documentosData?.map((documento) => ({
+      label: documento.nombre,
+      value: documento.id,
     })) || [];
 
   const [progresionesSelected, setProgresionesSelected] = useState<string[]>(
@@ -132,6 +171,13 @@ export const MenuProvider = ({
       setPatrullasSelected([...patrullasSelected, arg]);
     }
   };
+  const handleDocumentoChange = (arg: string) => {
+    if (documentosSelected.includes(arg)) {
+      setDocumentosSelected(documentosSelected.filter((item) => item !== arg));
+    } else {
+      setDocumentosSelected([...documentosSelected, arg]);
+    }
+  };
 
   const handleProgresionChange = (arg: string) => {
     if (progresionesSelected.includes(arg)) {
@@ -152,6 +198,13 @@ export const MenuProvider = ({
   };
   const handleSexoChange = (arg: string) => {
     setSexo(arg);
+  };
+
+  const handleRendidoChange = (arg: string) => {
+    setRendido(arg);
+  };
+  const handleVenceChange = (arg: string) => {
+    setVence(arg);
   };
 
   const handleMetodoPagoChange = (arg: string) => {
@@ -185,6 +238,11 @@ export const MenuProvider = ({
           patrullaList,
           handlePatrullaChange,
         },
+        documento: {
+          documentosSelected,
+          documentosList,
+          handleDocumentoChange,
+        },
         funcion: {
           funcionesSelected,
           funcionesList,
@@ -195,6 +253,15 @@ export const MenuProvider = ({
           metodosPagoList,
           handleMetodoPagoChange,
         },
+        rendido: {
+          rendido,
+          handleRendidoChange,
+        },
+        vence: {
+          vence,
+          handleVenceChange,
+        },
+        trueFalseList,
       }}
     >
       {children}
