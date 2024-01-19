@@ -37,6 +37,7 @@ export default function UserPage() {
   const { user: userId } = useLocalSearchParams<UserParams>();
   if (!userId) return null;
   const { data, isLoading } = useUser(userId);
+
   const { mutateAsync } = useModifyUser();
 
   const formMethods = useForm<FormValues>({

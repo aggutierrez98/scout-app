@@ -68,6 +68,18 @@ function AppLayout() {
                 active={index === 0}
               />
               <RNPDrawer.Item
+                key={"familiares"}
+                label={"Familiares"}
+                icon={"account-child"}
+                onPress={() => {
+                  navigation.dispatch({
+                    ...CommonActions.navigate(routes[3].name, routes[3].params),
+                    target: key,
+                  });
+                }}
+                active={index === 3}
+              />
+              <RNPDrawer.Item
                 key={"user"}
                 label={userData.username}
                 icon={"account-circle"}

@@ -18,6 +18,7 @@ interface Props {
   dropDownItemSelectedTextStyle?: TextStyle;
   dropDownItemStyle?: ViewStyle;
   dropDownItemTextStyle?: TextStyle;
+  dropDownContainerStyle?: ViewStyle;
 }
 
 export const CustomDropDown = ({
@@ -31,6 +32,7 @@ export const CustomDropDown = ({
   dropDownItemSelectedTextStyle,
   dropDownItemStyle,
   dropDownItemTextStyle,
+  dropDownContainerStyle,
 }: Props) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const {
@@ -44,7 +46,7 @@ export const CustomDropDown = ({
   const hasError = Boolean(!!error);
 
   return (
-    <View style={{ marginVertical: 7 }}>
+    <View style={{ marginVertical: 7, ...dropDownContainerStyle }}>
       <DropDown
         label={label}
         placeholder={placeholder}

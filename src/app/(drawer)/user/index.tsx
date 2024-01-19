@@ -30,11 +30,6 @@ export default function user() {
           }}
         >
           <Appbar.Content title={data?.username} />
-
-          <Appbar.Action
-            icon="pencil"
-            onPress={() => console.log("editar viejaa")}
-          />
         </Appbar.Header>
 
         {data ? (

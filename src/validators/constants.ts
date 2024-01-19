@@ -10,6 +10,7 @@ export const VALID_RELIGIONS = [
   "BUDISTA",
   "EVANGELICA",
 ] as const;
+export const VALID_ESTADO_CIVIL = ["CASADO", "SOLTERO", "SEPARADO"] as const;
 export const VALID_FUNCTIONS = ["JOVEN", "EDUCADOR", "COLABORADOR"] as const;
 
 export const VALID_GET_SCOUTS_FILTERS = [
@@ -27,6 +28,9 @@ export const VALID_RELATIONSHIPS = [
   "HERMANA",
   "OTRO",
 ] as const;
+
+export const M_RELATIONSHIPS = ["PADRE", "TIO", "HERMANO", "OTRO"] as const;
+export const F_RELATIONSHIPS = ["MADRE", "TIA", "HERMANA", "OTRO"] as const;
 
 export const VALID_INSINGIAS_TYPE = [
   "UNIFORME",
