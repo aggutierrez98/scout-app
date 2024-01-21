@@ -1,5 +1,5 @@
-import { Appbar, Portal, Searchbar, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { Appbar, Searchbar, useTheme } from "react-native-paper";
+import { View, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -27,6 +27,7 @@ export default function users() {
           {
             flex: 1,
             padding: 10,
+            paddingTop: 0,
             backgroundColor: theme.colors.background,
           },
         ]}

@@ -10,9 +10,8 @@ import {
 } from "react-native-paper";
 import { useLogout, useRenewLogin } from "client/auth";
 import Drawer from "expo-router/drawer";
-import { SafeAreaView } from "react-native-safe-area-context";
 import LogoIcon from "components/layout/AppLogoIcon";
-import { View } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import { useSnackBarContext } from "context/SnackBarContext";
 
@@ -171,13 +170,17 @@ function AppLayout() {
         rippleColor={colors.primary}
         onDismiss={onDismissSnackBar}
         duration={2000}
-        elevation={2}
+        elevation={1}
         style={{
-          backgroundColor:
+          borderColor:
             snackBarMode === "error" ? colors.error : colors.onTertiary,
+          borderWidth: 1,
+          marginBottom: 15,
         }}
         action={{
           label: "Cerrar",
+          textColor:
+            snackBarMode === "error" ? colors.error : colors.onTertiary,
           onPress: () => {
             onDismissSnackBar();
           },

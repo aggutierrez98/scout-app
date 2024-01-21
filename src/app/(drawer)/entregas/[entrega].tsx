@@ -62,7 +62,7 @@ export default function EntregaPage() {
           backgroundColor: theme.colors.background,
           height: 40,
           marginBottom: 10,
-          marginLeft: 10,
+          marginLeft: -10,
         }}
       >
         <Appbar.BackAction

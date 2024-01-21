@@ -12,12 +12,13 @@ import { getArrSearchParam } from "utils/getArraySearchParam";
 import { Documento, DocumentoData } from "types/interfaces/documento";
 
 interface QueryParams {
-  sexo: string;
   searchQuery: string;
   patrullas: string[];
   progresiones: string[];
   funciones: string[];
   vence: string;
+  tiempoDesde: Date;
+  tiempoHasta: Date;
 }
 
 export interface EditDocumentoParams {
@@ -82,7 +83,15 @@ export const useEditDocumento = () =>
 
 export const fetchDocuments = async (
   pageParam: number,
-  { patrullas, progresiones, funciones, searchQuery, sexo, vence }: QueryParams
+  {
+    patrullas,
+    progresiones,
+    funciones,
+    searchQuery,
+    vence,
+    tiempoDesde,
+    tiempoHasta,
+  }: QueryParams
 ) => {
   try {
     const offset = (pageParam - 1) * QUERY_LIMIT;
@@ -105,7 +114,7 @@ export const fetchDocuments = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await axios.get(
-      `${API_URL}/documento?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}`,
+      `${API_URL}/documento?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +162,11 @@ export const useDocuments = (queryParams: QueryParams) =>
         queryParams.patrullas
       }-progresion=${queryParams.progresiones}-funcion=${
         queryParams.funciones
-      }-funcion=${queryParams.funciones}-vence=${queryParams.vence}`,
+      }-funcion=${queryParams.funciones}-vence=${
+        queryParams.vence
+      }-tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${
+        queryParams.tiempoHasta
+      }`,
     ],
     queryFn: ({ pageParam }) => fetchDocuments(pageParam, queryParams),
     getNextPageParam: (lastPage, allPages) => {

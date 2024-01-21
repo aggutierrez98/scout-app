@@ -107,6 +107,8 @@ export default function AppLayout() {
               <BottomNavigation.Bar
                 style={{
                   backgroundColor: theme.colors.background,
+                  borderTopColor: theme.colors.tertiary,
+                  borderTopWidth: 0.2,
                 }}
                 navigationState={stateFin}
                 onTabPress={({ route, preventDefault }) => {

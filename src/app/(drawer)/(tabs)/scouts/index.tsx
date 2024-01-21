@@ -1,5 +1,5 @@
 import { Searchbar, useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useState } from "react";
 import ScoutsList from "components/scouts/ScoutsList";

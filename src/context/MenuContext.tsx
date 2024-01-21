@@ -67,14 +67,6 @@ export interface MenuContextProps {
       label: string;
     }[];
   };
-  documento: {
-    documentosSelected: string[];
-    handleDocumentoChange: (arg: string) => void;
-    documentosList: {
-      value: string;
-      label: string;
-    }[];
-  };
   funcion: {
     funcionesSelected: string[];
     handleFuncionChange: (arg: string) => void;
@@ -180,13 +172,6 @@ export const MenuProvider = ({
       value: patrulla.id,
     })) || [];
 
-  const [documentosSelected, setDocumentosSelected] = useState<string[]>([]);
-  const documentosList =
-    documentosData?.map((documento) => ({
-      label: documento.nombre,
-      value: documento.id,
-    })) || [];
-
   const [progresionesSelected, setProgresionesSelected] = useState<string[]>(
     []
   );
@@ -239,13 +224,6 @@ export const MenuProvider = ({
       setPatrullasSelected(patrullasSelected.filter((item) => item !== arg));
     } else {
       setPatrullasSelected([...patrullasSelected, arg]);
-    }
-  };
-  const handleDocumentoChange = (arg: string) => {
-    if (documentosSelected.includes(arg)) {
-      setDocumentosSelected(documentosSelected.filter((item) => item !== arg));
-    } else {
-      setDocumentosSelected([...documentosSelected, arg]);
     }
   };
 
@@ -320,11 +298,6 @@ export const MenuProvider = ({
           patrullasSelected,
           patrullaList,
           handlePatrullaChange,
-        },
-        documento: {
-          documentosSelected,
-          documentosList,
-          handleDocumentoChange,
         },
         funcion: {
           funcionesSelected,

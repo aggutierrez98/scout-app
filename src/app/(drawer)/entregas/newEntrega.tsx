@@ -30,7 +30,7 @@ export default function newEntrega() {
     resolver: zodResolver(CreateEntregaSchema),
   });
 
-  const { isSuccess, status, mutateAsync } = useCreateEntrega();
+  const { isSuccess, isPending, mutateAsync } = useCreateEntrega();
   const { data: users } = useAllScouts();
   const {
     tipoEntrega: { tipoEntregaList },
@@ -81,7 +81,7 @@ export default function newEntrega() {
             },
           ]}
         >
-          {status === "pending" && <LoadingScreen />}
+          {isPending && <LoadingScreen />}
 
           <FormProvider {...formMethods}>
             <CustomDropDown

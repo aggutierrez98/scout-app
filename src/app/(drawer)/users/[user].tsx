@@ -82,52 +82,49 @@ export default function UserPage() {
 
       {isLoading && <LoadingScreen />}
 
-      {data ? (
-        <>
-          <Avatar.Text
-            style={{ alignSelf: "center", marginVertical: 20 }}
-            size={120}
-            label={data.username.slice(0, 2).toLocaleUpperCase()}
-          />
-          <Divider style={{ marginBottom: 10 }} />
+      <Avatar.Text
+        style={{ alignSelf: "center", marginVertical: 20 }}
+        size={120}
+        label={data?.username.slice(0, 2).toLocaleUpperCase() ?? ""}
+      />
+      <Divider style={{ marginBottom: 10 }} />
 
-          <Text style={{ fontSize: 25 }}>
-            {data.scout.apellido} {data.scout.nombre}
-          </Text>
+      <Text style={{ fontSize: 25 }}>
+        {data?.scout.apellido ?? ""} {data?.scout.nombre ?? ""}
+      </Text>
 
-          <Divider style={{ marginBottom: 10 }} />
+      <Divider style={{ marginBottom: 10 }} />
 
-          <DescriptiveText title="DNI" description={data.scout.dni} />
-          <DescriptiveText title="Funcion" description={data.scout.funcion} />
+      <DescriptiveText title="DNI" description={data?.scout.dni ?? ""} />
+      <DescriptiveText
+        title="Funcion"
+        description={data?.scout.funcion ?? ""}
+      />
 
-          <Divider style={{ marginVertical: 10 }} />
+      <Divider style={{ marginVertical: 10 }} />
 
-          <FormProvider {...formMethods}>
-            <CustomDropDown name="role" label="Rol" list={rolList} />
+      <FormProvider {...formMethods}>
+        <CustomDropDown name="role" label="Rol" list={rolList} />
 
-            <CustomSwitchInput name="active" label="Usuario activo" />
+        <CustomSwitchInput name="active" label="Usuario activo" />
 
-            <Button
-              icon="send"
-              mode="contained"
-              contentStyle={{ flexDirection: "row-reverse" }}
-              style={{ marginTop: 20 }}
-              onPress={formMethods.handleSubmit(async (data) => {
-                const resp = await mutateAsync({ data, id: userId });
+        <Button
+          icon="send"
+          mode="contained"
+          contentStyle={{ flexDirection: "row-reverse" }}
+          style={{ marginTop: 20 }}
+          onPress={formMethods.handleSubmit(async (data) => {
+            const resp = await mutateAsync({ data, id: userId });
 
-                if (resp) {
-                  toogleSnackBar("Usuario modificado con exito!", "success");
-                  goBack();
-                } else toogleSnackBar("Error al modificar el usuario", "error");
-              })}
-            >
-              Guardar
-            </Button>
-          </FormProvider>
-        </>
-      ) : (
-        <LoadingScreen />
-      )}
+            if (resp) {
+              toogleSnackBar("Usuario modificado con exito!", "success");
+              goBack();
+            } else toogleSnackBar("Error al modificar el usuario", "error");
+          })}
+        >
+          Guardar
+        </Button>
+      </FormProvider>
     </ScrollView>
   );
 }

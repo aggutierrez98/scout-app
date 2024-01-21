@@ -1,5 +1,5 @@
-import { Appbar, Portal, Searchbar, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { Appbar, Searchbar, useTheme } from "react-native-paper";
+import { SafeAreaView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -13,7 +13,6 @@ import { CommonActions } from "@react-navigation/native";
 
 export default function entregas() {
   const theme = useTheme();
-  const { data } = useRenewLogin();
   const { dispatch } = useNavigation();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
@@ -31,6 +30,7 @@ export default function entregas() {
           {
             flex: 1,
             padding: 10,
+            paddingTop: 0,
             backgroundColor: theme.colors.background,
           },
         ]}
@@ -40,7 +40,6 @@ export default function entregas() {
           style={{
             backgroundColor: theme.colors.background,
             height: 40,
-            marginBottom: 10,
             marginLeft: 10,
           }}
         >
@@ -66,26 +65,22 @@ export default function entregas() {
           <FiltersMenu parentRef={touchable} />
         </Appbar.Header>
 
-        {data ? (
-          <View
-            style={[
-              {
-                flex: 1,
-                padding: 10,
-              },
-            ]}
-          >
-            <Searchbar
-              placeholder="Buscar"
-              onChangeText={onChangeSearch}
-              value={searchQuery}
-            />
+        <View
+          style={[
+            {
+              flex: 1,
+              padding: 10,
+            },
+          ]}
+        >
+          <Searchbar
+            placeholder="Buscar"
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+          />
 
-            <EntregasList searchQuery={debouncedSearchQuery} />
-          </View>
-        ) : (
-          <LoadingScreen />
-        )}
+          <EntregasList searchQuery={debouncedSearchQuery} />
+        </View>
       </SafeAreaView>
     </>
   );

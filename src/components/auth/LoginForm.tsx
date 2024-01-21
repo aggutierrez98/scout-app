@@ -6,6 +6,8 @@ import { useLogin } from "client/auth";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
 import { LoadingScreen } from "components/layout/LoadingScreen";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginUserSchema } from "validators/auth";
 
 type FormValues = {
   username: string;
@@ -15,12 +17,15 @@ type FormValues = {
 export default function LoginForm() {
   const theme = useTheme();
   const [hidePass, setHidePass] = useState(true);
-  const formMethods = useForm<FormValues>({ mode: "onBlur" });
-  const { mutate, status } = useLogin(formMethods.setError);
+  const formMethods = useForm<FormValues>({
+    mode: "onBlur",
+    resolver: zodResolver(LoginUserSchema),
+  });
+  const { mutate, isPending } = useLogin(formMethods.setError);
 
   return (
     <>
-      {status === "pending" && <LoadingScreen />}
+      {isPending && <LoadingScreen />}
       <View
         style={[
           {

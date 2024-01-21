@@ -30,7 +30,7 @@ export default function newUser() {
     mode: "onBlur",
     resolver: zodResolver(CreateUserSchema),
   });
-  const { isSuccess, mutate, status } = useCreateUser();
+  const { isSuccess, mutate, isPending } = useCreateUser();
   const { data: users } = useAllScouts(true);
   const rolList = VALID_ROLES.map((role) => ({
     label: role,
@@ -64,7 +64,6 @@ export default function newUser() {
             backgroundColor: theme.colors.background,
             height: 40,
             marginBottom: 10,
-            marginLeft: 10,
           }}
         >
           <Appbar.BackAction
@@ -75,70 +74,66 @@ export default function newUser() {
           <Appbar.Content title="Nuevo usuario" />
         </Appbar.Header>
 
-        {data ? (
-          <ScrollView
-            style={[
-              {
-                flex: 1,
-                padding: 10,
-              },
-            ]}
-          >
-            {status === "pending" && <LoadingScreen />}
+        <ScrollView
+          style={[
+            {
+              flex: 1,
+              padding: 10,
+            },
+          ]}
+        >
+          {isPending && <LoadingScreen />}
 
-            <FormProvider {...formMethods}>
+          <FormProvider {...formMethods}>
+            <CustomTextInput
+              name="username"
+              label="Usuario"
+              placeholder="Ingrese nombre de usuario"
+              style={{ marginTop: 10 }}
+            />
+            <View>
               <CustomTextInput
-                name="username"
-                label="Usuario"
-                placeholder="Ingrese nombre de usuario"
-                style={{ marginTop: 10 }}
+                name="password"
+                label="Contraseña"
+                placeholder="Ingrese contraseña"
+                secureTextEntry={hidePass ? true : false}
+                style={{ marginTop: 10, position: "relative" }}
               />
-              <View>
-                <CustomTextInput
-                  name="password"
-                  label="Contraseña"
-                  placeholder="Ingrese contraseña"
-                  secureTextEntry={hidePass ? true : false}
-                  style={{ marginTop: 10, position: "relative" }}
-                />
-                <Button
-                  style={{ position: "absolute", right: 0, top: 30 }}
-                  onPress={() => setHidePass(!hidePass)}
-                >
-                  <Icon name={hidePass ? "eye" : "eye-off"} size={20} />
-                </Button>
-              </View>
-
-              <CustomDropDown name="role" label="Rol" list={rolList} />
-
-              <CustomDropDown
-                name="scoutId"
-                label="Scout asociado"
-                list={scoutsList}
-              />
-
               <Button
-                mode="contained"
-                icon="send"
-                contentStyle={{
-                  flexDirection: "row-reverse",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                style={{ marginTop: 20 }}
-                onPress={formMethods.handleSubmit((data) => mutate(data))}
-                labelStyle={{
-                  fontSize: 17,
-                  fontWeight: "bold",
-                }}
+                style={{ position: "absolute", right: 0, top: 30 }}
+                onPress={() => setHidePass(!hidePass)}
               >
-                Guadar
+                <Icon name={hidePass ? "eye" : "eye-off"} size={20} />
               </Button>
-            </FormProvider>
-          </ScrollView>
-        ) : (
-          <LoadingScreen />
-        )}
+            </View>
+
+            <CustomDropDown name="role" label="Rol" list={rolList} />
+
+            <CustomDropDown
+              name="scoutId"
+              label="Scout asociado"
+              list={scoutsList}
+            />
+
+            <Button
+              mode="contained"
+              icon="send"
+              contentStyle={{
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              style={{ marginTop: 20 }}
+              onPress={formMethods.handleSubmit((data) => mutate(data))}
+              labelStyle={{
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+            >
+              Guadar
+            </Button>
+          </FormProvider>
+        </ScrollView>
       </SafeAreaView>
     </>
   );

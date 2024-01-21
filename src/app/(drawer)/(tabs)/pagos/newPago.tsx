@@ -33,7 +33,7 @@ export default function newPago() {
     resolver: zodResolver(CreatePagoSchema),
   });
 
-  const { isSuccess, status, mutateAsync } = useCreatePago();
+  const { isSuccess, mutateAsync, isPending } = useCreatePago();
   const { data: users } = useAllScouts();
   const {
     metodoPago: { metodosPagoList },
@@ -62,80 +62,76 @@ export default function newPago() {
       >
         <StatusBar style="auto" />
 
-        {data ? (
-          <ScrollView
-            style={[
-              {
-                flex: 1,
-                padding: 10,
-              },
-            ]}
+        <ScrollView
+          style={[
+            {
+              flex: 1,
+              padding: 10,
+            },
+          ]}
+        >
+          {isPending && <LoadingScreen />}
+
+          <Text
+            variant="titleLarge"
+            style={{ marginTop: -5, marginBottom: 10 }}
           >
-            {status === "pending" && <LoadingScreen />}
+            Crear pago
+          </Text>
 
-            <Text
-              variant="titleLarge"
-              style={{ marginTop: -5, marginBottom: 10 }}
+          <FormProvider {...formMethods}>
+            <CustomTextInput
+              name="concepto"
+              label="Concepto"
+              placeholder="Ingrese concepto"
+              style={{ marginTop: 10 }}
+            />
+
+            <CustomTextInput
+              name="monto"
+              label="Monto"
+              placeholder="Ingrese monto"
+              keyboardType="numeric"
+              style={{ marginTop: 10 }}
+            />
+
+            <CustomDropDown
+              name="metodoPago"
+              label="Metodo de pago"
+              list={metodosPagoList}
+            />
+
+            <CustomDropDown
+              name="scoutId"
+              label="Scout asociado"
+              list={scoutsList}
+            />
+
+            <CustomDatePicker name="fechaPago" label="Fecha de pago" />
+
+            <Button
+              mode="contained"
+              icon="send"
+              contentStyle={{
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              style={{ marginTop: 20 }}
+              onPress={formMethods.handleSubmit(async (data) => {
+                const resp = await mutateAsync(data);
+                if (resp) toogleSnackBar("Pago creado con exito!", "success");
+                else toogleSnackBar("Error al crear pago", "error");
+              })}
+              labelStyle={{
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
             >
-              Crear pago
-            </Text>
-
-            <FormProvider {...formMethods}>
-              <CustomTextInput
-                name="concepto"
-                label="Concepto"
-                placeholder="Ingrese concepto"
-                style={{ marginTop: 10 }}
-              />
-
-              <CustomTextInput
-                name="monto"
-                label="Monto"
-                placeholder="Ingrese monto"
-                keyboardType="numeric"
-                style={{ marginTop: 10 }}
-              />
-
-              <CustomDropDown
-                name="metodoPago"
-                label="Metodo de pago"
-                list={metodosPagoList}
-              />
-
-              <CustomDropDown
-                name="scoutId"
-                label="Scout asociado"
-                list={scoutsList}
-              />
-
-              <CustomDatePicker name="fechaPago" label="Fecha de pago" />
-
-              <Button
-                mode="contained"
-                icon="send"
-                contentStyle={{
-                  flexDirection: "row-reverse",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                style={{ marginTop: 20 }}
-                onPress={formMethods.handleSubmit(async (data) => {
-                  const resp = await mutateAsync(data);
-                  if (resp) toogleSnackBar("Pago creado con exito!", "success");
-                  else toogleSnackBar("Error al crear pago", "error");
-                })}
-                labelStyle={{
-                  fontSize: 17,
-                  fontWeight: "bold",
-                }}
-              >
-                Guadar
-              </Button>
-            </FormProvider>
-          </ScrollView>
-        ) : (
-          <LoadingScreen />
-        )}
+              Guadar
+            </Button>
+          </FormProvider>
+        </ScrollView>
       </SafeAreaView>
     </>
   );

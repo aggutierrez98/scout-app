@@ -2,11 +2,9 @@ import { useRenewLogin } from "client/auth";
 import LoginForm from "components/auth/LoginForm";
 import LogoIcon from "components/layout/AppLogoIcon";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useSnackBarContext } from "context/SnackBarContext";
 import { Redirect, Stack } from "expo-router";
-import { View } from "react-native";
-import { Portal, Snackbar, Text, useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, SafeAreaView } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 
 export default function Index() {
   const theme = useTheme();

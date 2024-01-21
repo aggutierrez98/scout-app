@@ -34,7 +34,6 @@ export default function FiltersMenu({
     },
     funcion: { funcionesList, funcionesSelected, handleFuncionChange },
     patrulla: { patrullasSelected, patrullaList, handlePatrullaChange },
-    documento: { documentosSelected, documentosList, handleDocumentoChange },
     tiempo: { setTiempoDesde, setTiempoHasta, tiempoDesde, tiempoHasta },
     rendido: { rendido, handleRendidoChange },
     vence: { vence, handleVenceChange },
@@ -191,22 +190,6 @@ export default function FiltersMenu({
 
             {menuMode === "documentos" && (
               <>
-                <List.Accordion title="Seleccione documento" id="4">
-                  {documentosList.map(({ label, value }, index) => (
-                    <Chip
-                      key={value + index}
-                      onPress={() => handleDocumentoChange(value)}
-                      style={{ marginVertical: 10, marginHorizontal: 15 }}
-                      selected={documentosSelected.includes(value)}
-                      showSelectedCheck
-                      showSelectedOverlay={true}
-                      compact
-                    >
-                      {label}
-                    </Chip>
-                  ))}
-                </List.Accordion>
-
                 <List.Section>
                   <List.Subheader>Vence</List.Subheader>
                   <SegmentedButtons

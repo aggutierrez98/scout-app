@@ -37,20 +37,21 @@ export default function DocumentsList({ searchQuery }: Props) {
   const { colors } = useTheme();
 
   const {
-    sexo: { sexo },
     progresion: { progresionesSelected },
     patrulla: { patrullasSelected },
     funcion: { funcionesSelected },
     vence: { vence },
+    tiempo: { tiempoDesde, tiempoHasta },
   } = useMenuContext();
 
   const { data, fetchNextPage, hasNextPage, isLoading } = useDocuments({
     patrullas: patrullasSelected,
-    sexo,
     vence,
     progresiones: progresionesSelected,
     funciones: funcionesSelected,
     searchQuery,
+    tiempoDesde,
+    tiempoHasta,
   });
 
   const flattenData: Documento[] =
@@ -64,12 +65,11 @@ export default function DocumentsList({ searchQuery }: Props) {
 
   return (
     <>
-      {isLoading || (isPending && <LoadingScreen />)}
+      {(isLoading || isPending) && <LoadingScreen />}
 
       <List.Section
         style={{
           marginBottom: 50,
-          marginTop: 10,
         }}
       >
         <FlatList
@@ -78,6 +78,9 @@ export default function DocumentsList({ searchQuery }: Props) {
           renderItem={({ item }: { item: Documento }) => (
             <Fragment key={item.id}>
               <TouchableRipple
+                style={{
+                  paddingHorizontal: 5,
+                }}
                 onPress={() => {
                   router.push(`/(drawer)/(tabs)/documentos/${item.id}`);
                 }}
@@ -95,7 +98,7 @@ export default function DocumentsList({ searchQuery }: Props) {
                   )}
                   right={(props) => (
                     <IconButton
-                      style={{ margin: 0 }}
+                      style={{ margin: 0, marginRight: -20 }}
                       icon="delete"
                       size={20}
                       onPress={() => {

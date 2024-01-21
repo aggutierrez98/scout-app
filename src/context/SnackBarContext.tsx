@@ -24,7 +24,7 @@ export const SnackBarProvider = ({
   };
 
   const [visibleSnack, setVisibleSnack] = useState(false);
-  const [snackBarText, setSnackBarText] = useState("");
+  const [snackBarText, setSnackBarText] = useState("dasdasdasds");
   const [snackBarMode, setSnackBarMode] = useState<SnackBarMode>("info");
   const onDismissSnackBar = () => setVisibleSnack(false);
 

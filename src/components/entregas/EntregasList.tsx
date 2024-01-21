@@ -104,9 +104,9 @@ export default function EntregasList({ searchQuery }: Props) {
                       size={35}
                     />
                   )}
-                  right={(props) => (
+                  right={() => (
                     <IconButton
-                      style={{ margin: 0 }}
+                      style={{ margin: 0, marginRight: -20 }}
                       icon="delete"
                       size={20}
                       onPress={() => {

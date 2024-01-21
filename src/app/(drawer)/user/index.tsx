@@ -1,5 +1,5 @@
 import { Appbar, Avatar, Divider, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView } from "react-native";
+import { ScrollView, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -7,7 +7,7 @@ import { DescriptiveText } from "components/layout/DescriptiveText";
 
 export default function user() {
   const theme = useTheme();
-  const { data } = useRenewLogin();
+  const { data, isLoading } = useRenewLogin();
 
   return (
     <>
@@ -31,7 +31,9 @@ export default function user() {
           <Appbar.Content title={data?.username} />
         </Appbar.Header>
 
-        {data ? (
+        {isLoading && <LoadingScreen />}
+
+        {data && (
           <ScrollView
             style={[
               {
@@ -68,8 +70,6 @@ export default function user() {
             />
             <DescriptiveText title="Mail" description={data.scout.mail} />
           </ScrollView>
-        ) : (
-          <LoadingScreen />
         )}
       </SafeAreaView>
     </>

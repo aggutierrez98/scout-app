@@ -39,3 +39,17 @@ export const CreateUserSchema = z.object({
       "Debe contener letras en mayuscula, miniscula, numeros y entre 8 y 12 caracteres"
     ),
 });
+
+export const LoginUserSchema = z.object({
+  username: z
+    .string({ required_error: "Nombre de usuario requerido" })
+    .min(8, "Debe tener al menos 8 caracteres")
+    .max(20, "Debe tener como maximo 20 caracteres")
+    .regex(lettersReg, "Debe contener solo letras"),
+  password: z
+    .string({ required_error: "Contraseña requerida" })
+    .regex(
+      passRegex,
+      "Debe contener letras en mayuscula, miniscula, numeros y entre 8 y 12 caracteres"
+    ),
+});

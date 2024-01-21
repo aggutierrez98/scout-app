@@ -1,8 +1,8 @@
 import PagosList from "components/pagos/PagosList";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useState } from "react";
-import { View } from "react-native";
 import { Searchbar, useTheme } from "react-native-paper";
+import { SafeAreaView } from "react-native";
 
 export default function pagos() {
   const theme = useTheme();
@@ -13,7 +13,7 @@ export default function pagos() {
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
 
   return (
-    <View
+    <SafeAreaView
       style={[
         {
           flex: 1,
@@ -30,6 +30,6 @@ export default function pagos() {
       />
 
       <PagosList searchQuery={debouncedSearchQuery} />
-    </View>
+    </SafeAreaView>
   );
 }

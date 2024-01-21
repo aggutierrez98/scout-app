@@ -80,6 +80,7 @@ export default function FamiliarPage() {
           marginBottom: 10,
           alignItems: "center",
           justifyContent: "center",
+          marginLeft: -10,
         }}
       >
         <Appbar.BackAction

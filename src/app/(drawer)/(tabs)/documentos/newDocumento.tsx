@@ -8,12 +8,10 @@ import { Redirect } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { useAllScouts } from "client/scouts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreatePagoSchema } from "validators/pago";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useCreateDocumento, useDocumentsData } from "client/documento";
+import { useCreateDocumento } from "client/documento";
 import { CreateDocumentoSchema } from "validators/documento";
-import documentos from "./index";
 import { useMenuContext } from "context/MenuContext";
 
 type FormValues = {
@@ -30,7 +28,7 @@ export default function newDocumento() {
     mode: "onBlur",
     resolver: zodResolver(CreateDocumentoSchema),
   });
-  const { isSuccess, status, mutateAsync } = useCreateDocumento();
+  const { isSuccess, mutateAsync, isPending } = useCreateDocumento();
   const { data: users } = useAllScouts();
   const {
     documento: { documentosList },
@@ -59,67 +57,63 @@ export default function newDocumento() {
       >
         <StatusBar style="auto" />
 
-        {data ? (
-          <ScrollView
-            style={[
-              {
-                flex: 1,
-                padding: 10,
-              },
-            ]}
+        <ScrollView
+          style={[
+            {
+              flex: 1,
+              padding: 10,
+            },
+          ]}
+        >
+          {isPending && <LoadingScreen />}
+
+          <Text
+            variant="titleLarge"
+            style={{ marginTop: -5, marginBottom: 10 }}
           >
-            {status === "pending" && <LoadingScreen />}
+            Crear documento
+          </Text>
 
-            <Text
-              variant="titleLarge"
-              style={{ marginTop: -5, marginBottom: 10 }}
+          <FormProvider {...formMethods}>
+            <CustomDropDown
+              name="documentoId"
+              label="Documento presentado"
+              list={documentosList}
+            />
+            <CustomDropDown
+              name="scoutId"
+              label="Scout asociado"
+              list={scoutsList}
+            />
+
+            <CustomDatePicker
+              name="fechaPresentacion"
+              label="Fecha de entrega del documento"
+            />
+
+            <Button
+              mode="contained"
+              icon="send"
+              contentStyle={{
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              style={{ marginTop: 20 }}
+              onPress={formMethods.handleSubmit(async (data) => {
+                const resp = await mutateAsync(data);
+                if (resp) toogleSnackBar("Pago creado con exito!", "success");
+                else toogleSnackBar("Error al crear pago", "error");
+              })}
+              labelStyle={{
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
             >
-              Crear documento
-            </Text>
-
-            <FormProvider {...formMethods}>
-              <CustomDropDown
-                name="documentoId"
-                label="Documento presentado"
-                list={documentosList}
-              />
-              <CustomDropDown
-                name="scoutId"
-                label="Scout asociado"
-                list={scoutsList}
-              />
-
-              <CustomDatePicker
-                name="fechaPresentacion"
-                label="Fecha de entrega del documento"
-              />
-
-              <Button
-                mode="contained"
-                icon="send"
-                contentStyle={{
-                  flexDirection: "row-reverse",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                style={{ marginTop: 20 }}
-                onPress={formMethods.handleSubmit(async (data) => {
-                  const resp = await mutateAsync(data);
-                  if (resp) toogleSnackBar("Pago creado con exito!", "success");
-                  else toogleSnackBar("Error al crear pago", "error");
-                })}
-                labelStyle={{
-                  fontSize: 17,
-                  fontWeight: "bold",
-                }}
-              >
-                Guadar
-              </Button>
-            </FormProvider>
-          </ScrollView>
-        ) : (
-          <LoadingScreen />
-        )}
+              Guadar
+            </Button>
+          </FormProvider>
+        </ScrollView>
       </SafeAreaView>
     </>
   );

@@ -1,7 +1,7 @@
 import { Searchbar, useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useState } from "react";
+import { SafeAreaView } from "react-native";
 import DocumentsList from "components/documentos/DocumentsList";
 
 export default function documentos() {

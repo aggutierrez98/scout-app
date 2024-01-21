@@ -45,13 +45,13 @@ export default function PagosList({ searchQuery }: Props) {
   } = useMenuContext();
 
   const { data, fetchNextPage, hasNextPage, isLoading } = usePagos({
-    patrullas: patrullasSelected,
     metodoPago,
+    patrullas: patrullasSelected,
     progresiones: progresionesSelected,
     funciones: funcionesSelected,
-    rendido: rendido as "si" | "no" | "",
     tiempoDesde,
     tiempoHasta,
+    rendido: rendido as "si" | "no" | "",
     searchQuery,
   });
 
@@ -65,11 +65,10 @@ export default function PagosList({ searchQuery }: Props) {
 
   return (
     <>
-      {isLoading || (isPending && <LoadingScreen />)}
+      {(isLoading || isPending) && <LoadingScreen />}
       <List.Section
         style={{
           marginBottom: 50,
-          marginTop: 10,
         }}
       >
         <FlatList
@@ -80,6 +79,9 @@ export default function PagosList({ searchQuery }: Props) {
               <TouchableRipple
                 onPress={() => {
                   router.push(`/(drawer)/(tabs)/pagos/${item.id}`);
+                }}
+                style={{
+                  paddingHorizontal: 5,
                 }}
               >
                 <List.Item
@@ -93,7 +95,7 @@ export default function PagosList({ searchQuery }: Props) {
                   )}
                   right={(props) => (
                     <IconButton
-                      style={{ margin: 0 }}
+                      style={{ margin: 0, marginRight: -20 }}
                       icon="delete"
                       size={20}
                       onPress={() => {
