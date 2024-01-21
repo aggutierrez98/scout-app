@@ -68,21 +68,9 @@ function AppLayout() {
                 active={index === 0}
               />
               <RNPDrawer.Item
-                key={"familiares"}
-                label={"Familiares"}
-                icon={"account-child"}
-                onPress={() => {
-                  navigation.dispatch({
-                    ...CommonActions.navigate(routes[3].name, routes[3].params),
-                    target: key,
-                  });
-                }}
-                active={index === 3}
-              />
-              <RNPDrawer.Item
-                key={"user"}
-                label={userData.username}
-                icon={"account-circle"}
+                key={"entregas"}
+                label={"Entregas"}
+                icon={"medal"}
                 onPress={() => {
                   navigation.dispatch({
                     ...CommonActions.navigate(routes[1].name, routes[1].params),
@@ -90,6 +78,18 @@ function AppLayout() {
                   });
                 }}
                 active={index === 1}
+              />
+              <RNPDrawer.Item
+                key={"familiares"}
+                label={"Familiares"}
+                icon={"account-child"}
+                onPress={() => {
+                  navigation.dispatch({
+                    ...CommonActions.navigate(routes[2].name, routes[2].params),
+                    target: key,
+                  });
+                }}
+                active={index === 2}
               />
               {userData.role === "ADMIN" && (
                 <RNPDrawer.Item
@@ -99,15 +99,27 @@ function AppLayout() {
                   onPress={() => {
                     navigation.dispatch({
                       ...CommonActions.navigate(
-                        routes[2].name,
-                        routes[2].params
+                        routes[3].name,
+                        routes[3].params
                       ),
                       target: key,
                     });
                   }}
-                  active={index === 2}
+                  active={index === 3}
                 />
               )}
+              <RNPDrawer.Item
+                key={"user"}
+                label={userData.username}
+                icon={"account-circle"}
+                onPress={() => {
+                  navigation.dispatch({
+                    ...CommonActions.navigate(routes[4].name, routes[4].params),
+                    target: key,
+                  });
+                }}
+                active={index === 4}
+              />
             </RNPDrawer.Section>
             <RNPDrawer.Section style={{ flexDirection: "column-reverse" }}>
               <RNPDrawer.Item
@@ -129,15 +141,27 @@ function AppLayout() {
           }}
         />
         <Drawer.Screen
-          name="user"
+          name="entregas"
           options={{
-            drawerLabel: "User",
+            drawerLabel: "Entregas",
+          }}
+        />
+        <Drawer.Screen
+          name="familiares"
+          options={{
+            drawerLabel: "Familiares",
           }}
         />
         <Drawer.Screen
           name="users"
           options={{
             drawerLabel: "Users",
+          }}
+        />
+        <Drawer.Screen
+          name="user"
+          options={{
+            drawerLabel: "User",
           }}
         />
       </Drawer>

@@ -18,12 +18,7 @@ import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  F_RELATIONSHIPS,
-  M_RELATIONSHIPS,
-  VALID_ESTADO_CIVIL,
-  VALID_RELATIONSHIPS,
-} from "validators/constants";
+import { F_RELATIONSHIPS, M_RELATIONSHIPS } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -34,6 +29,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScoutWithRelation } from "types/interfaces/familiar";
 import { useState } from "react";
 import { useAllScouts } from "client/scouts";
+import { useMenuContext } from "context/MenuContext";
 
 type FamiliarParams = {
   familiar: string;
@@ -66,19 +62,13 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
   const showDialogRelate = () => setDialogRelate(true);
   const hideDialogRelate = () => setDialogRelate(false);
   const [scoutId, setScoutId] = useState("");
+  const { relacionesFList, relacionesMList } = useMenuContext();
 
   const scoutsList =
     users?.map(({ id, nombre }) => ({
       label: nombre,
       value: id,
     })) || [];
-
-  const relacionesList = (sexo === "M" ? M_RELATIONSHIPS : F_RELATIONSHIPS).map(
-    (relacion) => ({
-      label: relacion,
-      value: relacion,
-    })
-  );
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
@@ -229,13 +219,11 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
                   name="scoutId"
                   label="Scout"
                   list={scoutsList}
-                  defaultValue={""}
                 />
                 <CustomDropDown
                   name="relacion"
                   label="Relacion"
-                  list={relacionesList}
-                  defaultValue={""}
+                  list={sexo === "M" ? relacionesMList : relacionesFList}
                 />
               </FormProvider>
             </View>

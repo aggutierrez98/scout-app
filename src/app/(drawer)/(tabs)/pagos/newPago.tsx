@@ -1,19 +1,20 @@
 import { Button, Text, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
-import { Redirect, useNavigation } from "expo-router";
+import { Redirect } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { VALID_METODOS_PAGO, VALID_ROLES } from "validators/constants";
+import { VALID_METODOS_PAGO } from "utils/constants";
 import { useAllScouts } from "client/scouts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePagoSchema } from "validators/pago";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useCreatePago } from "client/pago";
+import { useMenuContext } from "context/MenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -34,11 +35,9 @@ export default function newPago() {
 
   const { isSuccess, status, mutateAsync } = useCreatePago();
   const { data: users } = useAllScouts();
-
-  const metodosList = VALID_METODOS_PAGO.map((metodo) => ({
-    label: metodo,
-    value: metodo,
-  }));
+  const {
+    metodoPago: { metodosPagoList },
+  } = useMenuContext();
 
   if (isSuccess) {
     return <Redirect href="/(drawer)/pagos" />;
@@ -100,22 +99,16 @@ export default function newPago() {
               <CustomDropDown
                 name="metodoPago"
                 label="Metodo de pago"
-                list={metodosList}
-                defaultValue={""}
+                list={metodosPagoList}
               />
 
               <CustomDropDown
                 name="scoutId"
                 label="Scout asociado"
                 list={scoutsList}
-                defaultValue={""}
               />
 
-              <CustomDatePicker
-                name="fechaPago"
-                label="Fecha de pago"
-                defaultValue={new Date()}
-              />
+              <CustomDatePicker name="fechaPago" label="Fecha de pago" />
 
               <Button
                 mode="contained"

@@ -1,21 +1,20 @@
 import { useCallback, useState } from "react";
 import { Text, View } from "react-native";
-import { HelperText, IconButton, List, useTheme } from "react-native-paper";
+import { HelperText, IconButton, useTheme } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
 import { CalendarDate } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 
 interface Props {
   name: string;
   label: string;
-  defaultValue: CalendarDate;
 }
 
 import { registerTranslation } from "react-native-paper-dates";
 import { useController } from "react-hook-form";
 registerTranslation("es", {
   save: "Guardar",
-  selectSingle: "Select date",
-  selectMultiple: "Select dates",
+  selectSingle: "Seleccionar fecha",
+  selectMultiple: "Seleccionar fecha",
   selectRange: "Seleccionar periodos",
   notAccordingToDateFormat: (inputFormat) =>
     `El tipo de formato debe ser ${inputFormat}`,
@@ -31,7 +30,7 @@ registerTranslation("es", {
   close: "Cerrar",
 });
 
-export const CustomDatePicker = ({ name, label, defaultValue }: Props) => {
+export const CustomDatePicker = ({ name, label }: Props) => {
   const defaultDate = new Date(Date.now());
   const [show, setShow] = useState(false);
   const { colors } = useTheme();
@@ -39,7 +38,7 @@ export const CustomDatePicker = ({ name, label, defaultValue }: Props) => {
   const {
     field,
     fieldState: { error },
-  } = useController({ name, defaultValue });
+  } = useController({ name });
 
   const onConfirm = useCallback(
     ({ date }: { date: CalendarDate }) => {

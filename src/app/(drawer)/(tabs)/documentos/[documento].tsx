@@ -36,6 +36,9 @@ export default function DocumentoPage() {
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditDocumentoSchema),
+    values: {
+      fechaPresentacion: new Date(data?.fechaPresentacion || 0),
+    },
   });
 
   return (
@@ -74,7 +77,6 @@ export default function DocumentoPage() {
         <CustomDatePicker
           name="fechaPresentacion"
           label="Fecha de presentacion"
-          defaultValue={new Date(data?.fechaPresentacion || 0)}
         />
         <Button
           icon="send"

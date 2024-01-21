@@ -25,7 +25,6 @@ export default function user() {
           style={{
             backgroundColor: theme.colors.background,
             height: 40,
-            marginBottom: 10,
             marginLeft: 10,
           }}
         >

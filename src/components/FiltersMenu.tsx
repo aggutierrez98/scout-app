@@ -21,6 +21,11 @@ export default function FiltersMenu({
   const {
     showMenu,
     metodoPago: { metodoPago, metodosPagoList, handleMetodoPagoChange },
+    tipoEntrega: {
+      tipoEntregaList,
+      handleTipoEntregaChange,
+      tipoEntregasSelected,
+    },
     sexo: { handleSexoChange, sexo, sexoList },
     progresion: {
       progresionesSelected,
@@ -137,6 +142,38 @@ export default function FiltersMenu({
                     buttons={trueFalseList}
                   />
                 </List.Section>
+
+                <List.Section>
+                  <List.Subheader style={{ marginTop: 10 }}>
+                    Seleccionar fechas
+                  </List.Subheader>
+                  <CustomRangeDatePicker
+                    startValue={new Date(tiempoDesde)}
+                    endValue={new Date(tiempoHasta)}
+                    setStartValue={setTiempoDesde}
+                    setEndValue={setTiempoHasta}
+                  />
+                </List.Section>
+              </>
+            )}
+
+            {menuMode === "entregas" && (
+              <>
+                <List.Accordion title="Seleccione tipo entrega" id="5">
+                  {tipoEntregaList.map(({ label, value }, index) => (
+                    <Chip
+                      key={value + index}
+                      onPress={() => handleTipoEntregaChange(value)}
+                      style={{ marginVertical: 10, marginHorizontal: 15 }}
+                      selected={tipoEntregasSelected.includes(value)}
+                      showSelectedCheck
+                      showSelectedOverlay={true}
+                      compact
+                    >
+                      {label}
+                    </Chip>
+                  ))}
+                </List.Accordion>
 
                 <List.Section>
                   <List.Subheader style={{ marginTop: 10 }}>

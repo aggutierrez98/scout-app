@@ -9,7 +9,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { Redirect, useNavigation } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { VALID_ROLES } from "validators/constants";
+import { VALID_ROLES } from "utils/constants";
 import { useAllScouts } from "client/scouts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateUserSchema } from "validators/auth";
@@ -109,18 +109,12 @@ export default function newUser() {
                 </Button>
               </View>
 
-              <CustomDropDown
-                name="role"
-                label="Rol"
-                list={rolList}
-                defaultValue={"EXTERNO"}
-              />
+              <CustomDropDown name="role" label="Rol" list={rolList} />
 
               <CustomDropDown
                 name="scoutId"
                 label="Scout asociado"
                 list={scoutsList}
-                defaultValue={""}
               />
 
               <Button

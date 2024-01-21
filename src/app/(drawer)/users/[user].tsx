@@ -11,7 +11,7 @@ import {
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VALID_ROLES } from "validators/constants";
+import { VALID_ROLES } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { useModifyUser, useUser } from "client/auth";
@@ -20,6 +20,7 @@ import { StatusBar } from "expo-status-bar";
 import { CustomSwitchInput } from "components/layout/SwitchInput";
 import { EditUserSchema } from "validators/auth";
 import { useSnackBarContext } from "context/SnackBarContext";
+import { useMenuContext } from "context/MenuContext";
 
 type UserParams = {
   user: string;
@@ -37,23 +38,17 @@ export default function UserPage() {
   const { user: userId } = useLocalSearchParams<UserParams>();
   if (!userId) return null;
   const { data, isLoading } = useUser(userId);
-
+  const { rolList } = useMenuContext();
   const { mutateAsync } = useModifyUser();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditUserSchema),
+    values: {
+      active: data?.active ?? false,
+      role: (data?.role as unknown as typeof VALID_ROLES) ?? "",
+    },
   });
-
-  const rolList = VALID_ROLES.map((role) => ({
-    label: role,
-    value: role,
-  }));
-
-  if (isLoading)
-    return (
-      <ActivityIndicator animating style={{ marginTop: 25 }} size={"large"} />
-    );
 
   return (
     <ScrollView
@@ -85,6 +80,8 @@ export default function UserPage() {
         <Appbar.Content style={{ marginLeft: 10 }} title={data?.username} />
       </Appbar.Header>
 
+      {isLoading && <LoadingScreen />}
+
       {data ? (
         <>
           <Avatar.Text
@@ -106,18 +103,9 @@ export default function UserPage() {
           <Divider style={{ marginVertical: 10 }} />
 
           <FormProvider {...formMethods}>
-            <CustomDropDown
-              name="role"
-              label="Rol"
-              list={rolList}
-              defaultValue={data.role as unknown as string}
-            />
+            <CustomDropDown name="role" label="Rol" list={rolList} />
 
-            <CustomSwitchInput
-              name="active"
-              label="Usuario activo"
-              defaultValue={data.active}
-            />
+            <CustomSwitchInput name="active" label="Usuario activo" />
 
             <Button
               icon="send"

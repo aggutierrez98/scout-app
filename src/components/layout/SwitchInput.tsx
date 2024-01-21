@@ -5,11 +5,10 @@ import { Switch, Text } from "react-native-paper";
 interface Props {
   name: string;
   label: string;
-  defaultValue: boolean;
 }
 
-export const CustomSwitchInput = ({ name, label, defaultValue }: Props) => {
-  const { field } = useController({ name, defaultValue });
+export const CustomSwitchInput = ({ name, label }: Props) => {
+  const { field } = useController({ name });
   const handleSwitchChange = (value: boolean) => {
     field.onChange(value);
   };

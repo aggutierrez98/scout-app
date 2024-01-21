@@ -1,9 +1,3 @@
-export const VALID_PROGRESSIONS = [
-  "INTERRAMA",
-  "PISTA",
-  "RUMBO",
-  "TRAVESIA",
-] as const;
 export const VALID_RELIGIONS = [
   "CATOLICA",
   "JUDIA",
@@ -19,6 +13,13 @@ export const VALID_GET_SCOUTS_FILTERS = [
   "fechaNacimiento",
 ] as const;
 
+export const VALID_PROGRESSIONS = [
+  "INTERRAMA",
+  "PISTA",
+  "RUMBO",
+  "TRAVESIA",
+] as const;
+
 export const VALID_RELATIONSHIPS = [
   "PADRE",
   "MADRE",
@@ -32,15 +33,17 @@ export const VALID_RELATIONSHIPS = [
 export const M_RELATIONSHIPS = ["PADRE", "TIO", "HERMANO", "OTRO"] as const;
 export const F_RELATIONSHIPS = ["MADRE", "TIA", "HERMANA", "OTRO"] as const;
 
-export const VALID_INSINGIAS_TYPE = [
+export const VALID_ENTREGAS_TYPE = [
   "UNIFORME",
   "GUIA",
   "SUBGUIA",
-  "PROGRESION",
+  "PROGPISTA",
+  "PROGRUMBO",
+  "PROGTRAVESIA",
   "PROMESA",
   "ESPNATURALEZA",
   "ESPARTE",
-  "ESPECSERVICIO",
+  "ESPSERVICIO",
   "ESPESPIRITUALIDAD",
   "ESPDEPORTES",
   "ESPCIENCIA",

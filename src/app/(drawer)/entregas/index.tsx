@@ -3,22 +3,26 @@ import { SafeAreaView, ScrollView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDebouncedValue } from "hooks/useDebounceValue";
-import UsersList from "components/auth/UsersList";
 import { useNavigation } from "expo-router";
+import EntregasList from "components/entregas/EntregasList";
+import FiltersMenu from "components/FiltersMenu";
+import { useMenuContext } from "context/MenuContext";
 import { CommonActions } from "@react-navigation/native";
 
-export default function users() {
+export default function entregas() {
   const theme = useTheme();
   const { data } = useRenewLogin();
-  const { dispatch, getState } = useNavigation();
+  const { dispatch } = useNavigation();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
   };
 
   const [searchQuery, setsearchQuery] = useState("");
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
+  const touchable = useRef(null);
+  const { toogleMenu } = useMenuContext();
 
   return (
     <>
@@ -36,20 +40,30 @@ export default function users() {
           style={{
             backgroundColor: theme.colors.background,
             height: 40,
+            marginBottom: 10,
             marginLeft: 10,
           }}
         >
-          <Appbar.Content title="Usuarios" />
+          <Appbar.Content title="Entregas" />
+
+          <Appbar.Action
+            icon="chevron-down"
+            onPressIn={() => toogleMenu(true, "entregas")}
+            ref={touchable}
+          />
 
           <Appbar.Action
             icon="plus"
             onPress={() => {
-              dispatch({
-                ...CommonActions.navigate("newUser"),
-                target: getState().key,
-              });
+              dispatch(
+                CommonActions.navigate({
+                  name: "newEntrega",
+                })
+              );
             }}
           />
+
+          <FiltersMenu parentRef={touchable} />
         </Appbar.Header>
 
         {data ? (
@@ -67,7 +81,7 @@ export default function users() {
               value={searchQuery}
             />
 
-            <UsersList searchQuery={debouncedSearchQuery} />
+            <EntregasList searchQuery={debouncedSearchQuery} />
           </View>
         ) : (
           <LoadingScreen />

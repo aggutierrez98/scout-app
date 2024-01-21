@@ -1,19 +1,16 @@
-import { Appbar, Portal, Searchbar, useTheme } from "react-native-paper";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { Appbar, Searchbar, useTheme } from "react-native-paper";
+import { SafeAreaView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useState } from "react";
 import { useDebouncedValue } from "hooks/useDebounceValue";
-import UsersList from "components/auth/UsersList";
 import { useNavigation } from "expo-router";
-import { CommonActions } from "@react-navigation/native";
 import FamiliaresList from "components/familiares/FamiliaresList";
 
 export default function familiares() {
   const theme = useTheme();
   const { data } = useRenewLogin();
-  const { dispatch, getState } = useNavigation();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
   };
@@ -37,7 +34,6 @@ export default function familiares() {
           style={{
             backgroundColor: theme.colors.background,
             height: 40,
-            marginBottom: 10,
             marginLeft: 10,
           }}
         >
@@ -60,7 +56,6 @@ export default function familiares() {
             />
 
             <FamiliaresList searchQuery={debouncedSearchQuery} />
-            {/* <UsersList searchQuery={debouncedSearchQuery} /> */}
           </View>
         ) : (
           <LoadingScreen />

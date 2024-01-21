@@ -16,7 +16,7 @@ export default function LoginForm() {
   const theme = useTheme();
   const [hidePass, setHidePass] = useState(true);
   const formMethods = useForm<FormValues>({ mode: "onBlur" });
-  const { mutate, status, isSuccess } = useLogin(formMethods.setError);
+  const { mutate, status } = useLogin(formMethods.setError);
 
   return (
     <>

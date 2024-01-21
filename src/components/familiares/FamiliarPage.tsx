@@ -15,7 +15,7 @@ import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VALID_ESTADO_CIVIL } from "validators/constants";
+import { VALID_ESTADO_CIVIL } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -24,6 +24,7 @@ import { useEditFamiliar, useFamiliar } from "client/familiar";
 import { EditFamiliarSchema } from "validators/familiar";
 import { StatusBar } from "expo-status-bar";
 import FamiliaList from "./FamiliaList";
+import { useMenuContext } from "context/MenuContext";
 
 type FamiliarParams = {
   familiar: string;
@@ -46,17 +47,18 @@ export default function FamiliarPage() {
   const { changeIsEditing, isEditing } = useEditContext();
   const { data, isLoading } = useFamiliar(familiarId);
   const { mutateAsync, isPending } = useEditFamiliar();
+  const { estadoCivilList } = useMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditFamiliarSchema),
-  });
-
-  const estadoCivilList = VALID_ESTADO_CIVIL.map((estadoCivil) => {
-    return {
-      label: estadoCivil,
-      value: estadoCivil,
-    };
+    values: {
+      direccion: data?.direccion ?? "",
+      estadoCivil: data?.estadoCivil ?? "",
+      localidad: data?.localidad ?? "",
+      mail: data?.mail ?? "",
+      telefono: data?.telefono ?? "",
+    },
   });
 
   return (
@@ -92,7 +94,11 @@ export default function FamiliarPage() {
           title={`${data?.nombre} ${data?.apellido}`}
         />
 
-        <Appbar.Action icon="pencil" onPress={() => changeIsEditing()} />
+        <Appbar.Action
+          icon="pencil-circle"
+          size={35}
+          onPress={() => changeIsEditing()}
+        />
       </Appbar.Header>
 
       <Divider style={{ marginBottom: 10 }} />
@@ -137,32 +143,27 @@ export default function FamiliarPage() {
               name="telefono"
               label="Telefono"
               placeholder="Ingrese numero de telefono"
-              defaultValue={data?.telefono ?? ""}
             />
             <CustomTextInput
               name="mail"
               label="Mail"
               placeholder="Ingrese email"
-              defaultValue={data?.mail ?? ""}
             />
             <CustomTextInput
               name="direccion"
               label="Calle"
               placeholder="Ingrese calle y numero"
-              defaultValue={data?.direccion ?? ""}
             />
             <CustomTextInput
               name="localidad"
               label="Localidad"
               placeholder="Ingrese localidad"
-              defaultValue={data?.localidad ?? ""}
             />
 
             <CustomDropDown
               name="estadoCivil"
               label="Estado civil"
               list={estadoCivilList}
-              defaultValue={data?.estadoCivil ?? ""}
             />
 
             <Divider style={{ marginVertical: 0 }} />

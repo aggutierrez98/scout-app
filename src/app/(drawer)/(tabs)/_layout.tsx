@@ -20,14 +20,13 @@ import FiltersMenu from "components/FiltersMenu";
 
 export default function AppLayout() {
   const theme = useTheme();
-
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   const segments = useSegments();
   const pathname = usePathname();
   const pageTitle = pathname.split("/")[1];
-  const { goBack, dispatch, getState, navigate } = useNavigation();
+  const { dispatch } = useNavigation();
   const { toogleMenu } = useMenuContext();
   const { changeIsEditing } = useEditContext();
   const touchable = useRef(null);
@@ -75,7 +74,11 @@ export default function AppLayout() {
           />
         )}
         {segments.length > 3 && pageTitle === "scouts" && (
-          <Appbar.Action icon="pencil" onPress={() => changeIsEditing()} />
+          <Appbar.Action
+            icon="pencil-circle"
+            size={35}
+            onPress={() => changeIsEditing()}
+          />
         )}
         {segments.length === 3 && (
           <Appbar.Action

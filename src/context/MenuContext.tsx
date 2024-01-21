@@ -1,14 +1,19 @@
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useDocumentsData } from "client/documento";
 import { usePatrullas } from "client/patrulla";
 import { createContext, useContext, useState, ReactNode } from "react";
 import {
+  F_RELATIONSHIPS,
+  M_RELATIONSHIPS,
+  VALID_ENTREGAS_TYPE,
+  VALID_ESTADO_CIVIL,
   VALID_FUNCTIONS,
   VALID_METODOS_PAGO,
   VALID_PROGRESSIONS,
-} from "validators/constants";
+  VALID_RELIGIONS,
+  VALID_ROLES,
+} from "utils/constants";
 
-type MenuMode = "scouts" | "pagos" | "documentos";
+type MenuMode = "scouts" | "pagos" | "documentos" | "entregas";
 
 export interface MenuContextProps {
   showMenu: boolean;
@@ -26,6 +31,14 @@ export interface MenuContextProps {
     metodoPago: string;
     handleMetodoPagoChange: (arg: string) => void;
     metodosPagoList: {
+      value: string;
+      label: string;
+    }[];
+  };
+  tipoEntrega: {
+    tipoEntregasSelected: string[];
+    handleTipoEntregaChange: (arg: string) => void;
+    tipoEntregaList: {
       value: string;
       label: string;
     }[];
@@ -80,6 +93,26 @@ export interface MenuContextProps {
     value: string;
     label: string;
   }[];
+  religionList: {
+    value: string;
+    label: string;
+  }[];
+  estadoCivilList: {
+    value: string;
+    label: string;
+  }[];
+  relacionesMList: {
+    value: string;
+    label: string;
+  }[];
+  relacionesFList: {
+    value: string;
+    label: string;
+  }[];
+  rolList: {
+    value: string;
+    label: string;
+  }[];
 }
 
 const MenuContext = createContext({} as MenuContextProps);
@@ -125,6 +158,15 @@ export const MenuProvider = ({
   }));
   metodosPagoList.unshift({ label: "TODOS", value: "" });
 
+  const [tipoEntregasSelected, setTipoEntregasSelected] = useState<string[]>(
+    []
+  );
+  const tipoEntregaList = VALID_ENTREGAS_TYPE.map((tipoEntrega: string) => ({
+    label: tipoEntrega,
+    value: tipoEntrega,
+  }));
+  tipoEntregaList.unshift({ label: "TODOS", value: "" });
+
   const trueFalseList = [
     { label: "Ambos", value: "" },
     { label: "Si", value: "si" },
@@ -159,6 +201,34 @@ export const MenuProvider = ({
     value: funcion,
   }));
 
+  const religionList = VALID_RELIGIONS.map((religion) => {
+    return {
+      label: religion,
+      value: religion,
+    };
+  });
+
+  const estadoCivilList = VALID_ESTADO_CIVIL.map((estadoCivil) => {
+    return {
+      label: estadoCivil,
+      value: estadoCivil,
+    };
+  });
+
+  const relacionesMList = M_RELATIONSHIPS.map((relacion) => ({
+    label: relacion,
+    value: relacion,
+  }));
+  const relacionesFList = F_RELATIONSHIPS.map((relacion) => ({
+    label: relacion,
+    value: relacion,
+  }));
+
+  const rolList = VALID_ROLES.map((role) => ({
+    label: role,
+    value: role,
+  }));
+
   const toogleMenu = (show: boolean, mode: MenuMode) => {
     setShowMenu(show ? show : !showMenu);
     setMenuMode(mode);
@@ -189,6 +259,16 @@ export const MenuProvider = ({
     }
   };
 
+  const handleTipoEntregaChange = (arg: string) => {
+    if (tipoEntregasSelected.includes(arg)) {
+      setTipoEntregasSelected(
+        tipoEntregasSelected.filter((item) => item !== arg)
+      );
+    } else {
+      setTipoEntregasSelected([...tipoEntregasSelected, arg]);
+    }
+  };
+
   const handleFuncionChange = (arg: string) => {
     if (funcionesSelected.includes(arg)) {
       setFuncionesSelected(funcionesSelected.filter((item) => item !== arg));
@@ -210,6 +290,9 @@ export const MenuProvider = ({
   const handleMetodoPagoChange = (arg: string) => {
     setMetodoPago(arg);
   };
+  // const handleTipoEntregaChange = (arg: string) => {
+  //   setTipoEntrega(arg);
+  // };
 
   return (
     <MenuContext.Provider
@@ -253,6 +336,11 @@ export const MenuProvider = ({
           metodosPagoList,
           handleMetodoPagoChange,
         },
+        tipoEntrega: {
+          tipoEntregasSelected,
+          tipoEntregaList,
+          handleTipoEntregaChange,
+        },
         rendido: {
           rendido,
           handleRendidoChange,
@@ -262,6 +350,11 @@ export const MenuProvider = ({
           handleVenceChange,
         },
         trueFalseList,
+        religionList,
+        estadoCivilList,
+        relacionesMList,
+        relacionesFList,
+        rolList,
       }}
     >
       {children}

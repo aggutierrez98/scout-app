@@ -1,10 +1,12 @@
 import {
   ActivityIndicator,
+  Avatar,
   Button,
   Dialog,
   Divider,
   IconButton,
   List,
+  MD3Colors,
   Portal,
   Surface,
   Text,
@@ -14,48 +16,50 @@ import {
 import { Fragment, useState } from "react";
 import { FlatList } from "react-native";
 import { useRouter } from "expo-router";
-import { useMenuContext } from "context/MenuContext";
-import { useDeletePago, usePagos } from "client/pago";
-import { Pago } from "types/interfaces/pago";
+import { useFamiliares } from "client/familiar";
+import { Familiar } from "types/interfaces/familiar";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useSnackBarContext } from "context/SnackBarContext";
+import ListItem from "components/ListItem";
+import { useDeleteEntrega, useEntregas } from "client/entregas";
+import { useMenuContext } from "context/MenuContext";
+import { Entrega } from "types/interfaces/entrega";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSnackBarContext } from "context/SnackBarContext";
 
 interface Props {
   searchQuery: string;
 }
 
-export default function PagosList({ searchQuery }: Props) {
+export default function EntregasList({ searchQuery }: Props) {
+  const router = useRouter();
+  const { colors } = useTheme();
   const { toogleSnackBar } = useSnackBarContext();
   const [visible, setVisible] = useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
   const [idToDelete, setIdToDelete] = useState("");
-  const { mutateAsync, isPending } = useDeletePago();
-  const { colors } = useTheme();
-  const router = useRouter();
+  const { mutateAsync, isPending } = useDeleteEntrega();
 
   const {
     tiempo: { tiempoDesde, tiempoHasta },
-    metodoPago: { metodoPago },
-    progresion: { progresionesSelected },
-    patrulla: { patrullasSelected },
+    tipoEntrega: { tipoEntregasSelected },
     funcion: { funcionesSelected },
-    rendido: { rendido },
+    patrulla: { patrullasSelected },
+    progresion: { progresionesSelected },
   } = useMenuContext();
 
-  const { data, fetchNextPage, hasNextPage, isLoading } = usePagos({
-    patrullas: patrullasSelected,
-    metodoPago,
-    progresiones: progresionesSelected,
-    funciones: funcionesSelected,
-    rendido: rendido as "si" | "no" | "",
+  const { data, isError, fetchNextPage, hasNextPage, isLoading } = useEntregas({
+    searchQuery,
+    tipoEntregasSelected,
     tiempoDesde,
     tiempoHasta,
-    searchQuery,
+    funciones: funcionesSelected,
+    patrullas: patrullasSelected,
+    progresiones: progresionesSelected,
   });
 
-  const flattenData: Pago[] = data?.pages.flatMap((page) => page || []) || [];
+  const flattenData: Entrega[] =
+    data?.pages.flatMap((page) => page || []) || [];
 
   const loadNextPageData = () => {
     if (hasNextPage) {
@@ -65,7 +69,8 @@ export default function PagosList({ searchQuery }: Props) {
 
   return (
     <>
-      {isLoading || (isPending && <LoadingScreen />)}
+      {(isLoading || isPending) && <LoadingScreen />}
+
       <List.Section
         style={{
           marginBottom: 50,
@@ -74,20 +79,28 @@ export default function PagosList({ searchQuery }: Props) {
       >
         <FlatList
           data={flattenData}
-          keyExtractor={(scout) => scout.id}
-          renderItem={({ item }: { item: Pago }) => (
+          keyExtractor={(entrega) => entrega.id}
+          renderItem={({ item }: { item: Entrega }) => (
             <Fragment key={item.id}>
               <TouchableRipple
                 onPress={() => {
-                  router.push(`/(drawer)/(tabs)/pagos/${item.id}`);
+                  router.push(`/(drawer)/entregas/${item.id}`);
                 }}
               >
                 <List.Item
-                  title={`${item.fechaPago} - ${item.concepto}`}
+                  title={`${item.fechaEntrega} - ${item.scout.nombre} ${item.scout.nombre}`}
                   left={() => (
                     <Icon
-                      name={item.rendido ? "beaker-check" : "beaker"}
-                      color={item.rendido ? colors.primary : colors.tertiary}
+                      name={
+                        item.tipoEntrega.startsWith("PROG")
+                          ? "seal"
+                          : item.tipoEntrega.startsWith("ESP")
+                          ? "seal-variant"
+                          : item.tipoEntrega.includes("GUIA")
+                          ? "medal-outline"
+                          : "tshirt-crew"
+                      }
+                      color={colors.primary}
                       size={35}
                     />
                   )}
@@ -138,10 +151,10 @@ export default function PagosList({ searchQuery }: Props) {
 
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Eliminar pago</Dialog.Title>
+          <Dialog.Title>Eliminar entrega</Dialog.Title>
           <Dialog.Content>
             <Text variant="bodyMedium">
-              ¿Esta seguro de eliminar el pago seleccionado?
+              ¿Esta seguro de eliminar la entrega seleccionada?
             </Text>
           </Dialog.Content>
           <Dialog.Actions>
@@ -152,8 +165,8 @@ export default function PagosList({ searchQuery }: Props) {
                 hideDialog();
                 const resp = await mutateAsync({ id: idToDelete });
                 if (resp)
-                  toogleSnackBar("Exito al eliminar el pago", "success");
-                else toogleSnackBar("Error al eliminar el pago", "error");
+                  toogleSnackBar("Exito al eliminar la entrega", "success");
+                else toogleSnackBar("Error al eliminar la entrega", "error");
               }}
             >
               Confirmar

@@ -16,11 +16,10 @@ interface Props {
 }
 
 import { registerTranslation } from "react-native-paper-dates";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 registerTranslation("es", {
   save: "Guardar",
-  selectSingle: "Select date",
-  selectMultiple: "Select dates",
+  selectSingle: "Seleccionar fecha",
+  selectMultiple: "Seleccionar fechas",
   selectRange: "Seleccionar periodos",
   notAccordingToDateFormat: (inputFormat) =>
     `El tipo de formato debe ser ${inputFormat}`,

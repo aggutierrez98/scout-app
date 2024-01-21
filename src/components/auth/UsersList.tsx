@@ -3,20 +3,16 @@ import {
   Avatar,
   Divider,
   List,
-  MD3Colors,
   Surface,
   Text,
   TouchableRipple,
 } from "react-native-paper";
-import ListItem from "../ListItem";
-import { useScouts } from "../../client/scouts";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { FlatList } from "react-native";
-import { Scout } from "types/interfaces/scout";
 import { useRouter } from "expo-router";
-import { useMenuContext } from "context/MenuContext";
-import { useRenewLogin, useUsers } from "client/auth";
+import { useUsers } from "client/auth";
 import { User } from "types/interfaces/auth";
+import { LoadingScreen } from "components/layout/LoadingScreen";
 
 interface Props {
   searchQuery: string;
@@ -24,7 +20,7 @@ interface Props {
 
 export default function UsersList({ searchQuery }: Props) {
   const router = useRouter();
-  const { data, isError, fetchNextPage, hasNextPage, isLoading } = useUsers({
+  const { data, fetchNextPage, hasNextPage, isLoading } = useUsers({
     searchQuery,
   });
   const flattenData: User[] = data?.pages.flatMap((page) => page || []) || [];
@@ -42,6 +38,8 @@ export default function UsersList({ searchQuery }: Props) {
         marginTop: 10,
       }}
     >
+      {isLoading && <LoadingScreen />}
+
       <FlatList
         data={flattenData}
         keyExtractor={(user) => user.id}

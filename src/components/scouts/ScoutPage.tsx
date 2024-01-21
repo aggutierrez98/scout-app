@@ -7,16 +7,11 @@ import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { EditScoutSchema } from "validators/scout";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  VALID_FUNCTIONS,
-  VALID_PROGRESSIONS,
-  VALID_RELIGIONS,
-} from "validators/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { usePatrullas } from "client/patrulla";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
+import { useMenuContext } from "context/MenuContext";
 
 type ScoutParams = {
   scout: string;
@@ -30,7 +25,7 @@ type FormValues = {
   religion: string;
   funcion: string;
   patrullaId: string;
-  progresion: string;
+  progresionActual: string;
 };
 export default function ScoutPage() {
   const theme = useTheme();
@@ -38,41 +33,30 @@ export default function ScoutPage() {
   const { scout: scoutId } = useLocalSearchParams<ScoutParams>();
   if (!scoutId) return null;
   const { data, isLoading } = useScout(scoutId);
-  const { data: patrullas, isLoading: isLoadingPatrullas } = usePatrullas();
   const { mutateAsync, isPending } = useEditScout();
   const { goBack } = useNavigation();
+  const {
+    progresion: { progresionList },
+    patrulla: { patrullaList },
+    funcion: { funcionesList },
+    religionList,
+  } = useMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditScoutSchema),
+    values: {
+      direccion: data?.direccion ?? "",
+      funcion: data?.funcion ?? "",
+      localidad: data?.localidad ?? "",
+      mail: data?.mail ?? "",
+      patrullaId: data?.patrullaId ?? "",
+      progresionActual: data?.progresionActual ?? "",
+      religion: data?.religion ?? "",
+      telefono: data?.telefono ?? "",
+    },
   });
   const { isEditing } = useEditContext();
-
-  const religionList = VALID_RELIGIONS.map((religion) => {
-    return {
-      label: religion,
-      value: religion,
-    };
-  });
-  const funcionList = VALID_FUNCTIONS.map((funcion) => {
-    return {
-      label: funcion,
-      value: funcion,
-    };
-  });
-  const progressionList = VALID_PROGRESSIONS.map((progression) => {
-    return {
-      label: progression,
-      value: progression,
-    };
-  });
-  const patrullasList =
-    patrullas?.map((patrulla) => {
-      return {
-        label: patrulla.nombre,
-        value: patrulla.id,
-      };
-    }) ?? [];
 
   return (
     <ScrollView
@@ -85,7 +69,7 @@ export default function ScoutPage() {
         },
       ]}
     >
-      {(isLoading || isLoadingPatrullas || isPending) && <LoadingScreen />}
+      {(isLoading || isPending) && <LoadingScreen />}
 
       <Text style={{ fontSize: 25 }}>
         {data?.apellido} {data?.nombre}
@@ -123,53 +107,45 @@ export default function ScoutPage() {
               name="telefono"
               label="Telefono"
               placeholder="Ingrese numero de telefono"
-              defaultValue={data?.telefono ?? ""}
             />
             <CustomTextInput
               name="mail"
               label="Mail"
               placeholder="Ingrese email"
-              defaultValue={data?.mail ?? ""}
             />
             <CustomTextInput
               name="direccion"
               label="Calle"
               placeholder="Ingrese calle y numero"
-              defaultValue={data?.direccion ?? ""}
             />
             <CustomTextInput
               name="localidad"
               label="Localidad"
               placeholder="Ingrese localidad"
-              defaultValue={data?.localidad ?? ""}
             />
 
             <CustomDropDown
               name="religion"
               label="Religion"
               list={religionList}
-              defaultValue={data?.religion ?? ""}
             />
 
             <CustomDropDown
               name="funcion"
               label="Funcion"
-              list={funcionList}
-              defaultValue={data?.funcion ?? ""}
+              list={funcionesList}
             />
 
             <CustomDropDown
               name="patrullaId"
               label="Patrulla"
-              list={patrullasList}
-              defaultValue={data?.patrullaId ?? ""}
+              list={patrullaList}
             />
 
             <CustomDropDown
-              name="progresion"
+              name="progresionActual"
               label="Progresion"
-              list={progressionList}
-              defaultValue={data?.progresionActual ?? ""}
+              list={progresionList}
             />
 
             <Button

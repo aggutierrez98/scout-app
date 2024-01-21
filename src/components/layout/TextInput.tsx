@@ -11,7 +11,7 @@ interface Props extends TextInputProps, UseControllerProps {
   label: string;
   name: string;
   placeholder: string;
-  defaultValue?: string;
+  defaultValue?: undefined;
 }
 
 export const CustomTextInput = ({
@@ -19,13 +19,12 @@ export const CustomTextInput = ({
   label,
   rules,
   placeholder,
-  defaultValue,
   ...inputProps
 }: Props) => {
   const {
     field,
     fieldState: { error },
-  } = useController({ name, rules, defaultValue });
+  } = useController({ name, rules });
 
   const { colors } = useTheme();
   const hasError = Boolean(!!error);

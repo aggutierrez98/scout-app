@@ -23,10 +23,9 @@ interface Props {
 
 export default function FamiliaresList({ searchQuery }: Props) {
   const router = useRouter();
-  const { data, isError, fetchNextPage, hasNextPage, isLoading } =
-    useFamiliares({
-      searchQuery,
-    });
+  const { data, fetchNextPage, hasNextPage, isLoading } = useFamiliares({
+    searchQuery,
+  });
 
   const flattenData: Familiar[] =
     data?.pages.flatMap((page) => page || []) || [];

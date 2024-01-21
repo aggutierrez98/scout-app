@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { VALID_ROLES } from "./constants";
+import { VALID_ROLES } from "utils/constants";
 import { IdSchema, lettersReg } from "./scout";
 
 const passRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,12}$/;
@@ -10,7 +10,22 @@ export const EditUserSchema = z.object({
 });
 
 export const CreateUserSchema = z.object({
-  role: z.enum(VALID_ROLES),
+  role: z.enum(VALID_ROLES, {
+    errorMap: (issue, _ctx) => {
+      switch (issue.code) {
+        case "invalid_type":
+          return {
+            message: `Ingresar alguno de los valores ${VALID_ROLES},`,
+          };
+        case "invalid_enum_value":
+          return {
+            message: `Ingresar alguno de los valores ${VALID_ROLES},`,
+          };
+        default:
+          return { message: "Valor invalido" };
+      }
+    },
+  }),
   scoutId: IdSchema.max(10),
   username: z
     .string({ required_error: "Nombre de usuario requerido" })

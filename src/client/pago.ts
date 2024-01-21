@@ -36,7 +36,7 @@ export interface EditPagoParams {
   concepto: string;
   metodoPago: string;
   monto: string;
-  rendido: string;
+  rendido: boolean;
 }
 
 export const fetchPagos = async (

@@ -11,7 +11,7 @@ import * as SecureStore from "expo-secure-store";
 import { LoginResponse } from "types/interfaces/scout";
 import { UseFormSetError } from "react-hook-form";
 import { User } from "types/interfaces/auth";
-import { VALID_ROLES } from "validators/constants";
+import { VALID_ROLES } from "utils/constants";
 const QUERY_LIMIT = 15;
 
 interface ApiError {

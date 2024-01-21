@@ -1,4 +1,4 @@
-import { VALID_ROLES } from "validators/constants";
+import { VALID_ROLES } from "utils/constants";
 import { Scout } from "./scout";
 
 export interface User {

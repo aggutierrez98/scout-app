@@ -8,7 +8,6 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  defaultValue: string;
   list: {
     label: string;
     value: string;
@@ -26,7 +25,6 @@ export const CustomDropDown = ({
   label,
   list,
   placeholder,
-  defaultValue,
   dropDownStyle,
   dropDownItemSelectedStyle,
   dropDownItemSelectedTextStyle,
@@ -38,7 +36,7 @@ export const CustomDropDown = ({
   const {
     field,
     fieldState: { error },
-  } = useController({ name, defaultValue });
+  } = useController({ name });
 
   const handleDDChange = (value: string) => {
     field.onChange(value);

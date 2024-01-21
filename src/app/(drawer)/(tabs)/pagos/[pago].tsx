@@ -1,11 +1,10 @@
 import { ScrollView } from "react-native";
-import { Button, Divider, useTheme, Appbar } from "react-native-paper";
+import { Button, Divider, useTheme } from "react-native-paper";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useScout } from "client/scouts";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VALID_METODOS_PAGO } from "validators/constants";
+import { VALID_METODOS_PAGO } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useEditPago, usePago } from "client/pago";
@@ -14,6 +13,7 @@ import { CustomDatePicker } from "components/layout/DatePicker";
 import { EditPagoSchema } from "validators/pago";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { useSnackBarContext } from "context/SnackBarContext";
+import { useMenuContext } from "context/MenuContext";
 
 type PagoParams = {
   pago: string;
@@ -25,7 +25,7 @@ type FormValues = {
   concepto: string;
   metodoPago: string;
   monto: string;
-  rendido: string;
+  rendido: boolean;
 };
 
 export default function PagoPage() {
@@ -35,22 +35,23 @@ export default function PagoPage() {
 
   const { toogleSnackBar } = useSnackBarContext();
   const { data, isLoading } = usePago(pagoId);
-  const { data: scoutData, isLoading: isLoadingScout } = useScout(
-    data?.scoutId ?? ""
-  );
-
   const { mutateAsync, isPending } = useEditPago();
   const { goBack } = useNavigation();
+  const {
+    metodoPago: { metodosPagoList },
+  } = useMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditPagoSchema),
-  });
-  const metodoPagoList = VALID_METODOS_PAGO.map((metodoPago) => {
-    return {
-      label: metodoPago,
-      value: metodoPago,
-    };
+    values: {
+      concepto: data?.concepto ?? "",
+      monto: data?.monto ?? "",
+      scoutId: data?.scoutId ?? "",
+      metodoPago: data?.metodoPago ?? "",
+      rendido: !!data?.rendido,
+      fechaPago: new Date(data?.fechaPago || 0),
+    },
   });
 
   return (
@@ -64,12 +65,12 @@ export default function PagoPage() {
         },
       ]}
     >
-      {(isLoading || isLoadingScout || isPending) && <LoadingScreen />}
+      {(isLoading || isPending) && <LoadingScreen />}
 
       <DescriptiveText
         title="  Nombre"
         description={
-          scoutData ? `${scoutData?.apellido} ${scoutData?.nombre}` : "-"
+          data?.scout ? `${data.scout?.apellido} ${data.scout?.nombre}` : "-"
         }
       />
 
@@ -79,33 +80,22 @@ export default function PagoPage() {
           name="concepto"
           label="Concepto"
           placeholder="Ingrese concepto"
-          defaultValue={data?.concepto ?? ""}
         />
         <CustomTextInput
           name="monto"
           label="Monto"
           placeholder="Ingrese monto"
-          defaultValue={data?.monto ?? ""}
         />
 
-        <CustomDatePicker
-          name="fechaPago"
-          label="Fecha de pago"
-          defaultValue={new Date(data?.fechaPago || 0)}
-        />
+        <CustomDatePicker name="fechaPago" label="Fecha de pago" />
 
         <CustomDropDown
           name="metodoPago"
           label="Metodo de pago"
-          list={metodoPagoList}
-          defaultValue={data?.metodoPago ?? ""}
+          list={metodosPagoList}
         />
 
-        <CustomSwitchInput
-          name="rendido"
-          label="Pago rendido"
-          defaultValue={!!data?.rendido}
-        />
+        <CustomSwitchInput name="rendido" label="Pago rendido" />
 
         <Button
           icon="send"

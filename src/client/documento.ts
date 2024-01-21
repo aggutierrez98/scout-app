@@ -151,8 +151,8 @@ export const useDocuments = (queryParams: QueryParams) =>
       "documents",
       `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
         queryParams.patrullas
-      }-sexo=${queryParams.sexo}-progresion=${
-        queryParams.progresiones
+      }-progresion=${queryParams.progresiones}-funcion=${
+        queryParams.funciones
       }-funcion=${queryParams.funciones}-vence=${queryParams.vence}`,
     ],
     queryFn: ({ pageParam }) => fetchDocuments(pageParam, queryParams),

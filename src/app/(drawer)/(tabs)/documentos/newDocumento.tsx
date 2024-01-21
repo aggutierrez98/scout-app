@@ -13,6 +13,8 @@ import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useCreateDocumento, useDocumentsData } from "client/documento";
 import { CreateDocumentoSchema } from "validators/documento";
+import documentos from "./index";
+import { useMenuContext } from "context/MenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -28,18 +30,14 @@ export default function newDocumento() {
     mode: "onBlur",
     resolver: zodResolver(CreateDocumentoSchema),
   });
-
   const { isSuccess, status, mutateAsync } = useCreateDocumento();
   const { data: users } = useAllScouts();
-  const { data: documentsData } = useDocumentsData();
+  const {
+    documento: { documentosList },
+  } = useMenuContext();
 
   const scoutsList =
     users?.map(({ id, nombre }) => ({
-      label: nombre,
-      value: id,
-    })) || [];
-  const documentsList =
-    documentsData?.map(({ id, nombre }) => ({
       label: nombre,
       value: id,
     })) || [];
@@ -83,20 +81,17 @@ export default function newDocumento() {
               <CustomDropDown
                 name="documentoId"
                 label="Documento presentado"
-                list={documentsList}
-                defaultValue={""}
+                list={documentosList}
               />
               <CustomDropDown
                 name="scoutId"
                 label="Scout asociado"
                 list={scoutsList}
-                defaultValue={""}
               />
 
               <CustomDatePicker
                 name="fechaPresentacion"
                 label="Fecha de entrega del documento"
-                defaultValue={new Date()}
               />
 
               <Button
