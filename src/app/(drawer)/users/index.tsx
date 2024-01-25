@@ -11,7 +11,6 @@ import { CommonActions } from "@react-navigation/native";
 
 export default function users() {
   const theme = useTheme();
-  const { data } = useRenewLogin();
   const { dispatch, getState } = useNavigation();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
@@ -53,26 +52,22 @@ export default function users() {
           />
         </Appbar.Header>
 
-        {data ? (
-          <View
-            style={[
-              {
-                flex: 1,
-                padding: 10,
-              },
-            ]}
-          >
-            <Searchbar
-              placeholder="Buscar"
-              onChangeText={onChangeSearch}
-              value={searchQuery}
-            />
+        <View
+          style={[
+            {
+              flex: 1,
+              padding: 10,
+            },
+          ]}
+        >
+          <Searchbar
+            placeholder="Buscar"
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+          />
 
-            <UsersList searchQuery={debouncedSearchQuery} />
-          </View>
-        ) : (
-          <LoadingScreen />
-        )}
+          <UsersList searchQuery={debouncedSearchQuery} />
+        </View>
       </SafeAreaView>
     </>
   );
