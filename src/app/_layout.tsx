@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditProvider } from "../context/EditContext";
 import { Slot } from "expo-router";
 import { SnackBarProvider } from "context/SnackBarContext";
+import "react-native-gesture-handler";
 
 const queryClient = new QueryClient({
   // queryCache: {}
