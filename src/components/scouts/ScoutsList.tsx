@@ -5,11 +5,12 @@ import {
   MD3Colors,
   Surface,
   Text,
+  useTheme,
 } from "react-native-paper";
 import ListItem from "../ListItem";
 import { useScouts } from "../../client/scouts";
-import { Fragment } from "react";
-import { FlatList } from "react-native";
+import { Fragment, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 import { Scout } from "types/interfaces/scout";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
@@ -28,14 +29,16 @@ export default function ScoutsList({ searchQuery }: Props) {
     patrulla: { patrullasSelected },
     funcion: { funcionesSelected },
   } = useMenuContext();
+  const theme = useTheme();
 
-  const { data, fetchNextPage, hasNextPage, isLoading } = useScouts({
-    patrullas: patrullasSelected,
-    sexo,
-    progresiones: progresionesSelected,
-    funciones: funcionesSelected,
-    searchQuery,
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
+    useScouts({
+      patrullas: patrullasSelected,
+      sexo,
+      progresiones: progresionesSelected,
+      funciones: funcionesSelected,
+      searchQuery,
+    });
 
   const flattenData: Scout[] = data?.pages.flatMap((page) => page || []) || [];
 
@@ -98,6 +101,15 @@ export default function ScoutsList({ searchQuery }: Props) {
             >
               <Text variant="titleMedium">No se encontraron resultados</Text>
             </Surface>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              progressViewOffset={10}
+              progressBackgroundColor={theme.colors.secondaryContainer}
+              colors={[theme.colors.primary]}
+            />
           }
         />
       </List.Section>

@@ -2,7 +2,7 @@ import { View, StyleSheet, ViewStyle, TextStyle } from "react-native";
 import { useController } from "react-hook-form";
 import DropDown from "react-native-paper-dropdown";
 import { useState } from "react";
-import { HelperText } from "react-native-paper";
+import { HelperText, useTheme } from "react-native-paper";
 
 interface Props {
   name: string;
@@ -38,6 +38,8 @@ export const CustomDropDown = ({
     fieldState: { error },
   } = useController({ name });
 
+  const theme = useTheme();
+
   const handleDDChange = (value: string) => {
     field.onChange(value);
   };
@@ -60,7 +62,7 @@ export const CustomDropDown = ({
         dropDownItemSelectedTextStyle={dropDownItemSelectedTextStyle}
         dropDownItemStyle={dropDownItemStyle}
         dropDownItemTextStyle={{
-          ...defaultStyle.itemTextStyle,
+          color: theme.colors.onPrimary,
           ...dropDownItemTextStyle,
         }}
       />
@@ -71,9 +73,3 @@ export const CustomDropDown = ({
     </View>
   );
 };
-
-const defaultStyle = StyleSheet.create({
-  itemTextStyle: {
-    color: "white",
-  },
-});

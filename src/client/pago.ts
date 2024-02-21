@@ -6,10 +6,9 @@ import {
 } from "@tanstack/react-query";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import * as SecureStore from "expo-secure-store";
-import axios from "axios";
 const QUERY_LIMIT = 15;
-import { API_URL } from "@env";
 import { Pago } from "types/interfaces/pago";
+import api from "./api";
 
 interface QueryParams {
   metodoPago: string;
@@ -74,8 +73,8 @@ export const fetchPagos = async (
 
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(
-      `${API_URL}/pago?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+    const { data, status } = await api.get(
+      `/pago?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +98,7 @@ export const fetchPago = async (id: string) => {
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();
-    const { data, status } = await axios.get(`${API_URL}/pago/${id}`, {
+    const { data, status } = await api.get(`/pago/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -117,17 +116,13 @@ export const editPago = async (pagoId: string, pagoData: EditPagoParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.put(
-      `${API_URL}/pago/${pagoId}`,
-      pagoData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data, status } = await api.put(`/pago/${pagoId}`, pagoData, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data as Pago;
   } catch (error) {
     console.log(error);
@@ -171,7 +166,7 @@ export const useEditPago = () =>
 export const deletePago = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-    const { data } = await axios.delete(`${API_URL}/pago/${id}`, {
+    const { data } = await api.delete(`/pago/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -201,7 +196,7 @@ export const createPago = async (pagoData: CreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data } = await axios.post(`${API_URL}/pago`, pagoData, {
+    const { data } = await api.post("/pago", pagoData, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

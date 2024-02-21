@@ -107,7 +107,7 @@ export default function AppLayout() {
               <BottomNavigation.Bar
                 style={{
                   backgroundColor: theme.colors.background,
-                  borderTopColor: theme.colors.tertiary,
+                  // borderTopColor: theme.colors.tertiary,
                   borderTopWidth: 0.2,
                 }}
                 navigationState={stateFin}
@@ -133,8 +133,9 @@ export default function AppLayout() {
                     pagos: "cash-multiple",
                     documentos: "file-document-outline",
                   };
-                  const icon = icons[route.name];
-                  return <Icon name={icon} size={25} color={color} />;
+                  return (
+                    <Icon name={icons[route.name]} size={25} color={color} />
+                  );
                 }}
                 getLabelText={({ route }) => {
                   return capitalizeFirstLetter(route.name);

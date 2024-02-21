@@ -9,7 +9,14 @@ export const EditPagoSchema = z.object({
     .regex(numberReg)
     .max(99999999),
   metodoPago: z.enum(VALID_METODOS_PAGO),
-  fechaPago: z.date({ required_error: "La fecha es requerida" }),
+  fechaPago: z.date({
+    errorMap: (issue, { defaultError }) => ({
+      message:
+        issue.code === "invalid_date"
+          ? "Debe ser una fecha valida"
+          : defaultError,
+    }),
+  }),
 });
 
 export const CreatePagoSchema = z.object({
@@ -35,7 +42,14 @@ export const CreatePagoSchema = z.object({
     },
   }),
   fechaPago: z.coerce
-    .date({ required_error: "La fecha es requerida" })
+    .date({
+      errorMap: (issue, { defaultError }) => ({
+        message:
+          issue.code === "invalid_date"
+            ? "Debe ser una fecha valida"
+            : defaultError,
+      }),
+    })
     .refine((date) => date < new Date(), {
       message: "La fecha debe ser pasada",
     }),

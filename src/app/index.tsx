@@ -24,7 +24,6 @@ export default function Index() {
       <Stack.Screen
         options={{
           title: "Login",
-          headerTintColor: theme.colors.primary,
           headerTitleStyle: {
             fontWeight: "bold",
           },

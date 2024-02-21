@@ -6,9 +6,8 @@ import {
 } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
 const QUERY_LIMIT = 20;
-import { API_URL } from "@env";
-import axios from "axios";
 import { Familiar, FamiliarWithDetails } from "types/interfaces/familiar";
+import api from "./api";
 
 interface QueryParams {
   searchQuery: string;
@@ -45,7 +44,7 @@ export const fetchFamiliar = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(`${API_URL}/familiar/${id}`, {
+    const { data, status } = await api.get(`/familiar/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -66,8 +65,8 @@ export const editFamiliar = async (
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.put(
-      `${API_URL}/familiar/${familiarId}`,
+    const { data, status } = await api.put(
+      `/familiar/${familiarId}`,
       familiarData,
       {
         headers: {
@@ -99,8 +98,8 @@ export const fetchFamiliares = async (
     const offset = (pageParam - 1) * QUERY_LIMIT;
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(
-      `${API_URL}/familiar?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}`,
+    const { data, status } = await api.get(
+      `/familiar?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -147,8 +146,8 @@ export const relateFamiliar = async (
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.put(
-      `${API_URL}/familiar/relate/${familiarId}`,
+    const { data, status } = await api.put(
+      `/familiar/relate/${familiarId}`,
       familiarData,
       {
         headers: {
@@ -171,8 +170,8 @@ export const unrelateFamiliar = async (
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.put(
-      `${API_URL}/familiar/unrelate/${familiarId}`,
+    const { data, status } = await api.put(
+      `/familiar/unrelate/${familiarId}`,
       familiarData,
       {
         headers: {

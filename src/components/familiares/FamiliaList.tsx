@@ -91,24 +91,30 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
           >
             <Badge
               size={25}
-              style={{ marginRight: 10, paddingHorizontal: 5 }}
+              style={{
+                marginRight: 10,
+                paddingHorizontal: 5,
+                backgroundColor: theme.colors.secondary,
+                color: theme.colors.onTertiary,
+              }}
             >{`${scoutsData?.length} familiares`}</Badge>
             <Icon
-              color={theme.colors.primary}
+              color={theme.colors.onPrimary}
               size={30}
               name="chevron-down"
-            ></Icon>
+            />
           </View>
         )}
       >
         {scoutsData?.map((scout) => (
           <View
-            key={scout.id}
+            key={scout.dni}
             style={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+              marginLeft: -20,
             }}
           >
             <TouchableRipple
@@ -179,7 +185,7 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              mode="contained"
+              mode="contained-tonal"
               textColor="red"
               onPress={async () => {
                 hideDialogUnrelate();
@@ -201,7 +207,9 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
             >
               Confirmar
             </Button>
-            <Button onPress={hideDialogUnrelate}>Cancelar</Button>
+            <Button mode="contained-tonal" onPress={hideDialogUnrelate}>
+              Cancelar
+            </Button>
           </Dialog.Actions>
         </Dialog>
 
@@ -230,8 +238,8 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              mode="contained"
-              textColor="red"
+              mode="contained-tonal"
+              textColor={theme.colors.onTertiary}
               onPress={formMethods.handleSubmit(async (data) => {
                 Object.keys(data).forEach((key) => {
                   if (data[key as keyof FormValues] === "") {
@@ -257,7 +265,9 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
             >
               Confirmar
             </Button>
-            <Button onPress={hideDialogRelate}>Cancelar</Button>
+            <Button onPress={hideDialogRelate} mode="contained-tonal">
+              Cancelar
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -34,7 +34,6 @@ export default function LoginForm() {
             padding: 10,
             paddingTop: 0,
             paddingBottom: 100,
-            backgroundColor: theme.colors.backdrop,
           },
         ]}
       >
@@ -54,16 +53,17 @@ export default function LoginForm() {
             name="password"
             label="Contraseña"
             placeholder="Ingrese contraseña"
-            secureTextEntry={hidePass ? true : false}
+            hidden
+            // secureTextEntry={hidePass ? true : false}
             style={{ marginTop: 10, position: "relative" }}
           />
-
+          {/*
           <Button
-            style={{ position: "absolute", right: 10 }}
+            style={{ position: "absolute", right: 10, top: 10 }}
             onPress={() => setHidePass(!hidePass)}
           >
             <Icon name={hidePass ? "eye" : "eye-off"} size={20} />
-          </Button>
+          </Button> */}
 
           <Button
             mode="contained"

@@ -28,7 +28,7 @@ export default function newDocumento() {
     mode: "onBlur",
     resolver: zodResolver(CreateDocumentoSchema),
   });
-  const { isSuccess, mutateAsync, isPending } = useCreateDocumento();
+  const { isSuccess, mutateAsync, isPending, error } = useCreateDocumento();
   const { data: users } = useAllScouts();
   const {
     documento: { documentosList },

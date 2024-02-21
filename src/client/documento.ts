@@ -6,10 +6,9 @@ import {
 } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
 const QUERY_LIMIT = 20;
-import { API_URL } from "@env";
-import axios from "axios";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import { Documento, DocumentoData } from "types/interfaces/documento";
+import api from "./api";
 
 interface QueryParams {
   searchQuery: string;
@@ -35,7 +34,7 @@ export const fetchDocumento = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(`${API_URL}/documento/${id}`, {
+    const { data, status } = await api.get(`/documento/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -56,8 +55,8 @@ export const editDocumento = async (
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.put(
-      `${API_URL}/documento/${documentoId}`,
+    const { data, status } = await api.put(
+      `/documento/${documentoId}`,
       documentoData,
       {
         headers: {
@@ -113,8 +112,8 @@ export const fetchDocuments = async (
 
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(
-      `${API_URL}/documento?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+    const { data, status } = await api.get(
+      `/documento?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -140,7 +139,7 @@ export const fetchDocumentsData = async () => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(`${API_URL}/documento/data`, {
+    const { data, status } = await api.get("/documento/data", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -191,7 +190,7 @@ export const useDocumento = (id: string) =>
 export const deleteDocumento = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-    const { data } = await axios.delete(`${API_URL}/documento/${id}`, {
+    const { data } = await api.delete(`/documento/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -220,7 +219,7 @@ export const createDocumento = async (documentoData: CreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data } = await axios.post(`${API_URL}/documento`, documentoData, {
+    const { data } = await api.post("/documento", documentoData, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

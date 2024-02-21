@@ -1,4 +1,4 @@
-import { Appbar, Avatar, Divider, useTheme } from "react-native-paper";
+import { Appbar, Avatar, Divider, Text, useTheme } from "react-native-paper";
 import { ScrollView, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRenewLogin } from "client/auth";
@@ -50,25 +50,40 @@ export default function user() {
             />
             <Divider style={{ marginBottom: 10 }} />
 
-            <DescriptiveText
-              title="Nombre"
-              description={`${data.scout.apellido} ${data.scout.nombre}`}
-            />
-            <DescriptiveText title="ROL" description={data.role} />
-            <DescriptiveText title="Funcion" description={data.scout.funcion} />
+            {data.scout ? (
+              <>
+                <DescriptiveText
+                  title="Nombre"
+                  description={`${data.scout.apellido} ${data.scout.nombre}`}
+                />
+                <DescriptiveText title="ROL" description={data.role} />
+                <DescriptiveText
+                  title="Funcion"
+                  description={data.scout.funcion}
+                />
 
-            <Divider style={{ marginVertical: 10 }} />
+                <Divider style={{ marginVertical: 10 }} />
 
-            <DescriptiveText title="DNI" description={data.scout.dni} />
-            <DescriptiveText
-              title="Edad"
-              description={`${data.scout.edad} Años`}
-            />
-            <DescriptiveText
-              title="Sexo"
-              description={data.scout.sexo === "M" ? "Masculino" : "Femenino"}
-            />
-            <DescriptiveText title="Mail" description={data.scout.mail} />
+                <DescriptiveText title="DNI" description={data.scout.dni} />
+                <DescriptiveText
+                  title="Edad"
+                  description={`${data.scout.edad} Años`}
+                />
+                <DescriptiveText
+                  title="Sexo"
+                  description={
+                    data.scout.sexo === "M" ? "Masculino" : "Femenino"
+                  }
+                />
+                <DescriptiveText title="Mail" description={data.scout.mail} />
+              </>
+            ) : (
+              <Text
+                style={{ textAlign: "center", fontSize: 20, marginTop: 10 }}
+              >
+                No hay data de scout para el usuario
+              </Text>
+            )}
           </ScrollView>
         )}
       </SafeAreaView>

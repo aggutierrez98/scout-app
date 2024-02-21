@@ -1,12 +1,10 @@
 import {
   ActivityIndicator,
-  Avatar,
   Button,
   Dialog,
   Divider,
   IconButton,
   List,
-  MD3Colors,
   Portal,
   Surface,
   Text,
@@ -14,12 +12,9 @@ import {
   useTheme,
 } from "react-native-paper";
 import { Fragment, useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
-import { useFamiliares } from "client/familiar";
-import { Familiar } from "types/interfaces/familiar";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import ListItem from "components/ListItem";
 import { useDeleteEntrega, useEntregas } from "client/entregas";
 import { useMenuContext } from "context/MenuContext";
 import { Entrega } from "types/interfaces/entrega";
@@ -48,7 +43,17 @@ export default function EntregasList({ searchQuery }: Props) {
     progresion: { progresionesSelected },
   } = useMenuContext();
 
-  const { data, isError, fetchNextPage, hasNextPage, isLoading } = useEntregas({
+  const theme = useTheme();
+
+  const {
+    data,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useEntregas({
     searchQuery,
     tipoEntregasSelected,
     tiempoDesde,
@@ -146,6 +151,15 @@ export default function EntregasList({ searchQuery }: Props) {
               <Text variant="titleMedium">No se encontraron resultados</Text>
             </Surface>
           }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              progressViewOffset={10}
+              progressBackgroundColor={theme.colors.secondaryContainer}
+              colors={[theme.colors.primary]}
+            />
+          }
         />
       </List.Section>
 
@@ -159,7 +173,7 @@ export default function EntregasList({ searchQuery }: Props) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              mode="contained"
+              mode="contained-tonal"
               textColor="red"
               onPress={async () => {
                 hideDialog();
@@ -171,7 +185,9 @@ export default function EntregasList({ searchQuery }: Props) {
             >
               Confirmar
             </Button>
-            <Button onPress={hideDialog}>Cancelar</Button>
+            <Button onPress={hideDialog} mode="contained-tonal">
+              Cancelar
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

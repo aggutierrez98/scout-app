@@ -53,7 +53,7 @@ export const CustomDatePicker = ({ name, label }: Props) => {
     <View style={{ marginVertical: 5 }}>
       <Text
         style={{
-          color: colors.primary,
+          color: colors.onPrimary,
           fontSize: 12,
           marginBottom: -5,
           marginLeft: 10,
@@ -72,13 +72,14 @@ export const CustomDatePicker = ({ name, label }: Props) => {
           alignItems: "center",
           borderWidth: 1,
           borderColor: colors.secondary,
+          // backgroundColor: colors.tertiary,
           borderRadius: 5,
           paddingLeft: 15,
         }}
       >
         <Text
           style={{
-            color: colors.primary,
+            color: colors.onPrimary,
             flex: 1,
             fontSize: 16,
           }}

@@ -63,7 +63,7 @@ export const CustomRangeDatePicker = ({
   return (
     <View style={{ marginTop: -10, paddingLeft: 15 }}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={{ color: colors.primary, flex: 1, fontSize: 16 }}>
+        <Text style={{ color: colors.onPrimary, flex: 1, fontSize: 16 }}>
           {startValue?.toLocaleDateString("es")} -{" "}
           {endValue?.toLocaleDateString("es")}
         </Text>

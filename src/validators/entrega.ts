@@ -5,7 +5,18 @@ import { VALID_ENTREGAS_TYPE } from "utils/constants";
 export const EditEntregaSchema = z.object({
   scoutId: IdSchema.max(10),
   tipoEntrega: z.enum(VALID_ENTREGAS_TYPE),
-  fechaEntrega: z.date({ required_error: "La fecha es requerida" }),
+  fechaEntrega: z.coerce
+    .date({
+      errorMap: (issue, { defaultError }) => ({
+        message:
+          issue.code === "invalid_date"
+            ? "Debe ser una fecha valida"
+            : defaultError,
+      }),
+    })
+    .refine((date) => date < new Date(), {
+      message: "La fecha debe ser pasada",
+    }),
 });
 
 export const CreateEntregaSchema = z.object({
@@ -26,5 +37,16 @@ export const CreateEntregaSchema = z.object({
       }
     },
   }),
-  fechaEntrega: z.date({ required_error: "La fecha es requerida" }),
+  fechaEntrega: z.coerce
+    .date({
+      errorMap: (issue, { defaultError }) => ({
+        message:
+          issue.code === "invalid_date"
+            ? "Debe ser una fecha valida"
+            : defaultError,
+      }),
+    })
+    .refine((date) => date < new Date(), {
+      message: "La fecha debe ser pasada",
+    }),
 });

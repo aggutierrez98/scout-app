@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { Fragment, useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -44,18 +44,20 @@ export default function DocumentsList({ searchQuery }: Props) {
     tiempo: { tiempoDesde, tiempoHasta },
   } = useMenuContext();
 
-  const { data, fetchNextPage, hasNextPage, isLoading } = useDocuments({
-    patrullas: patrullasSelected,
-    vence,
-    progresiones: progresionesSelected,
-    funciones: funcionesSelected,
-    searchQuery,
-    tiempoDesde,
-    tiempoHasta,
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
+    useDocuments({
+      patrullas: patrullasSelected,
+      vence,
+      progresiones: progresionesSelected,
+      funciones: funcionesSelected,
+      searchQuery,
+      tiempoDesde,
+      tiempoHasta,
+    });
 
   const flattenData: Documento[] =
     data?.pages.flatMap((page) => page || []) || [];
+  const theme = useTheme();
 
   const loadNextPageData = () => {
     if (hasNextPage) {
@@ -138,6 +140,15 @@ export default function DocumentsList({ searchQuery }: Props) {
               <Text variant="titleMedium">No se encontraron resultados</Text>
             </Surface>
           }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              progressViewOffset={10}
+              progressBackgroundColor={theme.colors.secondaryContainer}
+              colors={[theme.colors.primary]}
+            />
+          }
         />
       </List.Section>
 
@@ -151,7 +162,7 @@ export default function DocumentsList({ searchQuery }: Props) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              mode="contained"
+              mode="contained-tonal"
               textColor="red"
               onPress={async () => {
                 hideDialog();
@@ -163,7 +174,9 @@ export default function DocumentsList({ searchQuery }: Props) {
             >
               Confirmar
             </Button>
-            <Button onPress={hideDialog}>Cancelar</Button>
+            <Button onPress={hideDialog} mode="contained-tonal">
+              Cancelar
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -67,6 +67,12 @@ export interface MenuContextProps {
       label: string;
     }[];
   };
+  documento: {
+    documentosList: {
+      value: string;
+      label: string;
+    }[];
+  };
   funcion: {
     funcionesSelected: string[];
     handleFuncionChange: (arg: string) => void;
@@ -170,6 +176,12 @@ export const MenuProvider = ({
     patrullasData?.map((patrulla) => ({
       label: patrulla.nombre,
       value: patrulla.id,
+    })) || [];
+
+  const documentosList =
+    documentosData?.map((documento) => ({
+      label: documento.nombre,
+      value: documento.id,
     })) || [];
 
   const [progresionesSelected, setProgresionesSelected] = useState<string[]>(
@@ -298,6 +310,9 @@ export const MenuProvider = ({
           patrullasSelected,
           patrullaList,
           handlePatrullaChange,
+        },
+        documento: {
+          documentosList,
         },
         funcion: {
           funcionesSelected,

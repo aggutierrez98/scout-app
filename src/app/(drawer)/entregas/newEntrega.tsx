@@ -1,12 +1,10 @@
 import { Appbar, Button, useTheme } from "react-native-paper";
 import { SafeAreaView, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
 import { Redirect, useNavigation } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { VALID_ENTREGAS_TYPE } from "utils/constants";
 import { useAllScouts } from "client/scouts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateEntregaSchema } from "validators/entrega";

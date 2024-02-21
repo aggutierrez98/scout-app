@@ -7,9 +7,10 @@ import {
   Surface,
   Text,
   TouchableRipple,
+  useTheme,
 } from "react-native-paper";
 import { Fragment } from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { User } from "types/interfaces/auth";
 import { useFamiliares } from "client/familiar";
@@ -23,10 +24,12 @@ interface Props {
 
 export default function FamiliaresList({ searchQuery }: Props) {
   const router = useRouter();
-  const { data, fetchNextPage, hasNextPage, isLoading } = useFamiliares({
-    searchQuery,
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
+    useFamiliares({
+      searchQuery,
+    });
 
+  const theme = useTheme();
   const flattenData: Familiar[] =
     data?.pages.flatMap((page) => page || []) || [];
 
@@ -89,6 +92,15 @@ export default function FamiliaresList({ searchQuery }: Props) {
             >
               <Text variant="titleMedium">No se encontraron resultados</Text>
             </Surface>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              progressViewOffset={10}
+              progressBackgroundColor={theme.colors.secondaryContainer}
+              colors={[theme.colors.primary]}
+            />
           }
         />
       </List.Section>

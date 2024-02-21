@@ -89,17 +89,25 @@ export default function UserPage() {
       />
       <Divider style={{ marginBottom: 10 }} />
 
-      <Text style={{ fontSize: 25 }}>
-        {data?.scout.apellido ?? ""} {data?.scout.nombre ?? ""}
-      </Text>
+      {data?.scout ? (
+        <>
+          <Text style={{ fontSize: 25 }}>
+            {data?.scout.apellido ?? ""} {data?.scout.nombre ?? ""}
+          </Text>
 
-      <Divider style={{ marginBottom: 10 }} />
+          <Divider style={{ marginBottom: 10 }} />
 
-      <DescriptiveText title="DNI" description={data?.scout.dni ?? ""} />
-      <DescriptiveText
-        title="Funcion"
-        description={data?.scout.funcion ?? ""}
-      />
+          <DescriptiveText title="DNI" description={data?.scout.dni ?? ""} />
+          <DescriptiveText
+            title="Funcion"
+            description={data?.scout.funcion ?? ""}
+          />
+        </>
+      ) : (
+        <Text style={{ fontSize: 20, textAlign: "center" }}>
+          El usuario no tiene asociado un scout
+        </Text>
+      )}
 
       <Divider style={{ marginVertical: 10 }} />
 

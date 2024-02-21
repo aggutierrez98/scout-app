@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { Fragment, useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { useDeletePago, usePagos } from "client/pago";
@@ -44,18 +44,20 @@ export default function PagosList({ searchQuery }: Props) {
     rendido: { rendido },
   } = useMenuContext();
 
-  const { data, fetchNextPage, hasNextPage, isLoading } = usePagos({
-    metodoPago,
-    patrullas: patrullasSelected,
-    progresiones: progresionesSelected,
-    funciones: funcionesSelected,
-    tiempoDesde,
-    tiempoHasta,
-    rendido: rendido as "si" | "no" | "",
-    searchQuery,
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
+    usePagos({
+      metodoPago,
+      patrullas: patrullasSelected,
+      progresiones: progresionesSelected,
+      funciones: funcionesSelected,
+      tiempoDesde,
+      tiempoHasta,
+      rendido: rendido as "si" | "no" | "",
+      searchQuery,
+    });
 
   const flattenData: Pago[] = data?.pages.flatMap((page) => page || []) || [];
+  const theme = useTheme();
 
   const loadNextPageData = () => {
     if (hasNextPage) {
@@ -135,6 +137,15 @@ export default function PagosList({ searchQuery }: Props) {
               <Text variant="titleMedium">No se encontraron resultados</Text>
             </Surface>
           }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              progressViewOffset={10}
+              progressBackgroundColor={theme.colors.secondaryContainer}
+              colors={[theme.colors.primary]}
+            />
+          }
         />
       </List.Section>
 
@@ -148,7 +159,7 @@ export default function PagosList({ searchQuery }: Props) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              mode="contained"
+              mode="contained-tonal"
               textColor="red"
               onPress={async () => {
                 hideDialog();
@@ -160,7 +171,9 @@ export default function PagosList({ searchQuery }: Props) {
             >
               Confirmar
             </Button>
-            <Button onPress={hideDialog}>Cancelar</Button>
+            <Button onPress={hideDialog} mode="contained-tonal">
+              Cancelar
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

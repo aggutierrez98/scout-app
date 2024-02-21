@@ -1,17 +1,17 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import {
-  QueryCache,
+  // QueryCache,
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { API_URL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import { LoginResponse } from "types/interfaces/scout";
 import { UseFormSetError } from "react-hook-form";
 import { User } from "types/interfaces/auth";
 import { VALID_ROLES } from "utils/constants";
+import api from "./api";
 const QUERY_LIMIT = 15;
 
 interface ApiError {
@@ -44,8 +44,8 @@ export const fetchUsers = async (
 
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(
-      `${API_URL}/auth/users?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}`,
+    const { data, status } = await api.get(
+      `/auth/users?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export const fetchUser = async (id: string) => {
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();
-    const { data, status } = await axios.get(`${API_URL}/auth/users/${id}`, {
+    const { data, status } = await api.get(`/auth/users/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -84,7 +84,7 @@ export const createUser = async (userData: CreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data } = await axios.put(`${API_URL}/auth/create`, userData, {
+    const { data } = await api.put("/auth/create", userData, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -101,7 +101,7 @@ export const modifyUser = async (id: string, userData: ModifyParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data } = await axios.put(`${API_URL}/auth/${id}`, userData, {
+    const { data } = await api.put(`/auth/${id}`, userData, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -119,7 +119,7 @@ export const loginUser = async (userData: {
   username: string;
   password: string;
 }) => {
-  const { data } = await axios.post(`${API_URL}/auth`, userData, {
+  const { data } = await api.post("/auth", userData, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -134,7 +134,7 @@ export const renewLogin = async () => {
     const token = await SecureStore.getItemAsync("secure_token");
 
     if (token) {
-      const data = await axios.get(`${API_URL}/auth/renew`, {
+      const data = await api.get("/auth/renew", {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data.data as LoginResponse;

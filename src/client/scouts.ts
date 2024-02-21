@@ -1,9 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { API_URL } from "@env";
 import { Scout } from "types/interfaces/scout";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import * as SecureStore from "expo-secure-store";
+import api from "./api";
 const QUERY_LIMIT = 15;
 
 interface QueryParams {
@@ -48,8 +47,8 @@ export const fetchScouts = async (
 
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(
-      `${API_URL}/scout?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}`,
+    const { data, status } = await api.get(
+      `/scout?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +69,7 @@ export const fetchScout = async (id: string) => {
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();
-    const { data, status } = await axios.get(`${API_URL}/scout/${id}`, {
+    const { data, status } = await api.get(`/scout/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -111,8 +110,8 @@ export const fetchAllScouts = async (onlyEducadores?: boolean) => {
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();
-    const { data } = await axios.get(
-      `${API_URL}/scout/all${onlyEducadores ? "Educadores" : "Scouts"}`,
+    const { data } = await api.get(
+      `/scout/all${onlyEducadores ? "Educadores" : "Scouts"}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -139,17 +138,13 @@ export const editScout = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();
-    const { data, status } = await axios.put(
-      `${API_URL}/scout/${scoutId}`,
-      scoutData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data, status } = await api.put(`/scout/${scoutId}`, scoutData, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data as Scout;
   } catch (error) {
     console.log(error);

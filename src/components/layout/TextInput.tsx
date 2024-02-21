@@ -1,17 +1,21 @@
 import { View, StyleSheet } from "react-native";
 import { useController, UseControllerProps } from "react-hook-form";
 import {
+  Button,
   HelperText,
   TextInput,
   TextInputProps,
   useTheme,
 } from "react-native-paper";
+import { useState } from "react";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 interface Props extends TextInputProps, UseControllerProps {
   label: string;
   name: string;
   placeholder: string;
   defaultValue?: undefined;
+  hidden?: boolean;
 }
 
 export const CustomTextInput = ({
@@ -19,6 +23,7 @@ export const CustomTextInput = ({
   label,
   rules,
   placeholder,
+  hidden,
   ...inputProps
 }: Props) => {
   const {
@@ -28,6 +33,7 @@ export const CustomTextInput = ({
 
   const { colors } = useTheme();
   const hasError = Boolean(!!error);
+  const [hidePass, setHidePass] = useState(true);
 
   return (
     <View style={styles.container}>
@@ -41,12 +47,22 @@ export const CustomTextInput = ({
         error={hasError}
         style={{ backgroundColor: colors.background, ...styles.input }}
         outlineStyle={{}}
+        secureTextEntry={hidden && hidePass}
         {...inputProps}
       />
       <HelperText style={styles.errorText} type="error" visible={hasError}>
         {error?.message?.toString()}
         {/* {name} ingresado es invalido */}
       </HelperText>
+
+      {hidden && (
+        <Button
+          style={{ position: "absolute", right: 0, top: 20 }}
+          onPress={() => setHidePass(!hidePass)}
+        >
+          <Icon name={hidePass ? "eye" : "eye-off"} size={20} />
+        </Button>
+      )}
     </View>
   );
 };

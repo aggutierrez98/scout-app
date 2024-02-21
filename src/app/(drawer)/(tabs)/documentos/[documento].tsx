@@ -22,7 +22,7 @@ type FormValues = {
 export default function DocumentoPage() {
   const { toogleSnackBar } = useSnackBarContext();
   const theme = useTheme();
-  const { documento: documento } = useLocalSearchParams<DocumentoParams>();
+  const { documento } = useLocalSearchParams<DocumentoParams>();
   if (!documento) return null;
 
   const { data, isLoading } = useDocumento(documento);

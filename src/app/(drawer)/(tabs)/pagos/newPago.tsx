@@ -26,7 +26,6 @@ type FormValues = {
 
 export default function newPago() {
   const theme = useTheme();
-  const { data } = useRenewLogin();
   const { toogleSnackBar } = useSnackBarContext();
   const formMethods = useForm<FormValues>({
     mode: "onBlur",

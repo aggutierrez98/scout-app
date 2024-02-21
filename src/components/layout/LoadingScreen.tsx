@@ -12,14 +12,16 @@ export const LoadingScreen = () => {
           justifyContent: "center",
           alignItems: "center",
           position: "absolute",
-          backgroundColor: "rgba(0, 0, 0, 0.397)",
+          backgroundColor: "#0F0F0F80",
           flex: 1,
           zIndex: 999,
           width: Dimensions.get("screen").width,
           height: Dimensions.get("screen").height,
         }}
       >
-        <Text style={{ fontSize: 25, color: colors.primary, marginBottom: 20 }}>
+        <Text
+          style={{ fontSize: 25, color: colors.onPrimary, marginBottom: 20 }}
+        >
           Cargando...
         </Text>
         <ActivityIndicator size={50} />

@@ -13,7 +13,14 @@ export const EditDocumentoSchema = z.object({
 
 export const CreateDocumentoSchema = z.object({
   fechaPresentacion: z.coerce
-    .date({ required_error: "La fecha es requerida" })
+    .date({
+      errorMap: (issue, { defaultError }) => ({
+        message:
+          issue.code === "invalid_date"
+            ? "Debe ser una fecha valida"
+            : defaultError,
+      }),
+    })
     .refine((date) => date < new Date(), {
       message: "La fecha debe ser pasada",
     }),

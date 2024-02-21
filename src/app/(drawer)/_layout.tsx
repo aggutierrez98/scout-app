@@ -35,6 +35,7 @@ function AppLayout() {
           <SafeAreaView
             style={{
               flex: 1,
+              paddingTop: 60,
               backgroundColor: colors.background,
               justifyContent: "space-between",
             }}
@@ -167,20 +168,20 @@ function AppLayout() {
 
       <Snackbar
         visible={visibleSnack}
-        rippleColor={colors.primary}
+        rippleColor={colors.onPrimary}
         onDismiss={onDismissSnackBar}
         duration={2000}
         elevation={1}
         style={{
           borderColor:
-            snackBarMode === "error" ? colors.error : colors.onTertiary,
+            snackBarMode === "error" ? colors.onError : colors.onTertiary,
           borderWidth: 1,
           marginBottom: 15,
         }}
         action={{
           label: "Cerrar",
           textColor:
-            snackBarMode === "error" ? colors.error : colors.onTertiary,
+            snackBarMode === "error" ? colors.onError : colors.onTertiary,
           onPress: () => {
             onDismissSnackBar();
           },

@@ -6,9 +6,10 @@ import {
   Surface,
   Text,
   TouchableRipple,
+  useTheme,
 } from "react-native-paper";
 import { Fragment } from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useUsers } from "client/auth";
 import { User } from "types/interfaces/auth";
@@ -20,9 +21,11 @@ interface Props {
 
 export default function UsersList({ searchQuery }: Props) {
   const router = useRouter();
-  const { data, fetchNextPage, hasNextPage, isLoading } = useUsers({
-    searchQuery,
-  });
+  const theme = useTheme();
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
+    useUsers({
+      searchQuery,
+    });
   const flattenData: User[] = data?.pages.flatMap((page) => page || []) || [];
 
   const loadNextPageData = () => {
@@ -91,6 +94,15 @@ export default function UsersList({ searchQuery }: Props) {
           >
             <Text variant="titleMedium">No se encontraron resultados</Text>
           </Surface>
+        }
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={refetch}
+            progressViewOffset={10}
+            progressBackgroundColor={theme.colors.secondaryContainer}
+            colors={[theme.colors.primary]}
+          />
         }
       />
     </List.Section>

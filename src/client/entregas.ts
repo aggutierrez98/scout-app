@@ -6,10 +6,9 @@ import {
 } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
 const QUERY_LIMIT = 20;
-import { API_URL } from "@env";
-import axios from "axios";
 import { Entrega } from "types/interfaces/entrega";
 import { getArrSearchParam } from "utils/getArraySearchParam";
+import api from "./api";
 
 interface QueryParams {
   searchQuery: string;
@@ -45,7 +44,7 @@ export const fetchEntrega = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(`${API_URL}/entrega/${id}`, {
+    const { data, status } = await api.get(`/entrega/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -63,7 +62,7 @@ export const createEntrega = async (entregaData: CreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data } = await axios.post(`${API_URL}/entrega`, entregaData, {
+    const { data } = await api.post("/entrega", entregaData, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -95,8 +94,8 @@ export const editEntrega = async (
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.put(
-      `${API_URL}/entrega/${entregaId}`,
+    const { data, status } = await api.put(
+      `/entrega/${entregaId}`,
       entregaData,
       {
         headers: {
@@ -155,8 +154,8 @@ export const fetchEntregas = async (
 
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await axios.get(
-      `${API_URL}/entrega?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${patrullasStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+    const { data, status } = await api.get(
+      `/entrega?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${patrullasStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -206,7 +205,7 @@ export const useEntrega = (id: string) =>
 export const deleteEntrega = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-    const { data } = await axios.delete(`${API_URL}/entrega/${id}`, {
+    const { data } = await api.delete(`/entrega/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
