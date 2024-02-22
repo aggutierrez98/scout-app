@@ -1,39 +1,24 @@
 import {
   ActivityIndicator,
-  Button,
-  Dialog,
-  Divider,
-  IconButton,
   List,
-  Portal,
   Surface,
   Text,
-  TouchableRipple,
   useTheme,
 } from "react-native-paper";
-import { Fragment, useState } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { useDeletePago, usePagos } from "client/pago";
 import { Pago } from "interfaces/pago";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useSnackBarContext } from "context/SnackBarContext";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import PagoItem from "./PagoItem";
+import { ModalDeletePago } from "./ModalDeletePago";
 
 interface Props {
   searchQuery: string;
 }
 
 export default function PagosList({ searchQuery }: Props) {
-  const { toogleSnackBar } = useSnackBarContext();
-  const [visible, setVisible] = useState(false);
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
-  const [idToDelete, setIdToDelete] = useState("");
-  const { mutateAsync, isPending } = useDeletePago();
-  const { colors } = useTheme();
-  const router = useRouter();
+  const { isPending } = useDeletePago();
 
   const {
     tiempo: { tiempoDesde, tiempoHasta },
@@ -76,41 +61,7 @@ export default function PagosList({ searchQuery }: Props) {
         <FlatList
           data={flattenData}
           keyExtractor={(scout) => scout.id}
-          renderItem={({ item }: { item: Pago }) => (
-            <Fragment key={item.id}>
-              <TouchableRipple
-                onPress={() => {
-                  router.push(`/(drawer)/(tabs)/pagos/${item.id}`);
-                }}
-                style={{
-                  paddingHorizontal: 5,
-                }}
-              >
-                <List.Item
-                  title={`${item.fechaPago} - ${item.concepto}`}
-                  left={() => (
-                    <Icon
-                      name={item.rendido ? "beaker-check" : "beaker"}
-                      color={item.rendido ? colors.primary : colors.tertiary}
-                      size={35}
-                    />
-                  )}
-                  right={(props) => (
-                    <IconButton
-                      style={{ margin: 0, marginRight: -20 }}
-                      icon="delete"
-                      size={20}
-                      onPress={() => {
-                        setIdToDelete(item.id);
-                        showDialog();
-                      }}
-                    />
-                  )}
-                />
-              </TouchableRipple>
-              <Divider style={{ marginVertical: -5 }} />
-            </Fragment>
-          )}
+          renderItem={({ item }: { item: Pago }) => <PagoItem item={item} />}
           onEndReached={loadNextPageData}
           onEndReachedThreshold={0.2}
           ListFooterComponent={
@@ -149,34 +100,7 @@ export default function PagosList({ searchQuery }: Props) {
         />
       </List.Section>
 
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Eliminar pago</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">
-              ¿Esta seguro de eliminar el pago seleccionado?
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              mode="contained-tonal"
-              textColor="red"
-              onPress={async () => {
-                hideDialog();
-                const resp = await mutateAsync({ id: idToDelete });
-                if (resp)
-                  toogleSnackBar("Exito al eliminar el pago", "success");
-                else toogleSnackBar("Error al eliminar el pago", "error");
-              }}
-            >
-              Confirmar
-            </Button>
-            <Button onPress={hideDialog} mode="contained-tonal">
-              Cancelar
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <ModalDeletePago />
     </>
   );
 }

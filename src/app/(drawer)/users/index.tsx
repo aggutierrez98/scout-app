@@ -1,11 +1,9 @@
 import { Appbar, Searchbar, useTheme } from "react-native-paper";
 import { View, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useRenewLogin } from "client/auth";
-import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useState } from "react";
 import { useDebouncedValue } from "hooks/useDebounceValue";
-import UsersList from "components/auth/UsersList";
+import UsersList from "components/users/UsersList";
 import { useNavigation } from "expo-router";
 import { CommonActions } from "@react-navigation/native";
 

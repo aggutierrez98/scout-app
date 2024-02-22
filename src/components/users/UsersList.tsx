@@ -1,26 +1,21 @@
 import {
   ActivityIndicator,
-  Avatar,
-  Divider,
   List,
   Surface,
   Text,
-  TouchableRipple,
   useTheme,
 } from "react-native-paper";
-import { Fragment } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
 import { useUsers } from "client/auth";
 import { User } from "interfaces/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
+import UserItem from "./UserItem";
 
 interface Props {
   searchQuery: string;
 }
 
 export default function UsersList({ searchQuery }: Props) {
-  const router = useRouter();
   const theme = useTheme();
   const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
     useUsers({
@@ -46,29 +41,7 @@ export default function UsersList({ searchQuery }: Props) {
       <FlatList
         data={flattenData}
         keyExtractor={(user) => user.id}
-        renderItem={({ item }: { item: User }) => (
-          <Fragment key={item.id}>
-            <TouchableRipple
-              onPress={() => {
-                router.push(`/(drawer)/users/${item.id}`);
-              }}
-              rippleColor="rgba(0, 0, 0, .12)"
-            >
-              <List.Item
-                title={`${item.username}`}
-                style={{ alignItems: "center" }}
-                titleStyle={{ fontSize: 20 }}
-                left={() => (
-                  <Avatar.Text
-                    size={30}
-                    label={item.username.slice(0, 2).toLocaleUpperCase()}
-                  />
-                )}
-              />
-            </TouchableRipple>
-            <Divider />
-          </Fragment>
-        )}
+        renderItem={({ item }: { item: User }) => <UserItem item={item} />}
         onEndReached={loadNextPageData}
         onEndReachedThreshold={0.2}
         ListFooterComponent={

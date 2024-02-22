@@ -7,6 +7,9 @@ import { EditProvider } from "../context/EditContext";
 import { Slot } from "expo-router";
 import { SnackBarProvider } from "context/SnackBarContext";
 import "react-native-gesture-handler";
+import { PagoProvider } from "context/PagosContext";
+import { DocumentoProvider } from "context/DocumentoContext";
+import { EntregaProvider } from "context/EntregaContext";
 
 const queryClient = new QueryClient({
   // queryCache: {}
@@ -32,7 +35,13 @@ export default function Layout() {
         <SnackBarProvider>
           <MenuProvider>
             <EditProvider>
-              <Slot />
+              <PagoProvider>
+                <DocumentoProvider>
+                  <EntregaProvider>
+                    <Slot />
+                  </EntregaProvider>
+                </DocumentoProvider>
+              </PagoProvider>
             </EditProvider>
           </MenuProvider>
         </SnackBarProvider>

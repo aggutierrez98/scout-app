@@ -1,14 +1,14 @@
 import ListItem from "components/ListItem";
 import { useRouter } from "expo-router/src/hooks";
-import { Scout } from "interfaces/scout";
+import { Familiar } from "interfaces/familiar";
 import React, { Fragment, memo } from "react";
 import { Divider, MD3Colors } from "react-native-paper";
 
 interface Props {
-  item: Scout;
+  item: Familiar;
 }
 
-export default memo(function ScoutItem({ item }: Props) {
+export default memo(function FamiliarItem({ item }: Props) {
   const router = useRouter();
 
   return (
@@ -20,7 +20,7 @@ export default memo(function ScoutItem({ item }: Props) {
           item.sexo === "F" ? MD3Colors.tertiary70 : MD3Colors.primary70
         }
         action={() => {
-          router.push(`/(drawer)/(tabs)/scouts/${item.id}`);
+          router.push(`/(drawer)/familiares/${item.id}`);
         }}
       />
       <Divider />

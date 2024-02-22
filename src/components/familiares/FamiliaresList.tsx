@@ -1,26 +1,21 @@
 import {
   ActivityIndicator,
-  Divider,
   List,
-  MD3Colors,
   Surface,
   Text,
   useTheme,
 } from "react-native-paper";
-import { Fragment } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
 import { useFamiliares } from "client/familiar";
 import { Familiar } from "interfaces/familiar";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import ListItem from "components/ListItem";
+import FamiliarItem from "./FamiliarItem";
 
 interface Props {
   searchQuery: string;
 }
 
 export default function FamiliaresList({ searchQuery }: Props) {
-  const router = useRouter();
   const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
     useFamiliares({
       searchQuery,
@@ -50,19 +45,7 @@ export default function FamiliaresList({ searchQuery }: Props) {
           data={flattenData}
           keyExtractor={(familiar) => familiar.id}
           renderItem={({ item }: { item: Familiar }) => (
-            <Fragment key={item.id}>
-              <ListItem
-                title={`${item.apellido} ${item.nombre}`}
-                icon={item.sexo === "M" ? "human-male" : "human-female"}
-                iconColor={
-                  item.sexo === "F" ? MD3Colors.tertiary70 : MD3Colors.primary70
-                }
-                action={() => {
-                  router.push(`/(drawer)/familiares/${item.id}`);
-                }}
-              />
-              <Divider />
-            </Fragment>
+            <FamiliarItem item={item} />
           )}
           onEndReached={loadNextPageData}
           onEndReachedThreshold={0.2}

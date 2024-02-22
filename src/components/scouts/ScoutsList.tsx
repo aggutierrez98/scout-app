@@ -1,20 +1,17 @@
 import {
   ActivityIndicator,
-  Divider,
   List,
-  MD3Colors,
   Surface,
   Text,
   useTheme,
 } from "react-native-paper";
-import ListItem from "../ListItem";
 import { useScouts } from "../../client/scouts";
-import { Fragment } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import { Scout } from "interfaces/scout";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
+import ScoutItem from "./ScoutItem";
 
 interface Props {
   searchQuery: string;
@@ -61,23 +58,9 @@ export default function ScoutsList({ searchQuery }: Props) {
         <FlatList
           data={flattenData}
           keyExtractor={(scout) => scout.id}
-          renderItem={({ item }: { item: Scout }) => (
-            <Fragment key={item.id}>
-              <ListItem
-                title={`${item.apellido} ${item.nombre}`}
-                icon={item.sexo === "M" ? "human-male" : "human-female"}
-                iconColor={
-                  item.sexo === "F" ? MD3Colors.tertiary70 : MD3Colors.primary70
-                }
-                action={() => {
-                  router.push(`/(drawer)/(tabs)/scouts/${item.id}`);
-                }}
-              />
-              <Divider />
-            </Fragment>
-          )}
+          renderItem={({ item }: { item: Scout }) => <ScoutItem item={item} />}
           onEndReached={loadNextPageData}
-          onEndReachedThreshold={0.2}
+          onEndReachedThreshold={0.1}
           ListFooterComponent={
             hasNextPage ? (
               <ActivityIndicator

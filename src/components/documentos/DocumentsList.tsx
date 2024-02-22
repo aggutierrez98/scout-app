@@ -1,40 +1,24 @@
 import {
   ActivityIndicator,
-  Button,
-  Dialog,
-  Divider,
-  IconButton,
   List,
-  Portal,
   Surface,
   Text,
-  TouchableRipple,
   useTheme,
 } from "react-native-paper";
-import { Fragment, useState } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useDeleteDocumento, useDocuments } from "client/documento";
 import { Documento } from "interfaces/documento";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useSnackBarContext } from "context/SnackBarContext";
+import { ModalDeleteDocumento } from "./ModalDeleteDocumento";
+import DocumentoItem from "./DocumentoItem";
 
 interface Props {
   searchQuery: string;
 }
 
 export default function DocumentsList({ searchQuery }: Props) {
-  const { toogleSnackBar } = useSnackBarContext();
-  const [visible, setVisible] = useState(false);
-  const [idToDelete, setIdToDelete] = useState("");
-  const { mutateAsync, isPending } = useDeleteDocumento();
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
-
-  const router = useRouter();
-  const { colors } = useTheme();
+  const { isPending } = useDeleteDocumento();
 
   const {
     progresion: { progresionesSelected },
@@ -78,41 +62,7 @@ export default function DocumentsList({ searchQuery }: Props) {
           data={flattenData}
           keyExtractor={(scout) => scout.id}
           renderItem={({ item }: { item: Documento }) => (
-            <Fragment key={item.id}>
-              <TouchableRipple
-                style={{
-                  paddingHorizontal: 5,
-                }}
-                onPress={() => {
-                  router.push(`/(drawer)/(tabs)/documentos/${item.id}`);
-                }}
-              >
-                <List.Item
-                  title={`${item.fechaPresentacion} - ${item.documento.nombre}`}
-                  left={() => (
-                    <Icon
-                      name={item.documento.vence ? "file-clock" : "file-check"}
-                      color={
-                        item.documento.vence ? colors.tertiary : colors.primary
-                      }
-                      size={35}
-                    />
-                  )}
-                  right={(props) => (
-                    <IconButton
-                      style={{ margin: 0, marginRight: -20 }}
-                      icon="delete"
-                      size={20}
-                      onPress={() => {
-                        setIdToDelete(item.id);
-                        showDialog();
-                      }}
-                    />
-                  )}
-                />
-              </TouchableRipple>
-              <Divider style={{ marginVertical: -5 }} />
-            </Fragment>
+            <DocumentoItem item={item} />
           )}
           onEndReached={loadNextPageData}
           onEndReachedThreshold={0.2}
@@ -152,34 +102,7 @@ export default function DocumentsList({ searchQuery }: Props) {
         />
       </List.Section>
 
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Eliminar documento</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">
-              ¿Esta seguro de eliminar el documento seleccionado?
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              mode="contained-tonal"
-              textColor="red"
-              onPress={async () => {
-                hideDialog();
-                const resp = await mutateAsync({ id: idToDelete });
-                if (resp)
-                  toogleSnackBar("Exito al eliminar el pago", "success");
-                else toogleSnackBar("Error al eliminar el pago", "error");
-              }}
-            >
-              Confirmar
-            </Button>
-            <Button onPress={hideDialog} mode="contained-tonal">
-              Cancelar
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <ModalDeleteDocumento />
     </>
   );
 }
