@@ -30,7 +30,6 @@ export const fetchScouts = async (
 ) => {
   try {
     const offset = (pageParam - 1) * QUERY_LIMIT;
-    console.log({ pageParam, offset });
 
     let funcionesToSend: string[] = funciones;
     if (funcionesToSend.includes("EDUCADOR")) {

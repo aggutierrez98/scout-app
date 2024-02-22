@@ -37,6 +37,7 @@ export default function Index() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: theme.colors.background,
         }}
       >
         <View style={{ alignItems: "center", marginBottom: 20 }}>

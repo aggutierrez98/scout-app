@@ -77,7 +77,7 @@ export default function FamiliarPage() {
         style={{
           backgroundColor: theme.colors.background,
           height: 40,
-          marginBottom: 10,
+          marginVertical: 10,
           alignItems: "center",
           justifyContent: "center",
           marginLeft: -10,

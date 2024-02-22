@@ -60,7 +60,7 @@ export default function EntregaPage() {
         style={{
           backgroundColor: theme.colors.background,
           height: 40,
-          marginBottom: 10,
+          marginVertical: 10,
           marginLeft: -10,
         }}
       >

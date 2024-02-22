@@ -41,6 +41,7 @@ export default function entregas() {
             backgroundColor: theme.colors.background,
             height: 40,
             marginLeft: 10,
+            marginTop: 10,
           }}
         >
           <Appbar.Content title="Entregas" />

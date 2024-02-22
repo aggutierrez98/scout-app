@@ -10,7 +10,9 @@ export default function Layout() {
     <Stack
       screenOptions={{
         headerShown: false,
+        animation: "fade_from_bottom",
+        animationDuration: 50,
       }}
-    ></Stack>
+    />
   );
 }

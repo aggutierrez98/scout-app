@@ -61,6 +61,7 @@ export default function newEntrega() {
             backgroundColor: theme.colors.background,
             height: 40,
             marginLeft: 10,
+            marginTop: 10,
           }}
         >
           <Appbar.BackAction

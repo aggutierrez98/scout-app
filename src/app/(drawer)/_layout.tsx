@@ -11,7 +11,7 @@ import {
 import { useLogout, useRenewLogin } from "client/auth";
 import Drawer from "expo-router/drawer";
 import LogoIcon from "components/layout/AppLogoIcon";
-import { View, SafeAreaView } from "react-native";
+import { View, SafeAreaView, Platform } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import { useSnackBarContext } from "context/SnackBarContext";
 

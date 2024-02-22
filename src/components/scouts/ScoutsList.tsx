@@ -18,8 +18,6 @@ interface Props {
 }
 
 export default function ScoutsList({ searchQuery }: Props) {
-  const router = useRouter();
-
   const {
     sexo: { sexo },
     progresion: { progresionesSelected },

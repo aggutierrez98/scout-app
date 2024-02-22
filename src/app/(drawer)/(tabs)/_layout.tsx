@@ -1,11 +1,9 @@
 import {
-  Redirect,
   Tabs,
   useNavigation,
   usePathname,
   useRouter,
   useSegments,
-  router,
 } from "expo-router";
 
 import { Appbar, BottomNavigation, useTheme } from "react-native-paper";
@@ -40,7 +38,7 @@ export default function AppLayout() {
           backgroundColor: theme.colors.background,
           height: 40,
           marginBottom: 10,
-          marginLeft: 10,
+          marginVertical: 10,
         }}
       >
         {segments.length > 3 && (
