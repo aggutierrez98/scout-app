@@ -1,10 +1,6 @@
-// import DateTimePicker, {
-//   DateTimePickerEvent,
-// } from "@react-native-community/datetimepicker";
 import { useCallback, useState } from "react";
-import { Text, View, useColorScheme } from "react-native";
-import { Button, IconButton, useTheme } from "react-native-paper";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Text, View } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
 import { CalendarDate } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 

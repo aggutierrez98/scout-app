@@ -7,7 +7,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 const QUERY_LIMIT = 20;
 import { getArrSearchParam } from "utils/getArraySearchParam";
-import { Documento, DocumentoData } from "types/interfaces/documento";
+import { Documento, DocumentoData } from "interfaces/documento";
 import api from "./api";
 
 interface QueryParams {

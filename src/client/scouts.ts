@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
-import { Scout } from "types/interfaces/scout";
+import { Scout } from "interfaces/scout";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import * as SecureStore from "expo-secure-store";
 import api from "./api";

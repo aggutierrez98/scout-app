@@ -1,31 +1,50 @@
 {
-	"expo": {
-		"android": {
-			"adaptiveIcon": {
-				"backgroundColor": "#ffffff",
-				"foregroundImage": "./assets/adaptive-icon.png"
-			},
-			"userInterfaceStyle": "automatic"
-		},
-		"assetBundlePatterns": ["**/*"],
-		"icon": "./assets/icon.png",
-		"ios": {
-			"supportsTablet": true,
-			"userInterfaceStyle": "automatic"
-		},
-		"name": "scout-app",
-		"description": "Scout app for the scout team. Developed by Aggutierrez. Used to manage all scout-related information incluiding CRUD operations, complex filters for searching and more.",
-		"orientation": "portrait",
-		"plugins": ["expo-router"],
-		"scheme": "Scout app",
-		"slug": "scout-app",
-		"sourceExts": ["js", "json", "ts", "tsx", "jsx"],
-		"splash": {
-			"backgroundColor": "#ffffff",
-			"image": "./assets/splash.png",
-			"resizeMode": "contain"
-		},
-		"userInterfaceStyle": "automatic",
-		"version": "1.0.0"
-	}
+  "expo": {
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff",
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "userInterfaceStyle": "automatic",
+      "package": "com.aggutierrez.scoutapp"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "icon": "./assets/icon.png",
+    "ios": {
+      "supportsTablet": true,
+      "userInterfaceStyle": "automatic"
+    },
+    "name": "scout-app",
+    "description": "Scout app for the scout team. Developed by Aggutierrez. Used to manage all scout-related information incluiding CRUD operations, complex filters for searching and more.",
+    "orientation": "portrait",
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "Scout app",
+    "slug": "scout-app",
+    "sourceExts": [
+      "js",
+      "json",
+      "ts",
+      "tsx",
+      "jsx"
+    ],
+    "splash": {
+      "backgroundColor": "#040404",
+      "image": "./assets/splash.png",
+      "resizeMode": "contain"
+    },
+    "userInterfaceStyle": "automatic",
+    "version": "1.0.0",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "566a82f1-3bb4-44fa-8b49-d8cd70add0f3"
+      }
+    }
+  }
 }

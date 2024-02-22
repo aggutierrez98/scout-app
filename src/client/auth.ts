@@ -1,15 +1,14 @@
 import { AxiosError } from "axios";
 import {
-  // QueryCache,
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
-import { LoginResponse } from "types/interfaces/scout";
+import { LoginResponse } from "interfaces/scout";
 import { UseFormSetError } from "react-hook-form";
-import { User } from "types/interfaces/auth";
+import { User } from "interfaces/auth";
 import { VALID_ROLES } from "utils/constants";
 import api from "./api";
 const QUERY_LIMIT = 15;

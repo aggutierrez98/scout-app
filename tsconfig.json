@@ -4,8 +4,6 @@
     "baseUrl": "src",
     "strict": true,
     "module": "esnext",
-    "typeRoots": [
-      "./src/types"
-    ],
-  },
+    "typeRoots": ["./src/types"]
+  }
 }

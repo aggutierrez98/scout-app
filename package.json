@@ -47,6 +47,7 @@
 	"scripts": {
 		"android": "expo start --android --clear",
 		"ios": "expo start --ios",
+		"build": "eas build --platform android",
 		"lint:check": "biome check --apply .",
 		"lint:format": "biome check . --write",
 		"start": "npx expo start",

@@ -17,7 +17,7 @@ import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useDeleteDocumento, useDocuments } from "client/documento";
-import { Documento } from "types/interfaces/documento";
+import { Documento } from "interfaces/documento";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useSnackBarContext } from "context/SnackBarContext";
 

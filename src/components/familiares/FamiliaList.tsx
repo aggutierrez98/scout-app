@@ -1,10 +1,8 @@
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import {
-  Appbar,
   Badge,
   Button,
   Dialog,
-  Divider,
   IconButton,
   List,
   MD3Colors,
@@ -13,20 +11,17 @@ import {
   TouchableRipple,
   useTheme,
 } from "react-native-paper";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
-import { CustomTextInput } from "components/layout/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { F_RELATIONSHIPS, M_RELATIONSHIPS } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useRelateFamiliar, useUnrelateFamiliar } from "client/familiar";
-import { EditFamiliarSchema, RelateFamiliarSchema } from "validators/familiar";
+import { RelateFamiliarSchema } from "validators/familiar";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ScoutWithRelation } from "types/interfaces/familiar";
+import { ScoutWithRelation } from "interfaces/familiar";
 import { useState } from "react";
 import { useAllScouts } from "client/scouts";
 import { useMenuContext } from "context/MenuContext";

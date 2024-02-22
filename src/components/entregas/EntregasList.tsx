@@ -17,7 +17,7 @@ import { useRouter } from "expo-router";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useDeleteEntrega, useEntregas } from "client/entregas";
 import { useMenuContext } from "context/MenuContext";
-import { Entrega } from "types/interfaces/entrega";
+import { Entrega } from "interfaces/entrega";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useSnackBarContext } from "context/SnackBarContext";
 

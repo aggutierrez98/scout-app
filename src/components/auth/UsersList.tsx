@@ -12,7 +12,7 @@ import { Fragment } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useUsers } from "client/auth";
-import { User } from "types/interfaces/auth";
+import { User } from "interfaces/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 
 interface Props {

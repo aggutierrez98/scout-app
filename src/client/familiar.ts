@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
 const QUERY_LIMIT = 20;
-import { Familiar, FamiliarWithDetails } from "types/interfaces/familiar";
+import { Familiar, FamiliarWithDetails } from "interfaces/familiar";
 import api from "./api";
 
 interface QueryParams {

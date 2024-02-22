@@ -1,6 +1,5 @@
 import React from "react";
 import { List, TouchableRipple } from "react-native-paper";
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 interface Props {

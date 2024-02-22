@@ -1,20 +1,17 @@
 import {
   ActivityIndicator,
-  Avatar,
   Divider,
   List,
   MD3Colors,
   Surface,
   Text,
-  TouchableRipple,
   useTheme,
 } from "react-native-paper";
 import { Fragment } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
-import { User } from "types/interfaces/auth";
 import { useFamiliares } from "client/familiar";
-import { Familiar } from "types/interfaces/familiar";
+import { Familiar } from "interfaces/familiar";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import ListItem from "components/ListItem";
 

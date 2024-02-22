@@ -16,7 +16,7 @@ import { FlatList, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { useDeletePago, usePagos } from "client/pago";
-import { Pago } from "types/interfaces/pago";
+import { Pago } from "interfaces/pago";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";

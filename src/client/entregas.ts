@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
 const QUERY_LIMIT = 20;
-import { Entrega } from "types/interfaces/entrega";
+import { Entrega } from "interfaces/entrega";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import api from "./api";
 

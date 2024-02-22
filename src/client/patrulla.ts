@@ -1,12 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-// import ky from "ky";
-import { API_URL } from "@env";
-import { Patrulla } from "types/interfaces/scout";
+import { Patrulla } from "interfaces/scout";
 import * as SecureStore from "expo-secure-store";
 import api from "./api";
-// export const scoutsApi = ky.create({
-//   prefixUrl: API_URL,
-// });
 
 export const fetchPatrullas = async () => {
   try {

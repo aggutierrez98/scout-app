@@ -9,9 +9,9 @@ import {
 } from "react-native-paper";
 import ListItem from "../ListItem";
 import { useScouts } from "../../client/scouts";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import { Scout } from "types/interfaces/scout";
+import { Scout } from "interfaces/scout";
 import { useRouter } from "expo-router";
 import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
