@@ -8,3 +8,19 @@ export interface User {
   role: typeof VALID_ROLES;
   active: boolean;
 }
+
+export interface UsersQueryParams {
+  searchQuery?: string;
+}
+
+export interface UserModifyParams {
+  active: boolean;
+  role: typeof VALID_ROLES;
+}
+
+export interface UserCreateParams {
+  username: string;
+  password: string;
+  scoutId: string;
+  // role: typeof VALID_ROLES
+}

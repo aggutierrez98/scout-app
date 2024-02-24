@@ -1,6 +1,6 @@
-import { useDeleteEntrega } from "client/entregas";
 import { useEntregaContext } from "context/EntregaContext";
 import { useSnackBarContext } from "context/SnackBarContext";
+import { useDeleteEntrega } from "hooks";
 import React from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 

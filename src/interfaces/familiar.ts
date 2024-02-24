@@ -22,3 +22,23 @@ export interface ScoutWithRelation extends Scout {
 export interface FamiliarWithDetails extends Familiar {
   scoutFamiliares: ScoutWithRelation[];
 }
+
+export interface FamiliaresQueryParams {
+  searchQuery: string;
+}
+
+export interface FamiliarEditParams {
+  localidad: string;
+  direccion: string;
+  mail?: string;
+  telefono?: string;
+  estadoCivil?: string;
+}
+
+export interface FamiliarUnrelateParams {
+  scoutId: string;
+}
+export interface FamiliarRelateParams {
+  scoutId: string;
+  relacion: string;
+}

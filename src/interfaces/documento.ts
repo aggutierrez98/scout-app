@@ -18,3 +18,23 @@ export interface DocumentoData {
   nombre: string;
   vence: boolean;
 }
+
+export interface DocumentosQueryParams {
+  searchQuery: string;
+  patrullas: string[];
+  progresiones: string[];
+  funciones: string[];
+  vence: string;
+  tiempoDesde: Date;
+  tiempoHasta: Date;
+}
+
+export interface DocumentoEditParams {
+  fechaPresentacion: Date;
+}
+
+export interface DocumentoCreateParams {
+  scoutId: string;
+  documentoId: string;
+  fechaPresentacion: Date;
+}

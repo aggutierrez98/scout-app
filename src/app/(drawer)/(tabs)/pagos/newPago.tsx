@@ -1,20 +1,17 @@
 import { Button, Text, useTheme } from "react-native-paper";
 import { SafeAreaView, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { Redirect } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { VALID_METODOS_PAGO } from "utils/constants";
-import { useAllScouts } from "client/scouts";
+import { useAllScouts, useCreatePago } from "hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePagoSchema } from "validators/pago";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useCreatePago } from "client/pago";
-import { useMenuContext } from "context/MenuContext";
+import { usePagoMenuContext } from "context/PagosMenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -24,7 +21,7 @@ type FormValues = {
   monto: string;
 };
 
-export default function newPago() {
+export default function NewPago() {
   const theme = useTheme();
   const { toogleSnackBar } = useSnackBarContext();
   const formMethods = useForm<FormValues>({
@@ -36,7 +33,7 @@ export default function newPago() {
   const { data: users } = useAllScouts();
   const {
     metodoPago: { metodosPagoList },
-  } = useMenuContext();
+  } = usePagoMenuContext();
 
   if (isSuccess) {
     return <Redirect href="/(drawer)/pagos" />;

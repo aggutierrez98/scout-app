@@ -1,7 +1,7 @@
 import { Appbar, Avatar, Divider, Text, useTheme } from "react-native-paper";
 import { ScrollView, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useRenewLogin } from "client/auth";
+import { useRenewLogin } from "hooks";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 

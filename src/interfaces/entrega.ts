@@ -6,10 +6,10 @@ export interface Entrega {
   tipoEntrega: string;
   fechaEntrega: string;
   fechaCreacion: string;
-  scout: Scout;
+  scout: ScoutEntrega;
 }
 
-export interface Scout {
+export interface ScoutEntrega {
   nombre: string;
   apellido: string;
   dni: string;
@@ -17,4 +17,26 @@ export interface Scout {
   fechaNacimiento: string;
   sexo: string;
   telefono: string;
+}
+
+export interface EntregasQueryParams {
+  searchQuery: string;
+  tiempoDesde: Date;
+  tiempoHasta: Date;
+  tipoEntregasSelected: string[];
+  patrullas: string[];
+  progresiones: string[];
+  funciones: string[];
+}
+
+export interface EntregaEditParams {
+  scoutId: string;
+  fechaEntrega: Date;
+  tipoEntrega: string;
+}
+
+export interface EntregaCreateParams {
+  scoutId: string;
+  fechaEntrega: Date;
+  tipoEntrega: string;
 }

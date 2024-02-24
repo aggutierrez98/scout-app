@@ -6,10 +6,10 @@ import {
   useTheme,
 } from "react-native-paper";
 import { FlatList, RefreshControl } from "react-native";
-import { useFamiliares } from "client/familiar";
 import { Familiar } from "interfaces/familiar";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import FamiliarItem from "./FamiliarItem";
+import { useFamiliares } from "hooks";
 
 interface Props {
   searchQuery: string;

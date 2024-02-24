@@ -1,18 +1,16 @@
 import { Button, Text, useTheme } from "react-native-paper";
 import { SafeAreaView, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useRenewLogin } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
 import { Redirect } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { useAllScouts } from "client/scouts";
+import { useAllScouts, useCreateDocumento } from "hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useCreateDocumento } from "client/documento";
 import { CreateDocumentoSchema } from "validators/documento";
-import { useMenuContext } from "context/MenuContext";
+import { useDocumentosMenuContext } from "context/DocumentosMenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -20,19 +18,18 @@ type FormValues = {
   fechaPresentacion: Date;
 };
 
-export default function newDocumento() {
+export default function NewDocumento() {
   const theme = useTheme();
-  const { data } = useRenewLogin();
   const { toogleSnackBar } = useSnackBarContext();
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(CreateDocumentoSchema),
   });
-  const { isSuccess, mutateAsync, isPending, error } = useCreateDocumento();
+  const { isSuccess, mutateAsync, isPending } = useCreateDocumento();
   const { data: users } = useAllScouts();
   const {
     documento: { documentosList },
-  } = useMenuContext();
+  } = useDocumentosMenuContext();
 
   const scoutsList =
     users?.map(({ id, nombre }) => ({

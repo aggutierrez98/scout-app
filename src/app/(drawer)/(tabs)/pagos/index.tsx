@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Searchbar, useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native";
 
-export default function pagos() {
+export default function Pagos() {
   const theme = useTheme();
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);

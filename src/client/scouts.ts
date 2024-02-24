@@ -1,35 +1,15 @@
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
-import { Scout } from "interfaces/scout";
+import { Scout, ScoutEditParams, ScoutsQueryParams } from "interfaces/scout";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import * as SecureStore from "expo-secure-store";
 import api from "./api";
-const QUERY_LIMIT = 15;
-
-interface QueryParams {
-  sexo: string;
-  searchQuery: string;
-  patrullas: string[];
-  progresiones: string[];
-  funciones: string[];
-}
-
-export interface EditScoutParams {
-  funcion: string;
-  religion: string;
-  direccion: string;
-  localidad: string;
-  progresion?: string;
-  patrullaId?: string;
-  telefono?: string;
-  email?: string;
-}
+import { SCOUTS_QUERY_LIMIT } from "utils/constants";
 
 export const fetchScouts = async (
   pageParam: number,
-  { patrullas, progresiones, funciones, searchQuery, sexo }: QueryParams
+  { patrullas, progresiones, funciones, searchQuery, sexo }: ScoutsQueryParams
 ) => {
   try {
-    const offset = (pageParam - 1) * QUERY_LIMIT;
+    const offset = (pageParam - 1) * SCOUTS_QUERY_LIMIT;
 
     let funcionesToSend: string[] = funciones;
     if (funcionesToSend.includes("EDUCADOR")) {
@@ -48,7 +28,7 @@ export const fetchScouts = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/scout?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}`,
+      `/scout?offset=${offset}&limit=${SCOUTS_QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -83,28 +63,6 @@ export const fetchScout = async (id: string) => {
   }
 };
 
-export const useScouts = (queryParams: QueryParams) =>
-  useInfiniteQuery({
-    queryKey: [
-      "scouts",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
-      }-sexo=${queryParams.sexo}-progresion=${
-        queryParams.progresiones
-      }-funcion=${queryParams.funciones}`,
-    ],
-    queryFn: ({ pageParam }) => fetchScouts(pageParam, queryParams),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage =
-        lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
-      return nextPage;
-    },
-    initialPageParam: 1,
-  });
-
-export const useScout = (id: string) =>
-  useQuery({ queryKey: ["scout", "id"], queryFn: () => fetchScout(id) });
-
 export const fetchAllScouts = async (onlyEducadores?: boolean) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -132,7 +90,7 @@ export const fetchAllScouts = async (onlyEducadores?: boolean) => {
 
 export const editScout = async (
   scoutId: string,
-  scoutData: EditScoutParams
+  scoutData: ScoutEditParams
 ) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -151,16 +109,3 @@ export const editScout = async (
     return null;
   }
 };
-
-export const useAllScouts = (onlyEducadores?: boolean) =>
-  useQuery({
-    queryKey: ["scouts", "all"],
-    queryFn: () => fetchAllScouts(onlyEducadores),
-  });
-
-export const useEditScout = () =>
-  useMutation({
-    mutationFn: ({ id, data }: { id: string; data: EditScoutParams }) =>
-      editScout(id, data),
-    mutationKey: ["users", "id"],
-  });

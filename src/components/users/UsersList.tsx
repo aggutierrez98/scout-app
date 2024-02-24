@@ -6,10 +6,10 @@ import {
   useTheme,
 } from "react-native-paper";
 import { FlatList, RefreshControl } from "react-native";
-import { useUsers } from "client/auth";
 import { User } from "interfaces/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import UserItem from "./UserItem";
+import { useUsers } from "hooks";
 
 interface Props {
   searchQuery: string;

@@ -1,17 +1,15 @@
 import { Appbar, Searchbar, useTheme } from "react-native-paper";
 import { SafeAreaView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useRenewLogin } from "client/auth";
-import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useRef, useState } from "react";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useNavigation } from "expo-router";
-import EntregasList from "components/entregas/EntregasList";
-import FiltersMenu from "components/FiltersMenu";
-import { useMenuContext } from "context/MenuContext";
 import { CommonActions } from "@react-navigation/native";
+import EntregasList from "components/familiares/EntregasList";
+import EntregasFiltersMenu from "components/entregas/EntregasFiltersMenu";
+import { useEntregaMenuContext } from "context/EntregasMenuContext";
 
-export default function entregas() {
+export default function Entregas() {
   const theme = useTheme();
   const { dispatch } = useNavigation();
   const onChangeSearch = (searchText: string) => {
@@ -21,7 +19,7 @@ export default function entregas() {
   const [searchQuery, setsearchQuery] = useState("");
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
   const touchable = useRef(null);
-  const { toogleMenu } = useMenuContext();
+  const { toogleMenuEntregas } = useEntregaMenuContext();
 
   return (
     <>
@@ -48,7 +46,7 @@ export default function entregas() {
 
           <Appbar.Action
             icon="chevron-down"
-            onPressIn={() => toogleMenu(true, "entregas")}
+            onPressIn={() => toogleMenuEntregas()}
             ref={touchable}
           />
 
@@ -63,7 +61,7 @@ export default function entregas() {
             }}
           />
 
-          <FiltersMenu parentRef={touchable} />
+          <EntregasFiltersMenu parentRef={touchable} />
         </Appbar.Header>
 
         <View

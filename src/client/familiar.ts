@@ -1,44 +1,14 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
-const QUERY_LIMIT = 20;
-import { Familiar, FamiliarWithDetails } from "interfaces/familiar";
+import {
+  Familiar,
+  FamiliarEditParams,
+  FamiliarRelateParams,
+  FamiliarUnrelateParams,
+  FamiliarWithDetails,
+  FamiliaresQueryParams,
+} from "interfaces/familiar";
 import api from "./api";
-
-interface QueryParams {
-  searchQuery: string;
-}
-
-export interface EditFamiliarParams {
-  // nombre: string;
-  // apellido: string;
-  // sexo: string;
-  // dni: string;
-  // fechaNacimiento: Date;
-  localidad: string;
-  direccion: string;
-  mail?: string;
-  telefono?: string;
-  estadoCivil?: string;
-}
-
-// interface CreateParams {
-//   scoutId: string;
-//   documentoId: string;
-//   fechaPresentacion: Date;
-// }
-
-export interface UnrelateFamiliarParams {
-  scoutId: string;
-}
-export interface RelateFamiliarParams {
-  scoutId: string;
-  relacion: string;
-}
+import { FAMILIARES_QUERY_LIMIT } from "utils/constants";
 
 export const fetchFamiliar = async (id: string) => {
   try {
@@ -60,7 +30,7 @@ export const fetchFamiliar = async (id: string) => {
 
 export const editFamiliar = async (
   familiarId: string,
-  familiarData: EditFamiliarParams
+  familiarData: FamiliarEditParams
 ) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -83,23 +53,16 @@ export const editFamiliar = async (
   }
 };
 
-export const useEditFamiliar = () =>
-  useMutation({
-    mutationFn: ({ id, data }: { id: string; data: EditFamiliarParams }) =>
-      editFamiliar(id, data),
-    mutationKey: ["edit-familiar", "id"],
-  });
-
 export const fetchFamiliares = async (
   pageParam: number,
-  { searchQuery }: QueryParams
+  { searchQuery }: FamiliaresQueryParams
 ) => {
   try {
-    const offset = (pageParam - 1) * QUERY_LIMIT;
+    const offset = (pageParam - 1) * FAMILIARES_QUERY_LIMIT;
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/familiar?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}`,
+      `/familiar?offset=${offset}&limit=${FAMILIARES_QUERY_LIMIT}&nombre=${searchQuery}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -116,32 +79,9 @@ export const fetchFamiliares = async (
   }
 };
 
-export const useFamiliares = (queryParams: QueryParams) =>
-  useInfiniteQuery({
-    queryKey: [
-      "familiares",
-      `searchParam${queryParams.searchQuery ?? ""}-searchQuery=${
-        queryParams.searchQuery
-      }`,
-    ],
-    queryFn: ({ pageParam }) => fetchFamiliares(pageParam, queryParams),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage =
-        lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
-      return nextPage;
-    },
-    initialPageParam: 1,
-  });
-
-export const useFamiliar = (id: string) =>
-  useQuery({
-    queryKey: ["familiares", id],
-    queryFn: () => fetchFamiliar(id),
-  });
-
 export const relateFamiliar = async (
   familiarId: string,
-  familiarData: RelateFamiliarParams
+  familiarData: FamiliarRelateParams
 ) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -165,7 +105,7 @@ export const relateFamiliar = async (
 };
 export const unrelateFamiliar = async (
   familiarId: string,
-  familiarData: UnrelateFamiliarParams
+  familiarData: FamiliarUnrelateParams
 ) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -186,36 +126,4 @@ export const unrelateFamiliar = async (
     console.log(error);
     return null;
   }
-};
-
-export const useRelateFamiliar = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      familiarId,
-      data,
-    }: {
-      familiarId: string;
-      data: RelateFamiliarParams;
-    }) => relateFamiliar(familiarId, data),
-    onSuccess: (data, variables) => {
-      queryClient.setQueryData(["familiares", variables.familiarId], data);
-    },
-  });
-};
-
-export const useUnrelateFamiliar = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      familiarId,
-      data,
-    }: {
-      familiarId: string;
-      data: UnrelateFamiliarParams;
-    }) => unrelateFamiliar(familiarId, data),
-    onSuccess: (data, variables) => {
-      queryClient.setQueryData(["familiares", variables.familiarId], data);
-    },
-  });
 };

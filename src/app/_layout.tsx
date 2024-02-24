@@ -10,6 +10,10 @@ import "react-native-gesture-handler";
 import { PagoProvider } from "context/PagosContext";
 import { DocumentoProvider } from "context/DocumentoContext";
 import { EntregaProvider } from "context/EntregaContext";
+import { DocumentosMenuProvider } from "context/DocumentosMenuContext";
+import { EntregaMenuProvider } from "context/EntregasMenuContext";
+import { PagoMenuProvider } from "context/PagosMenuContext";
+import { ScoutMenuProvider } from "context/ScoutsMenuContext";
 
 const queryClient = new QueryClient({
   // queryCache: {}
@@ -33,17 +37,23 @@ export default function Layout() {
     <PaperProvider theme={paperTheme}>
       <QueryClientProvider client={queryClient}>
         <SnackBarProvider>
-          <MenuProvider>
-            <EditProvider>
-              <PagoProvider>
-                <DocumentoProvider>
-                  <EntregaProvider>
-                    <Slot />
-                  </EntregaProvider>
-                </DocumentoProvider>
-              </PagoProvider>
-            </EditProvider>
-          </MenuProvider>
+          <EditProvider>
+            <PagoProvider>
+              <DocumentoProvider>
+                <EntregaProvider>
+                  <DocumentosMenuProvider>
+                    <EntregaMenuProvider>
+                      <PagoMenuProvider>
+                        <ScoutMenuProvider>
+                          <Slot />
+                        </ScoutMenuProvider>
+                      </PagoMenuProvider>
+                    </EntregaMenuProvider>
+                  </DocumentosMenuProvider>
+                </EntregaProvider>
+              </DocumentoProvider>
+            </PagoProvider>
+          </EditProvider>
         </SnackBarProvider>
       </QueryClientProvider>
     </PaperProvider>

@@ -4,16 +4,15 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VALID_METODOS_PAGO } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useEditPago, usePago } from "client/pago";
 import { CustomSwitchInput } from "components/layout/SwitchInput";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { EditPagoSchema } from "validators/pago";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useMenuContext } from "context/MenuContext";
+import { usePagoMenuContext } from "context/PagosMenuContext";
+import { useEditPago, usePago } from "hooks";
 
 type PagoParams = {
   pago: string;
@@ -39,7 +38,7 @@ export default function PagoPage() {
   const { goBack } = useNavigation();
   const {
     metodoPago: { metodosPagoList },
-  } = useMenuContext();
+  } = usePagoMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",

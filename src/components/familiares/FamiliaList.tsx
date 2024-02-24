@@ -18,13 +18,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useRelateFamiliar, useUnrelateFamiliar } from "client/familiar";
 import { RelateFamiliarSchema } from "validators/familiar";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ScoutWithRelation } from "interfaces/familiar";
 import { useState } from "react";
-import { useAllScouts } from "client/scouts";
-import { useMenuContext } from "context/MenuContext";
+import { F_RELATIONSHIPS, M_RELATIONSHIPS } from "utils/constants";
+import { useAllScouts, useRelateFamiliar, useUnrelateFamiliar } from "hooks";
 
 type FamiliarParams = {
   familiar: string;
@@ -40,6 +39,15 @@ interface Props {
   scoutsData: ScoutWithRelation[];
   sexo: string;
 }
+
+const relacionesMList = M_RELATIONSHIPS.map((relacion) => ({
+  label: relacion,
+  value: relacion,
+}));
+const relacionesFList = F_RELATIONSHIPS.map((relacion) => ({
+  label: relacion,
+  value: relacion,
+}));
 
 export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
   const theme = useTheme();
@@ -57,7 +65,6 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
   const showDialogRelate = () => setDialogRelate(true);
   const hideDialogRelate = () => setDialogRelate(false);
   const [scoutId, setScoutId] = useState("");
-  const { relacionesFList, relacionesMList } = useMenuContext();
 
   const scoutsList =
     users?.map(({ id, nombre }) => ({

@@ -39,3 +39,22 @@ export interface LoginResponse {
   role: string;
   token: string;
 }
+
+export interface ScoutsQueryParams {
+  sexo: string;
+  searchQuery: string;
+  patrullas: string[];
+  progresiones: string[];
+  funciones: string[];
+}
+
+export interface ScoutEditParams {
+  funcion: string;
+  religion: string;
+  direccion: string;
+  localidad: string;
+  progresion?: string;
+  patrullaId?: string;
+  telefono?: string;
+  email?: string;
+}

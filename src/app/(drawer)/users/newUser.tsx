@@ -1,7 +1,7 @@
 import { Appbar, Button, useTheme } from "react-native-paper";
 import { SafeAreaView, ScrollView, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useCreateUser, useRenewLogin } from "client/auth";
+import { useCreateUser, useRenewLogin, useAllScouts } from "hooks";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -10,7 +10,6 @@ import { CustomTextInput } from "components/layout/TextInput";
 import { Redirect, useNavigation } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { VALID_ROLES } from "utils/constants";
-import { useAllScouts } from "client/scouts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateUserSchema } from "validators/auth";
 
@@ -21,7 +20,7 @@ type FormValues = {
   scoutId: string;
 };
 
-export default function newUser() {
+export default function NewUser() {
   const theme = useTheme();
   const { data } = useRenewLogin();
   const { goBack } = useNavigation();

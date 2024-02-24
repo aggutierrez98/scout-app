@@ -1,7 +1,6 @@
 import { ScrollView } from "react-native";
 import { Button, Divider, Text, useTheme } from "react-native-paper";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useEditScout, useScout } from "client/scouts";
 import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
@@ -11,7 +10,8 @@ import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useMenuContext } from "context/MenuContext";
+import { useScoutMenuContext } from "context/ScoutsMenuContext";
+import { useEditScout, useScout } from "hooks";
 
 type ScoutParams = {
   scout: string;
@@ -40,7 +40,7 @@ export default function ScoutPage() {
     patrulla: { patrullaList },
     funcion: { funcionesList },
     religionList,
-  } = useMenuContext();
+  } = useScoutMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",

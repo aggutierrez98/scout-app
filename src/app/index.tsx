@@ -1,4 +1,4 @@
-import { useRenewLogin } from "client/auth";
+import { useRenewLogin } from "hooks";
 import LoginForm from "components/auth/LoginForm";
 import LogoIcon from "components/layout/AppLogoIcon";
 import { LoadingScreen } from "components/layout/LoadingScreen";

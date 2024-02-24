@@ -1,6 +1,6 @@
-import { useDeletePago } from "client/pago";
 import { usePagoContext } from "context/PagosContext";
 import { useSnackBarContext } from "context/SnackBarContext";
+import { useDeletePago } from "hooks";
 import React from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 

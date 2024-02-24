@@ -1,6 +1,6 @@
-import { useDeleteDocumento } from "client/documento";
 import { useDocumentoContext } from "context/DocumentoContext";
 import { useSnackBarContext } from "context/SnackBarContext";
+import { useDeleteDocumento } from "hooks";
 import React from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 

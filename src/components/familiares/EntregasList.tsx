@@ -7,11 +7,11 @@ import {
 } from "react-native-paper";
 import { FlatList, RefreshControl } from "react-native";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useDeleteEntrega, useEntregas } from "client/entregas";
-import { useMenuContext } from "context/MenuContext";
 import { Entrega } from "interfaces/entrega";
-import EntregaItem from "./EntregaItem";
-import { ModalDeleteEntrega } from "./ModalDeleteEntrega";
+import EntregaItem from "../entregas/EntregaItem";
+import { ModalDeleteEntrega } from "../entregas/ModalDeleteEntrega";
+import { useEntregaMenuContext } from "context/EntregasMenuContext";
+import { useDeleteEntrega, useEntregas } from "hooks";
 
 interface Props {
   searchQuery: string;
@@ -26,7 +26,7 @@ export default function EntregasList({ searchQuery }: Props) {
     funcion: { funcionesSelected },
     patrulla: { patrullasSelected },
     progresion: { progresionesSelected },
-  } = useMenuContext();
+  } = useEntregaMenuContext();
 
   const theme = useTheme();
 

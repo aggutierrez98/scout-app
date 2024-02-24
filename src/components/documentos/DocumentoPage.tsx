@@ -1,13 +1,12 @@
 import { ScrollView } from "react-native";
 import { Button, Divider, useTheme } from "react-native-paper";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useScout } from "client/scouts";
+import { useScout, useDocumento, useEditDocumento } from "hooks";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { DescriptiveText } from "components/layout/DescriptiveText";
-import { useDocumento, useEditDocumento } from "client/documento";
 import { EditDocumentoSchema } from "validators/documento";
 import { useSnackBarContext } from "context/SnackBarContext";
 

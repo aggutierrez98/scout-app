@@ -5,13 +5,12 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
-import { useScouts } from "../../client/scouts";
 import { FlatList, RefreshControl } from "react-native";
 import { Scout } from "interfaces/scout";
-import { useRouter } from "expo-router";
-import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import ScoutItem from "./ScoutItem";
+import { useScoutMenuContext } from "context/ScoutsMenuContext";
+import { useScouts } from "hooks";
 
 interface Props {
   searchQuery: string;
@@ -23,7 +22,7 @@ export default function ScoutsList({ searchQuery }: Props) {
     progresion: { progresionesSelected },
     patrulla: { patrullasSelected },
     funcion: { funcionesSelected },
-  } = useMenuContext();
+  } = useScoutMenuContext();
   const theme = useTheme();
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =

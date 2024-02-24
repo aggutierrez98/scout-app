@@ -8,9 +8,9 @@ import { LoadingScreen } from "components/layout/LoadingScreen";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useEditEntrega, useEntrega } from "client/entregas";
 import { EditEntregaSchema } from "validators/entrega";
-import { useMenuContext } from "context/MenuContext";
+import { useEntregaMenuContext } from "context/EntregasMenuContext";
+import { useEditEntrega, useEntrega } from "hooks";
 
 type EntregaParams = {
   entrega: string;
@@ -33,7 +33,7 @@ export default function EntregaPage() {
   const { mutateAsync, isPending } = useEditEntrega();
   const {
     tipoEntrega: { tipoEntregaList },
-  } = useMenuContext();
+  } = useEntregaMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",

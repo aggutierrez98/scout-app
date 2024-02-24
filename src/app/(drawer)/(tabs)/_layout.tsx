@@ -7,14 +7,18 @@ import {
 } from "expo-router";
 
 import { Appbar, BottomNavigation, useTheme } from "react-native-paper";
-import { useMenuContext } from "context/MenuContext";
 import { useEditContext } from "context/EditContext";
 import { useRef } from "react";
 import { View } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { StatusBar } from "expo-status-bar";
-import FiltersMenu from "components/FiltersMenu";
+import ScoutsFiltersMenu from "components/scouts/ScoutFiltersMenu";
+import { useScoutMenuContext } from "context/ScoutsMenuContext";
+import { usePagoMenuContext } from "context/PagosMenuContext";
+import { useDocumentosMenuContext } from "context/DocumentosMenuContext";
+import DocumentosFiltersMenu from "components/documentos/DocumentosFiltersMenu";
+import PagosFiltersMenu from "components/pagos/PagosFiltersMenu";
 
 export default function AppLayout() {
   const theme = useTheme();
@@ -25,9 +29,13 @@ export default function AppLayout() {
   const pathname = usePathname();
   const pageTitle = pathname.split("/")[1];
   const { dispatch } = useNavigation();
-  const { toogleMenu } = useMenuContext();
   const { changeIsEditing } = useEditContext();
-  const touchable = useRef(null);
+  const { toogleMenuScouts } = useScoutMenuContext();
+  const { toogleMenuPagos } = usePagoMenuContext();
+  const { toogleMenuDocumentos } = useDocumentosMenuContext();
+  const touchableScouts = useRef(null);
+  const touchablePagos = useRef(null);
+  const touchableDocumentos = useRef(null);
   const { back } = useRouter();
 
   return (
@@ -78,16 +86,37 @@ export default function AppLayout() {
             onPress={() => changeIsEditing()}
           />
         )}
-        {segments.length === 3 && (
-          <Appbar.Action
-            icon="chevron-down"
-            onPressIn={() =>
-              toogleMenu(true, pageTitle as "scouts" | "documentos" | "pagos")
-            }
-            ref={touchable}
-          />
-        )}
-        <FiltersMenu parentRef={touchable} />
+        {segments.length === 3 &&
+          (pageTitle === "scouts" ? (
+            <>
+              <Appbar.Action
+                icon="chevron-down"
+                onPressIn={() => toogleMenuScouts()}
+                ref={touchableScouts}
+              />
+              <ScoutsFiltersMenu parentRef={touchableScouts} />
+            </>
+          ) : pageTitle === "pagos" ? (
+            <>
+              <Appbar.Action
+                icon="chevron-down"
+                onPressIn={() => toogleMenuPagos()}
+                ref={touchablePagos}
+              />
+              <PagosFiltersMenu parentRef={touchablePagos} />
+            </>
+          ) : pageTitle === "documentos" ? (
+            <>
+              <Appbar.Action
+                icon="chevron-down"
+                onPressIn={() => toogleMenuDocumentos()}
+                ref={touchableDocumentos}
+              />
+              <DocumentosFiltersMenu parentRef={touchableDocumentos} />
+            </>
+          ) : (
+            <></>
+          ))}
       </Appbar.Header>
 
       <Tabs

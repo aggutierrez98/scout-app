@@ -7,7 +7,7 @@ import UsersList from "components/users/UsersList";
 import { useNavigation } from "expo-router";
 import { CommonActions } from "@react-navigation/native";
 
-export default function users() {
+export default function Users() {
   const theme = useTheme();
   const { dispatch, getState } = useNavigation();
   const onChangeSearch = (searchText: string) => {

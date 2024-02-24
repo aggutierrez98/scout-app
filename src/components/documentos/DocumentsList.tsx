@@ -6,12 +6,12 @@ import {
   useTheme,
 } from "react-native-paper";
 import { FlatList, RefreshControl } from "react-native";
-import { useMenuContext } from "context/MenuContext";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { useDeleteDocumento, useDocuments } from "client/documento";
+import { useDeleteDocumento, useDocuments } from "hooks";
 import { Documento } from "interfaces/documento";
 import { ModalDeleteDocumento } from "./ModalDeleteDocumento";
 import DocumentoItem from "./DocumentoItem";
+import { useDocumentosMenuContext } from "context/DocumentosMenuContext";
 
 interface Props {
   searchQuery: string;
@@ -26,7 +26,7 @@ export default function DocumentsList({ searchQuery }: Props) {
     funcion: { funcionesSelected },
     vence: { vence },
     tiempo: { tiempoDesde, tiempoHasta },
-  } = useMenuContext();
+  } = useDocumentosMenuContext();
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
     useDocuments({

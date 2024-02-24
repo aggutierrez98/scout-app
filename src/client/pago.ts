@@ -1,42 +1,13 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import * as SecureStore from "expo-secure-store";
-const QUERY_LIMIT = 15;
-import { Pago } from "interfaces/pago";
+import {
+  Pago,
+  PagoCreateParams,
+  PagoEditParams,
+  PagosQueryParams,
+} from "interfaces/pago";
 import api from "./api";
-
-interface QueryParams {
-  metodoPago: string;
-  searchQuery: string;
-  patrullas: string[];
-  progresiones: string[];
-  funciones: string[];
-  rendido: "si" | "no" | "";
-  tiempoDesde: Date;
-  tiempoHasta: Date;
-}
-
-interface CreateParams {
-  concepto: string;
-  monto: string;
-  metodoPago: string;
-  scoutId: string;
-  fechaPago: Date;
-}
-
-export interface EditPagoParams {
-  scoutId: string;
-  fechaPago: Date;
-  concepto: string;
-  metodoPago: string;
-  monto: string;
-  rendido: boolean;
-}
+import { PAGOS_QUERY_LIMIT } from "utils/constants";
 
 export const fetchPagos = async (
   pageParam: number,
@@ -49,10 +20,10 @@ export const fetchPagos = async (
     rendido,
     tiempoDesde,
     tiempoHasta,
-  }: QueryParams
+  }: PagosQueryParams
 ) => {
   try {
-    const offset = (pageParam - 1) * QUERY_LIMIT;
+    const offset = (pageParam - 1) * PAGOS_QUERY_LIMIT;
 
     let funcionesToSend: string[] = funciones;
     if (funcionesToSend.includes("EDUCADOR")) {
@@ -74,7 +45,7 @@ export const fetchPagos = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/pago?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +83,7 @@ export const fetchPago = async (id: string) => {
   }
 };
 
-export const editPago = async (pagoId: string, pagoData: EditPagoParams) => {
+export const editPago = async (pagoId: string, pagoData: PagoEditParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
@@ -130,69 +101,7 @@ export const editPago = async (pagoId: string, pagoData: EditPagoParams) => {
   }
 };
 
-export const usePagos = (queryParams: QueryParams) =>
-  useInfiniteQuery({
-    queryKey: [
-      "pagos",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
-      }-metodoPago=${queryParams.metodoPago}-progresion=${
-        queryParams.progresiones
-      }-funcion=${queryParams.funciones}
-      -rendido=${queryParams.rendido}
-      -tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${
-        queryParams.tiempoHasta
-      }`,
-    ],
-    queryFn: ({ pageParam }) => fetchPagos(pageParam, queryParams),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage =
-        lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
-      return nextPage;
-    },
-    initialPageParam: 1,
-  });
-
-export const usePago = (id: string) =>
-  useQuery({ queryKey: ["pago", "id"], queryFn: () => fetchPago(id) });
-
-export const useEditPago = () =>
-  useMutation({
-    mutationFn: ({ id, data }: { id: string; data: EditPagoParams }) =>
-      editPago(id, data),
-    mutationKey: ["pago", "id"],
-  });
-
-export const deletePago = async (id: string) => {
-  try {
-    const token = await SecureStore.getItemAsync("secure_token");
-    const { data } = await api.delete(`/pago/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data as Pago;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
-export const useDeletePago = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id }: { id: string }) => deletePago(id),
-    mutationKey: ["delete-pago", "id"],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["pagos"] });
-    },
-  });
-};
-
-export const createPago = async (pagoData: CreateParams) => {
+export const createPago = async (pagoData: PagoCreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
@@ -210,13 +119,19 @@ export const createPago = async (pagoData: CreateParams) => {
   }
 };
 
-export const useCreatePago = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: CreateParams) => createPago(data),
-    mutationKey: ["pagos"],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["pagos"] });
-    },
-  });
+export const deletePago = async (id: string) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+    const { data } = await api.delete(`/pago/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data as Pago;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };

@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { Patrulla } from "interfaces/scout";
 import * as SecureStore from "expo-secure-store";
 import api from "./api";
@@ -20,6 +19,3 @@ export const fetchPatrullas = async () => {
     return null;
   }
 };
-
-export const usePatrullas = () =>
-  useQuery({ queryKey: ["patrullas"], queryFn: fetchPatrullas });

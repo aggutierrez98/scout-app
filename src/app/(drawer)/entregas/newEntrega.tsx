@@ -5,13 +5,12 @@ import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
 import { Redirect, useNavigation } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { useAllScouts } from "client/scouts";
+import { useAllScouts, useCreateEntrega } from "hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateEntregaSchema } from "validators/entrega";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useCreateEntrega } from "client/entregas";
-import { useMenuContext } from "context/MenuContext";
+import { useEntregaMenuContext } from "context/EntregasMenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -19,7 +18,7 @@ type FormValues = {
   tipoEntrega: string;
 };
 
-export default function newEntrega() {
+export default function NewEntrega() {
   const theme = useTheme();
   const { goBack } = useNavigation();
   const { toogleSnackBar } = useSnackBarContext();
@@ -32,7 +31,7 @@ export default function newEntrega() {
   const { data: users } = useAllScouts();
   const {
     tipoEntrega: { tipoEntregaList },
-  } = useMenuContext();
+  } = useEntregaMenuContext();
 
   if (isSuccess) {
     return <Redirect href="/(drawer)/entregas" />;

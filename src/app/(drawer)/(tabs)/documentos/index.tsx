@@ -4,8 +4,9 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native";
 import DocumentsList from "components/documentos/DocumentsList";
 
-export default function documentos() {
+export default function Documentos() {
   const theme = useTheme();
+
   const onChangeSearch = (searchText: string) => {
     setsearchQuery(searchText);
   };

@@ -1,34 +1,14 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
-const QUERY_LIMIT = 20;
 import { getArrSearchParam } from "utils/getArraySearchParam";
-import { Documento, DocumentoData } from "interfaces/documento";
+import {
+  Documento,
+  DocumentoCreateParams,
+  DocumentoData,
+  DocumentoEditParams,
+  DocumentosQueryParams,
+} from "interfaces/documento";
+import { DOCUMENTOS_QUERY_LIMIT } from "utils/constants";
 import api from "./api";
-
-interface QueryParams {
-  searchQuery: string;
-  patrullas: string[];
-  progresiones: string[];
-  funciones: string[];
-  vence: string;
-  tiempoDesde: Date;
-  tiempoHasta: Date;
-}
-
-export interface EditDocumentoParams {
-  fechaPresentacion: Date;
-}
-
-interface CreateParams {
-  scoutId: string;
-  documentoId: string;
-  fechaPresentacion: Date;
-}
 
 export const fetchDocumento = async (id: string) => {
   try {
@@ -50,7 +30,7 @@ export const fetchDocumento = async (id: string) => {
 
 export const editDocumento = async (
   documentoId: string,
-  documentoData: EditDocumentoParams
+  documentoData: DocumentoEditParams
 ) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -73,13 +53,6 @@ export const editDocumento = async (
   }
 };
 
-export const useEditDocumento = () =>
-  useMutation({
-    mutationFn: ({ id, data }: { id: string; data: EditDocumentoParams }) =>
-      editDocumento(id, data),
-    mutationKey: ["documentos", "id"],
-  });
-
 export const fetchDocuments = async (
   pageParam: number,
   {
@@ -90,10 +63,10 @@ export const fetchDocuments = async (
     vence,
     tiempoDesde,
     tiempoHasta,
-  }: QueryParams
+  }: DocumentosQueryParams
 ) => {
   try {
-    const offset = (pageParam - 1) * QUERY_LIMIT;
+    const offset = (pageParam - 1) * DOCUMENTOS_QUERY_LIMIT;
 
     let funcionesToSend: string[] = funciones;
     if (funcionesToSend.includes("EDUCADOR")) {
@@ -113,7 +86,7 @@ export const fetchDocuments = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/documento?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/documento?offset=${offset}&limit=${DOCUMENTOS_QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -153,69 +126,7 @@ export const fetchDocumentsData = async () => {
   }
 };
 
-export const useDocuments = (queryParams: QueryParams) =>
-  useInfiniteQuery({
-    queryKey: [
-      "documents",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
-      }-progresion=${queryParams.progresiones}-funcion=${
-        queryParams.funciones
-      }-funcion=${queryParams.funciones}-vence=${
-        queryParams.vence
-      }-tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${
-        queryParams.tiempoHasta
-      }`,
-    ],
-    queryFn: ({ pageParam }) => fetchDocuments(pageParam, queryParams),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage =
-        lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
-      return nextPage;
-    },
-    initialPageParam: 1,
-  });
-export const useDocumentsData = () =>
-  useQuery({
-    queryKey: ["documents-data"],
-    queryFn: () => fetchDocumentsData(),
-  });
-
-export const useDocumento = (id: string) =>
-  useQuery({
-    queryKey: ["documento", "id"],
-    queryFn: () => fetchDocumento(id),
-  });
-
-export const deleteDocumento = async (id: string) => {
-  try {
-    const token = await SecureStore.getItemAsync("secure_token");
-    const { data } = await api.delete(`/documento/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data as Documento;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
-export const useDeleteDocumento = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id }: { id: string }) => deleteDocumento(id),
-    mutationKey: ["delete-documento", "id"],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["documentos"] });
-    },
-  });
-};
-
-export const createDocumento = async (documentoData: CreateParams) => {
+export const createDocumento = async (documentoData: DocumentoCreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
@@ -233,13 +144,19 @@ export const createDocumento = async (documentoData: CreateParams) => {
   }
 };
 
-export const useCreateDocumento = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: CreateParams) => createDocumento(data),
-    mutationKey: ["documentos"],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["documentos"] });
-    },
-  });
+export const deleteDocumento = async (id: string) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+    const { data } = await api.delete(`/documento/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data as Documento;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };

@@ -20,3 +20,31 @@ export interface Scout {
   sexo: string;
   telefono: string;
 }
+
+export interface PagosQueryParams {
+  metodoPago: string;
+  searchQuery: string;
+  patrullas: string[];
+  progresiones: string[];
+  funciones: string[];
+  rendido: "si" | "no" | "";
+  tiempoDesde: Date;
+  tiempoHasta: Date;
+}
+
+export interface PagoCreateParams {
+  concepto: string;
+  monto: string;
+  metodoPago: string;
+  scoutId: string;
+  fechaPago: Date;
+}
+
+export interface PagoEditParams {
+  scoutId: string;
+  fechaPago: Date;
+  concepto: string;
+  metodoPago: string;
+  monto: string;
+  rendido: boolean;
+}

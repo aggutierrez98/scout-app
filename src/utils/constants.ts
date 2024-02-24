@@ -65,3 +65,10 @@ export const VALID_ROLES = [
   "COLABORADOR",
   "EXTERNO",
 ] as const;
+
+export const PAGOS_QUERY_LIMIT = 15;
+export const USERS_QUERY_LIMIT = 15;
+export const DOCUMENTOS_QUERY_LIMIT = 20;
+export const ENTREGAS_QUERY_LIMIT = 20;
+export const FAMILIARES_QUERY_LIMIT = 20;
+export const SCOUTS_QUERY_LIMIT = 15;

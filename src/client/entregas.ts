@@ -1,44 +1,13 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
-const QUERY_LIMIT = 20;
-import { Entrega } from "interfaces/entrega";
+import {
+  Entrega,
+  EntregaCreateParams,
+  EntregaEditParams,
+  EntregasQueryParams,
+} from "interfaces/entrega";
 import { getArrSearchParam } from "utils/getArraySearchParam";
 import api from "./api";
-
-interface QueryParams {
-  searchQuery: string;
-  tiempoDesde: Date;
-  tiempoHasta: Date;
-  tipoEntregasSelected: string[];
-  patrullas: string[];
-  progresiones: string[];
-  funciones: string[];
-}
-
-export interface EditEntregaParams {
-  scoutId: string;
-  fechaEntrega: Date;
-  tipoEntrega: string;
-}
-
-export interface CreateParams {
-  scoutId: string;
-  fechaEntrega: Date;
-  tipoEntrega: string;
-}
-
-// export interface UnrelateFamiliarParams {
-//   scoutId: string;
-// }
-// export interface RelateFamiliarParams {
-//   scoutId: string;
-//   relacion: string;
-// }
+import { ENTREGAS_QUERY_LIMIT } from "utils/constants";
 
 export const fetchEntrega = async (id: string) => {
   try {
@@ -58,7 +27,7 @@ export const fetchEntrega = async (id: string) => {
   }
 };
 
-export const createEntrega = async (entregaData: CreateParams) => {
+export const createEntrega = async (entregaData: EntregaCreateParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
@@ -76,20 +45,9 @@ export const createEntrega = async (entregaData: CreateParams) => {
   }
 };
 
-export const useCreateEntrega = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: CreateParams) => createEntrega(data),
-    mutationKey: ["entregas"],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["entregas"] });
-    },
-  });
-};
-
 export const editEntrega = async (
   entregaId: string,
-  entregaData: EditEntregaParams
+  entregaData: EntregaEditParams
 ) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -112,13 +70,6 @@ export const editEntrega = async (
   }
 };
 
-export const useEditEntrega = () =>
-  useMutation({
-    mutationFn: ({ id, data }: { id: string; data: EditEntregaParams }) =>
-      editEntrega(id, data),
-    mutationKey: ["edit-entrega", "id"],
-  });
-
 export const fetchEntregas = async (
   pageParam: number,
   {
@@ -129,10 +80,10 @@ export const fetchEntregas = async (
     funciones,
     patrullas,
     progresiones,
-  }: QueryParams
+  }: EntregasQueryParams
 ) => {
   try {
-    const offset = (pageParam - 1) * QUERY_LIMIT;
+    const offset = (pageParam - 1) * ENTREGAS_QUERY_LIMIT;
 
     let funcionesToSend: string[] = funciones;
     if (funcionesToSend.includes("EDUCADOR")) {
@@ -155,7 +106,7 @@ export const fetchEntregas = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/entrega?offset=${offset}&limit=${QUERY_LIMIT}&nombre=${searchQuery}${patrullasStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${patrullasStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -175,33 +126,6 @@ export const fetchEntregas = async (
   }
 };
 
-export const useEntregas = (queryParams: QueryParams) =>
-  useInfiniteQuery({
-    queryKey: [
-      "entregas",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
-      }-progresion=${queryParams.progresiones}-funcion=${
-        queryParams.funciones
-      }-tipoEntrega=${queryParams.tipoEntregasSelected}-tiempoDesde=${
-        queryParams.tiempoDesde
-      }-tiempoHasta=${queryParams.tiempoHasta}`,
-    ],
-    queryFn: ({ pageParam }) => fetchEntregas(pageParam, queryParams),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage =
-        lastPage?.length === QUERY_LIMIT ? allPages.length + 1 : undefined;
-      return nextPage;
-    },
-    initialPageParam: 1,
-  });
-
-export const useEntrega = (id: string) =>
-  useQuery({
-    queryKey: ["entregas", id],
-    queryFn: () => fetchEntrega(id),
-  });
-
 export const deleteEntrega = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
@@ -217,16 +141,4 @@ export const deleteEntrega = async (id: string) => {
     console.log(error);
     return null;
   }
-};
-
-export const useDeleteEntrega = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id }: { id: string }) => deleteEntrega(id),
-    //   mutationKey: ["delete-entrega", "id"],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["entregas"] });
-    },
-  });
 };

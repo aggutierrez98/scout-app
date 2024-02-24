@@ -1,6 +1,5 @@
 import { ScrollView } from "react-native";
 import {
-  ActivityIndicator,
   Appbar,
   Avatar,
   Button,
@@ -14,13 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { VALID_ROLES } from "utils/constants";
 import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
-import { useModifyUser, useUser } from "client/auth";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { StatusBar } from "expo-status-bar";
 import { CustomSwitchInput } from "components/layout/SwitchInput";
 import { EditUserSchema } from "validators/auth";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useMenuContext } from "context/MenuContext";
+import { useModifyUser, useUser } from "hooks";
 
 type UserParams = {
   user: string;
@@ -31,6 +29,11 @@ type FormValues = {
   active: boolean;
 };
 
+const rolList = VALID_ROLES.map((role) => ({
+  label: role,
+  value: role,
+}));
+
 export default function UserPage() {
   const { toogleSnackBar } = useSnackBarContext();
   const theme = useTheme();
@@ -38,7 +41,6 @@ export default function UserPage() {
   const { user: userId } = useLocalSearchParams<UserParams>();
   if (!userId) return null;
   const { data, isLoading } = useUser(userId);
-  const { rolList } = useMenuContext();
   const { mutateAsync } = useModifyUser();
 
   const formMethods = useForm<FormValues>({

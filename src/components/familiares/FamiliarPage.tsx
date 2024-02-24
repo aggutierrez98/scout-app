@@ -1,16 +1,6 @@
-import { ScrollView, View } from "react-native";
-import {
-  Appbar,
-  Badge,
-  Button,
-  Divider,
-  List,
-  MD3Colors,
-  Text,
-  TouchableRipple,
-  useTheme,
-} from "react-native-paper";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { ScrollView } from "react-native";
+import { Appbar, Button, Divider, useTheme } from "react-native-paper";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
@@ -20,11 +10,10 @@ import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useEditFamiliar, useFamiliar } from "client/familiar";
 import { EditFamiliarSchema } from "validators/familiar";
 import { StatusBar } from "expo-status-bar";
 import FamiliaList from "./FamiliaList";
-import { useMenuContext } from "context/MenuContext";
+import { useEditFamiliar, useFamiliar } from "hooks";
 
 type FamiliarParams = {
   familiar: string;
@@ -38,6 +27,13 @@ type FormValues = {
   localidad: string;
 };
 
+const estadoCivilList = VALID_ESTADO_CIVIL.map((estadoCivil) => {
+  return {
+    label: estadoCivil,
+    value: estadoCivil,
+  };
+});
+
 export default function FamiliarPage() {
   const { toogleSnackBar } = useSnackBarContext();
   const theme = useTheme();
@@ -47,7 +43,6 @@ export default function FamiliarPage() {
   const { changeIsEditing, isEditing } = useEditContext();
   const { data, isLoading } = useFamiliar(familiarId);
   const { mutateAsync, isPending } = useEditFamiliar();
-  const { estadoCivilList } = useMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",

@@ -6,12 +6,12 @@ import {
   useTheme,
 } from "react-native-paper";
 import { FlatList, RefreshControl } from "react-native";
-import { useMenuContext } from "context/MenuContext";
-import { useDeletePago, usePagos } from "client/pago";
 import { Pago } from "interfaces/pago";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import PagoItem from "./PagoItem";
 import { ModalDeletePago } from "./ModalDeletePago";
+import { usePagoMenuContext } from "context/PagosMenuContext";
+import { useDeletePago, usePagos } from "hooks";
 
 interface Props {
   searchQuery: string;
@@ -27,7 +27,7 @@ export default function PagosList({ searchQuery }: Props) {
     patrulla: { patrullasSelected },
     funcion: { funcionesSelected },
     rendido: { rendido },
-  } = useMenuContext();
+  } = usePagoMenuContext();
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch, isRefetching } =
     usePagos({

@@ -1,17 +1,16 @@
 import { Redirect } from "expo-router";
 import {
   Divider,
-  Portal,
   Drawer as RNPDrawer,
   Snackbar,
   Text,
   useTheme,
   withTheme,
 } from "react-native-paper";
-import { useLogout, useRenewLogin } from "client/auth";
+import { useLogout, useRenewLogin } from "hooks";
 import Drawer from "expo-router/drawer";
 import LogoIcon from "components/layout/AppLogoIcon";
-import { View, SafeAreaView, Platform } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import { useSnackBarContext } from "context/SnackBarContext";
 
