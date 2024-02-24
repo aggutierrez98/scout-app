@@ -1,36 +1,23 @@
 {
   "expo": {
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#ffffff",
-        "foregroundImage": "./assets/adaptive-icon.png"
-      },
       "userInterfaceStyle": "automatic",
-      "package": "com.aggutierrez.scoutapp"
+      "package": "com.aggutierrez.scoutapp",
+      "versionCode": 1
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "icon": "./assets/icon.png",
+    "assetBundlePatterns": ["**/*"],
+    "icon": "./assets/scout-logo.png",
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.aggutierrez.scoutapp"
     },
     "name": "scout-app",
     "description": "Scout app for the scout team. Developed by Aggutierrez. Used to manage all scout-related information incluiding CRUD operations, complex filters for searching and more.",
     "orientation": "portrait",
-    "plugins": [
-      "expo-router"
-    ],
-    "scheme": "Scout app",
+    "plugins": ["expo-router"],
+    "scheme": "scoutapp",
     "slug": "scout-app",
-    "sourceExts": [
-      "js",
-      "json",
-      "ts",
-      "tsx",
-      "jsx"
-    ],
     "splash": {
       "backgroundColor": "#040404",
       "image": "./assets/splash.png",
