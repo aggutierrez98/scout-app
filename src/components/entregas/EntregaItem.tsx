@@ -1,8 +1,6 @@
 import { useEntregaContext } from "context/EntregaContext";
-import { usePagoContext } from "context/PagosContext";
-import { useRouter } from "expo-router/src/hooks";
+import { useRouter } from "expo-router";
 import { Entrega } from "interfaces/entrega";
-import { Pago } from "interfaces/pago";
 import React, { Fragment, memo } from "react";
 import {
   Divider,

@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router/src/hooks";
+import { useRouter } from "expo-router";
 import { User } from "interfaces/auth";
 import React, { Fragment, memo } from "react";
 import { Avatar, Divider, List, TouchableRipple } from "react-native-paper";

@@ -1,5 +1,5 @@
 import { usePagoContext } from "context/PagosContext";
-import { useRouter } from "expo-router/src/hooks";
+import { useRouter } from "expo-router";
 import { Pago } from "interfaces/pago";
 import React, { Fragment, memo } from "react";
 import {

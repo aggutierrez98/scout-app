@@ -1,5 +1,5 @@
 import { useDocumentoContext } from "context/DocumentoContext";
-import { useRouter } from "expo-router/src/hooks";
+import { useRouter } from "expo-router";
 import { Documento } from "interfaces/documento";
 import React, { Fragment, memo } from "react";
 import {

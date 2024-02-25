@@ -1,5 +1,5 @@
 import ListItem from "components/ListItem";
-import { useRouter } from "expo-router/src/hooks";
+import { useRouter } from "expo-router";
 import { Familiar } from "interfaces/familiar";
 import React, { Fragment, memo } from "react";
 import { Divider, MD3Colors } from "react-native-paper";
