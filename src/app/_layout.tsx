@@ -1,7 +1,6 @@
 import { lightTheme, darkTheme } from "../customTheme";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
-import { MenuProvider } from "../context/MenuContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditProvider } from "../context/EditContext";
 import { Slot } from "expo-router";
