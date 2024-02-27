@@ -5,23 +5,10 @@
       "distribution": "internal"
     },
     "preview": {
-      "android": {
-        "buildType": "apk"
-      },
+      "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_API_URL": "https://3.90.147.118.nip.io/api"
       }
-    },
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "developmentClient": true
-    },
-    "preview4": {
-      "distribution": "internal"
     },
     "production": {
       "env": {
