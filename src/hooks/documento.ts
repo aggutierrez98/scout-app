@@ -51,7 +51,7 @@ export const useDocumentsData = () =>
 
 export const useDocumento = (id: string) =>
   useQuery({
-    queryKey: ["documento", "id"],
+    queryKey: ["documento", id],
     queryFn: () => fetchDocumento(id),
   });
 
@@ -59,14 +59,12 @@ export const useEditDocumento = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: string; data: DocumentoEditParams }) =>
       editDocumento(id, data),
-    mutationKey: ["documentos", "id"],
   });
 
 export const useDeleteDocumento = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id }: { id: string }) => deleteDocumento(id),
-    mutationKey: ["delete-documento", "id"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documentos"] });
     },
@@ -77,7 +75,6 @@ export const useCreateDocumento = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: DocumentoCreateParams) => createDocumento(data),
-    mutationKey: ["documentos"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documentos"] });
     },

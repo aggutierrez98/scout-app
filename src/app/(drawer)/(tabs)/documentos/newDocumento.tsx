@@ -5,12 +5,11 @@ import { LoadingScreen } from "components/layout/LoadingScreen";
 import { FormProvider, useForm } from "react-hook-form";
 import { Redirect } from "expo-router";
 import { CustomDropDown } from "components/layout/SelectInput";
-import { useAllScouts, useCreateDocumento } from "hooks";
+import { useAllScouts, useCreateDocumento, useDocumentsData } from "hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { CreateDocumentoSchema } from "validators/documento";
-import { useDocumentosMenuContext } from "context/DocumentosMenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -27,9 +26,12 @@ export default function NewDocumento() {
   });
   const { isSuccess, mutateAsync, isPending } = useCreateDocumento();
   const { data: users } = useAllScouts();
-  const {
-    documento: { documentosList },
-  } = useDocumentosMenuContext();
+  const { data: documentosData } = useDocumentsData();
+  const documentosList =
+    documentosData?.map((documento) => ({
+      label: documento.nombre,
+      value: documento.id,
+    })) || [];
 
   const scoutsList =
     users?.map(({ id, nombre }) => ({

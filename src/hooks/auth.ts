@@ -46,8 +46,6 @@ export const useLogin = (
   return useMutation({
     mutationFn: loginUser,
     onSuccess: async ({ token, ...data }: LoginResponse) => {
-      // localStorage.setItem("token", data.data.token);
-      // localStorage.setItem("token-init-date", new Date().getTime());
       await SecureStore.setItemAsync("secure_token", token);
 
       queryClient.setQueryData(["user"], () => {
@@ -66,10 +64,7 @@ export const useLogin = (
     },
 
     onError: (data: AxiosError) => {
-      // console.log(data.message);
-
       if (data.response) {
-        // const message = (data.response.data as ApiError).message;
         setError("username", {
           type: "credentials",
           message: "Credenciales invalidas",
@@ -109,17 +104,15 @@ export const useUsers = (queryParams: UsersQueryParams) =>
   });
 
 export const useUser = (id: string) =>
-  useQuery({ queryKey: ["users", "id"], queryFn: () => fetchUser(id) });
+  useQuery({ queryKey: ["users", id], queryFn: () => fetchUser(id) });
 
 export const useModifyUser = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: string; data: UserModifyParams }) =>
       modifyUser(id, data),
-    mutationKey: ["users", "id"],
   });
 
 export const useCreateUser = () =>
   useMutation({
     mutationFn: (data: UserCreateParams) => createUser(data),
-    mutationKey: ["users", "id"],
   });

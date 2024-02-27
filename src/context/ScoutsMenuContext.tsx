@@ -1,5 +1,5 @@
 import { usePatrullas } from "hooks";
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useMemo } from "react";
 import {
   VALID_FUNCTIONS,
   VALID_PROGRESSIONS,

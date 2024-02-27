@@ -51,7 +51,6 @@ export const useCreateEntrega = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: EntregaCreateParams) => createEntrega(data),
-    mutationKey: ["entregas"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["entregas"] });
     },
@@ -62,7 +61,6 @@ export const useEditEntrega = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: string; data: EntregaEditParams }) =>
       editEntrega(id, data),
-    mutationKey: ["edit-entrega", "id"],
   });
 
 export const useDeleteEntrega = () => {
@@ -70,7 +68,6 @@ export const useDeleteEntrega = () => {
 
   return useMutation({
     mutationFn: ({ id }: { id: string }) => deleteEntrega(id),
-    //   mutationKey: ["delete-entrega", "id"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["entregas"] });
     },

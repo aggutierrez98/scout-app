@@ -7,8 +7,6 @@ import {
   VALID_PROGRESSIONS,
 } from "utils/constants";
 
-type MenuMode = "scouts" | "pagos" | "documentos" | "entregas";
-
 export interface DocumentosMenuContextProps {
   showMenu: boolean;
   toogleMenuDocumentos: () => void;
@@ -28,12 +26,6 @@ export interface DocumentosMenuContextProps {
     patrullasSelected: string[];
     handlePatrullaChange: (arg: string) => void;
     patrullaList: {
-      value: string;
-      label: string;
-    }[];
-  };
-  documento: {
-    documentosList: {
       value: string;
       label: string;
     }[];
@@ -66,7 +58,6 @@ export const DocumentosMenuProvider = ({
   children: ReactNode[] | ReactNode;
 }) => {
   const { data: patrullasData } = usePatrullas();
-  const { data: documentosData } = useDocumentsData();
 
   const [showMenu, setShowMenu] = useState(false);
   const [vence, setVence] = useState("");
@@ -99,12 +90,6 @@ export const DocumentosMenuProvider = ({
     patrullasData?.map((patrulla) => ({
       label: patrulla.nombre,
       value: patrulla.id,
-    })) || [];
-
-  const documentosList =
-    documentosData?.map((documento) => ({
-      label: documento.nombre,
-      value: documento.id,
     })) || [];
 
   const [progresionesSelected, setProgresionesSelected] = useState<string[]>(
@@ -175,9 +160,7 @@ export const DocumentosMenuProvider = ({
           patrullaList,
           handlePatrullaChange,
         },
-        documento: {
-          documentosList,
-        },
+
         funcion: {
           funcionesSelected,
           funcionesList,

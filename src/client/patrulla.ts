@@ -13,6 +13,7 @@ export const fetchPatrullas = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return data as Patrulla[];
   } catch (error) {
     console.log(error);

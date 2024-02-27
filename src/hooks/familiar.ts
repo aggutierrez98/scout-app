@@ -48,7 +48,6 @@ export const useEditFamiliar = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: string; data: FamiliarEditParams }) =>
       editFamiliar(id, data),
-    mutationKey: ["edit-familiar", "id"],
   });
 
 export const useRelateFamiliar = () => {

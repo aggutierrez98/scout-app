@@ -4,9 +4,6 @@ import { editScout } from "../client/scouts";
 import { ScoutEditParams, ScoutsQueryParams } from "interfaces/scout";
 import { SCOUTS_QUERY_LIMIT } from "utils/constants";
 
-export const useScout = (id: string) =>
-  useQuery({ queryKey: ["scout", "id"], queryFn: () => fetchScout(id) });
-
 export const useScouts = (queryParams: ScoutsQueryParams) =>
   useInfiniteQuery({
     queryKey: [
@@ -28,6 +25,9 @@ export const useScouts = (queryParams: ScoutsQueryParams) =>
     initialPageParam: 1,
   });
 
+export const useScout = (id: string) =>
+  useQuery({ queryKey: ["scout", id], queryFn: () => fetchScout(id) });
+
 export const useAllScouts = (onlyEducadores?: boolean) =>
   useQuery({
     queryKey: ["scouts", "all"],
@@ -38,5 +38,4 @@ export const useEditScout = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: string; data: ScoutEditParams }) =>
       editScout(id, data),
-    mutationKey: ["users", "id"],
   });

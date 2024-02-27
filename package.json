@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@dev-plugins/react-query": "^0.0.5",
     "@expo/webpack-config": "^19.0.0",
     "@hookform/resolvers": "^3.3.2",
     "@react-navigation/drawer": "^6.6.6",
