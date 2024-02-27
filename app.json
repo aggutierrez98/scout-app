@@ -3,7 +3,11 @@
     "android": {
       "userInterfaceStyle": "automatic",
       "package": "com.aggutierrez.scoutapp",
-      "versionCode": 1
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/scout-logo.png",
+        "backgroundColor": "#0F0F0F"
+      }
     },
     "assetBundlePatterns": ["**/*"],
     "icon": "./assets/scout-logo.png",
@@ -19,7 +23,7 @@
     "scheme": "scoutapp",
     "slug": "scout-app",
     "splash": {
-      "backgroundColor": "#040404",
+      "backgroundColor": "#0F0F0F",
       "image": "./assets/splash.png",
       "resizeMode": "contain"
     },
