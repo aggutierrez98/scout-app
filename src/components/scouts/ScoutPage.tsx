@@ -14,163 +14,184 @@ import { useScoutMenuContext } from "context/ScoutsMenuContext";
 import { useEditScout, useScout } from "hooks";
 
 type ScoutParams = {
-  scout: string;
+	scout: string;
 };
 
 type FormValues = {
-  telefono: string;
-  mail: string;
-  direccion: string;
-  localidad: string;
-  religion: string;
-  funcion: string;
-  patrullaId: string;
-  progresionActual: string;
+	telefono: string;
+	mail: string;
+	direccion: string;
+	localidad: string;
+	religion: string;
+	funcion: string;
+	patrullaId: string;
+	progresionActual: string;
 };
 export default function ScoutPage() {
-  const theme = useTheme();
-  const { toogleSnackBar } = useSnackBarContext();
-  const { scout: scoutId } = useLocalSearchParams<ScoutParams>();
-  if (!scoutId) return null;
-  const { data, isLoading } = useScout(scoutId);
-  const { mutateAsync, isPending } = useEditScout();
-  const { goBack } = useNavigation();
-  const {
-    progresion: { progresionList },
-    patrulla: { patrullaList },
-    funcion: { funcionesList },
-    religionList,
-  } = useScoutMenuContext();
+	const theme = useTheme();
+	const { toogleSnackBar } = useSnackBarContext();
+	const { scout: scoutId } = useLocalSearchParams<ScoutParams>();
+	if (!scoutId) return null;
+	const { data, isLoading } = useScout(scoutId);
+	const { mutateAsync, isPending } = useEditScout();
+	const { goBack } = useNavigation();
+	const {
+		progresion: { progresionList },
+		patrulla: { patrullaList },
+		funcion: { funcionesList },
+		religionList,
+	} = useScoutMenuContext();
 
-  const formMethods = useForm<FormValues>({
-    mode: "onBlur",
-    resolver: zodResolver(EditScoutSchema),
-    values: {
-      direccion: data?.direccion ?? "",
-      funcion: data?.funcion ?? "",
-      localidad: data?.localidad ?? "",
-      mail: data?.mail ?? "",
-      patrullaId: data?.patrullaId ?? "",
-      progresionActual: data?.progresionActual ?? "",
-      religion: data?.religion ?? "",
-      telefono: data?.telefono ?? "",
-    },
-  });
-  const { isEditing } = useEditContext();
+	const formMethods = useForm<FormValues>({
+		mode: "onBlur",
+		resolver: zodResolver(EditScoutSchema),
+		values: {
+			direccion: data?.direccion ?? "",
+			funcion: data?.funcion ?? "",
+			localidad: data?.localidad ?? "",
+			mail: data?.mail ?? "",
+			patrullaId: data?.patrullaId ?? "",
+			progresionActual: data?.progresionActual ?? "",
+			religion: data?.religion ?? "",
+			telefono: data?.telefono ?? "",
+		},
+	});
+	const { isEditing } = useEditContext();
 
-  return (
-    <ScrollView
-      style={[
-        {
-          flex: 1,
-          padding: 20,
-          paddingTop: 0,
-          backgroundColor: theme.colors.background,
-        },
-      ]}
-    >
-      {(isLoading || isPending) && <LoadingScreen />}
+	return (
+		<ScrollView
+			style={[
+				{
+					flex: 1,
+					padding: 20,
+					paddingTop: 0,
+					backgroundColor: theme.colors.background,
+				},
+			]}
+		>
+			{(isLoading || isPending) && <LoadingScreen />}
 
-      <Text style={{ fontSize: 25 }}>
-        {data?.apellido} {data?.nombre}
-      </Text>
-      <Divider style={{ marginBottom: 10 }} />
+			<Text style={{ fontSize: 25 }}>
+				{data?.apellido} {data?.nombre}
+			</Text>
+			<Divider style={{ marginBottom: 10 }} />
 
-      <DescriptiveText title="DNI" description={data?.dni || "-"} />
-      <DescriptiveText title="Edad" description={`${data?.edad} Años`} />
-      <DescriptiveText
-        title="Sexo"
-        description={data?.sexo === "M" ? "Masculino" : "Femenino"}
-      />
+			<DescriptiveText title="DNI" description={data?.dni || "-"} />
+			<DescriptiveText title="Edad" description={`${data?.edad} Años`} />
+			<DescriptiveText
+				title="Sexo"
+				description={data?.sexo === "M" ? "Masculino" : "Femenino"}
+			/>
 
-      {!isEditing ? (
-        <>
-          <DescriptiveText title="Telefono" description={data?.telefono} />
-          <DescriptiveText title="Mail" description={data?.mail} />
-          <DescriptiveText
-            title="Direccion"
-            description={`${data?.direccion} - ${data?.localidad}`}
-          />
-          <DescriptiveText title="Funcion" description={data?.funcion} />
-          <DescriptiveText title="Religion" description={data?.religion} />
-          <DescriptiveText
-            title="Patrulla"
-            description={data?.patrulla?.nombre}
-          />
-        </>
-      ) : (
-        <>
-          <Divider style={{ marginVertical: 10 }} />
+			{!isEditing ? (
+				<>
+					<DescriptiveText
+						title="Telefono"
+						description={data?.telefono}
+					/>
+					<DescriptiveText title="Mail" description={data?.mail} />
+					<DescriptiveText
+						title="Direccion"
+						description={`${data?.direccion} - ${data?.localidad}`}
+					/>
+					<DescriptiveText
+						title="Funcion"
+						description={data?.funcion}
+					/>
+					<DescriptiveText
+						title="Religion"
+						description={data?.religion}
+					/>
+					<DescriptiveText
+						title="Patrulla"
+						description={data?.patrulla?.nombre}
+					/>
+				</>
+			) : (
+				<>
+					<Divider style={{ marginVertical: 10 }} />
 
-          <FormProvider {...formMethods}>
-            <CustomTextInput
-              name="telefono"
-              label="Telefono"
-              placeholder="Ingrese numero de telefono"
-            />
-            <CustomTextInput
-              name="mail"
-              label="Mail"
-              placeholder="Ingrese email"
-            />
-            <CustomTextInput
-              name="direccion"
-              label="Calle"
-              placeholder="Ingrese calle y numero"
-            />
-            <CustomTextInput
-              name="localidad"
-              label="Localidad"
-              placeholder="Ingrese localidad"
-            />
+					<FormProvider {...formMethods}>
+						<CustomTextInput
+							name="telefono"
+							label="Telefono"
+							placeholder="Ingrese numero de telefono"
+						/>
+						<CustomTextInput
+							name="mail"
+							label="Mail"
+							placeholder="Ingrese email"
+						/>
+						<CustomTextInput
+							name="direccion"
+							label="Calle"
+							placeholder="Ingrese calle y numero"
+						/>
+						<CustomTextInput
+							name="localidad"
+							label="Localidad"
+							placeholder="Ingrese localidad"
+						/>
 
-            <CustomDropDown
-              name="religion"
-              label="Religion"
-              list={religionList}
-            />
+						<CustomDropDown
+							name="religion"
+							label="Religion"
+							list={religionList}
+						/>
 
-            <CustomDropDown
-              name="funcion"
-              label="Funcion"
-              list={funcionesList}
-            />
+						<CustomDropDown
+							name="funcion"
+							label="Funcion"
+							list={funcionesList}
+						/>
 
-            <CustomDropDown
-              name="patrullaId"
-              label="Patrulla"
-              list={patrullaList}
-            />
+						<CustomDropDown
+							name="patrullaId"
+							label="Patrulla"
+							list={patrullaList}
+						/>
 
-            <CustomDropDown
-              name="progresionActual"
-              label="Progresion"
-              list={progresionList}
-            />
+						<CustomDropDown
+							name="progresionActual"
+							label="Progresion"
+							list={progresionList}
+						/>
 
-            <Button
-              icon="send"
-              mode="contained"
-              contentStyle={{ flexDirection: "row-reverse" }}
-              style={{ marginVertical: 10 }}
-              onPress={formMethods.handleSubmit(async (data) => {
-                Object.keys(data).forEach((key) => {
-                  if (data[key as keyof FormValues] === "") {
-                    (data[key as keyof FormValues] as unknown) = null;
-                  }
-                });
-                const resp = await mutateAsync({ id: scoutId, data });
-                if (resp) {
-                  toogleSnackBar("Scout modificado con exito!", "success");
-                  goBack();
-                } else toogleSnackBar("Error al modificar el scout", "error");
-              })}
-            >
-              Guardar
-            </Button>
-          </FormProvider>
-        </>
-      )}
-    </ScrollView>
-  );
+						<Button
+							icon="send"
+							mode="contained"
+							contentStyle={{ flexDirection: "row-reverse" }}
+							style={{ marginVertical: 10 }}
+							onPress={formMethods.handleSubmit(async (data) => {
+								for (const key of Object.keys(data)) {
+									if (data[key as keyof FormValues] === "") {
+										(data[
+											key as keyof FormValues
+										] as unknown) = null;
+									}
+								}
+								const resp = await mutateAsync({
+									id: scoutId,
+									data,
+								});
+								if (resp) {
+									toogleSnackBar(
+										"Scout modificado con exito!",
+										"success",
+									);
+									goBack();
+								} else
+									toogleSnackBar(
+										"Error al modificar el scout",
+										"error",
+									);
+							})}
+						>
+							Guardar
+						</Button>
+					</FormProvider>
+				</>
+			)}
+		</ScrollView>
+	);
 }
