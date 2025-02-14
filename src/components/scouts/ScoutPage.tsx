@@ -12,22 +12,13 @@ import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useEditScout, useScout } from "hooks";
 import { useMenuContext } from "context/MenuContext";
+import { formatEmptyStrings } from "utils/formatEmptyStrings";
+import { ScoutEditParams } from "interfaces/scout";
 
 type ScoutParams = {
 	scout: string;
 };
 
-// // type FormValues = {
-// // 	telefono: string;
-// // 	mail: string;
-// // 	direccion: string;
-// // 	localidad: string;
-// // 	religion: string;
-// // 	funcion: string;
-// // 	equipoId: string;
-// // 	rama: string;
-// // 	progresionActual: string;
-// // };
 export default function ScoutPage() {
 	const theme = useTheme();
 	const { toogleSnackBar } = useSnackBarContext();
@@ -176,16 +167,9 @@ export default function ScoutPage() {
 							contentStyle={{ flexDirection: "row-reverse" }}
 							style={{ marginVertical: 10 }}
 							onPress={formMethods.handleSubmit(async (data) => {
-								// for (const key of Object.keys(data)) {
-								// 	if (data[key as keyof FormValues] === "") {
-								// 		(data[
-								// 			key as keyof FormValues
-								// 		] as unknown) = null;
-								// 	}
-								// }
 								const resp = await mutateAsync({
 									id: scoutId,
-									data,
+									data: formatEmptyStrings(data) as ScoutEditParams,
 								});
 								if (resp) {
 									toogleSnackBar(

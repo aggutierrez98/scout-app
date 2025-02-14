@@ -9,6 +9,13 @@ export interface User {
   active: boolean;
 }
 
+export interface GetMeResponse {
+  id: string
+  username: string
+  scout: Scout;
+  role: string
+}
+
 export interface UsersQueryParams {
   searchQuery?: string;
 }

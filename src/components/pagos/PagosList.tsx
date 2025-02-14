@@ -27,6 +27,7 @@ export default function PagosList({ searchQuery }: Props) {
 		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
 		rendido: { rendido },
+		rama: { ramasSelected }
 	} = useMenuContext();
 	const {
 		data,
@@ -40,6 +41,7 @@ export default function PagosList({ searchQuery }: Props) {
 		equipos: equiposSelected,
 		progresiones: progresionesSelected,
 		funciones: funcionesSelected,
+		ramas: ramasSelected,
 		tiempoDesde,
 		tiempoHasta,
 		rendido: rendido as "si" | "no" | "",

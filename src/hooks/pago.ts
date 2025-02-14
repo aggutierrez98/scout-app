@@ -24,6 +24,7 @@ export const usePagos = (queryParams: PagosQueryParams) =>
 			"pagos",
 			`searchParam${queryParams.searchQuery ?? ""}-equipos=${queryParams.equipos
 			}-metodoPago=${queryParams.metodoPago}-progresion=${queryParams.progresiones
+			}-ramas=${queryParams.ramas
 			}-funcion=${queryParams.funciones}
       -rendido=${queryParams.rendido}
       -tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${queryParams.tiempoHasta

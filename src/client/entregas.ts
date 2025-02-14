@@ -78,6 +78,7 @@ export const fetchEntregas = async (
     tiempoDesde,
     tiempoHasta,
     funciones,
+    ramas,
     equipos,
     progresiones,
   }: EntregasQueryParams
@@ -97,6 +98,7 @@ export const fetchEntregas = async (
 
     const equiposStr = getArrSearchParam(equipos, "equipos");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
+    const ramasStr = getArrSearchParam(ramas, "ramas");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
     const tipoEntregasStr = getArrSearchParam(
       tipoEntregasSelected,
@@ -106,7 +108,7 @@ export const fetchEntregas = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${equiposStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${equiposStr}${progresionesStr}${funcionesStr}${ramasStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",

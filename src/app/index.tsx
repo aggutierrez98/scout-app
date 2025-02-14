@@ -1,4 +1,4 @@
-import { useRenewLogin } from "hooks";
+import { useGetMe } from "hooks";
 import LoginForm from "components/auth/LoginForm";
 import LogoIcon from "components/layout/AppLogoIcon";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -7,9 +7,8 @@ import { View, SafeAreaView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
 export default function Index() {
-	const { data: userData, isLoading } = useRenewLogin();
+	const { data: userData, isLoading } = useGetMe();
 	const theme = useTheme();
-	console.log({ userData });
 
 	return (
 		<SafeAreaView

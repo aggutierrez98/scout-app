@@ -28,6 +28,7 @@ export default function EntregasList({ searchQuery }: Props) {
 		funcion: { funcionesSelected },
 		equipo: { equiposSelected },
 		progresion: { progresionesSelected },
+		rama: { ramasSelected },
 	} = useMenuContext();
 
 	const theme = useTheme();
@@ -47,6 +48,7 @@ export default function EntregasList({ searchQuery }: Props) {
 		funciones: funcionesSelected,
 		equipos: equiposSelected,
 		progresiones: progresionesSelected,
+		ramas: ramasSelected
 	});
 
 	return (

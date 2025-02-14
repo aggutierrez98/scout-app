@@ -59,6 +59,7 @@ export const fetchDocuments = async (
     equipos,
     progresiones,
     funciones,
+    ramas,
     searchQuery,
     vence,
     tiempoDesde,
@@ -80,13 +81,14 @@ export const fetchDocuments = async (
 
     const equiposStr = getArrSearchParam(equipos, "equipos");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
+    const ramasStr = getArrSearchParam(ramas, "ramas");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
     const venceStr = vence ? `&vence=${vence === "si" ? "true" : "false"}` : "";
 
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/documento?offset=${offset}&limit=${DOCUMENTOS_QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${equiposStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/documento?offset=${offset}&limit=${DOCUMENTOS_QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${equiposStr}${funcionesStr}${ramasStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",

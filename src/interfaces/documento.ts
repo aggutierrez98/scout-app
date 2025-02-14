@@ -23,6 +23,7 @@ export interface DocumentosQueryParams {
   searchQuery: string;
   equipos: string[];
   progresiones: string[];
+  ramas: string[];
   funciones: string[];
   vence: string;
   tiempoDesde: Date;

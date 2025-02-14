@@ -25,6 +25,7 @@ export interface EntregasQueryParams {
   tiempoHasta: Date;
   tipoEntregasSelected: string[];
   equipos: string[];
+  ramas: string[];
   progresiones: string[];
   funciones: string[];
 }

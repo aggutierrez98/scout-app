@@ -6,7 +6,7 @@ import { SCOUTS_QUERY_LIMIT } from "utils/constants";
 
 export const fetchScouts = async (
   pageParam: number,
-  { equipos, progresiones, funciones, searchQuery, sexo }: ScoutsQueryParams
+  { equipos, progresiones, funciones, searchQuery, sexo, ramas }: ScoutsQueryParams
 ) => {
   try {
     const offset = (pageParam - 1) * SCOUTS_QUERY_LIMIT;
@@ -22,13 +22,14 @@ export const fetchScouts = async (
     }
 
     const equiposStr = getArrSearchParam(equipos, "equipos");
+    const ramasStr = getArrSearchParam(ramas, "ramas");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
 
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/scout?offset=${offset}&limit=${SCOUTS_QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${equiposStr}${funcionesStr}`,
+      `/scout?offset=${offset}&limit=${SCOUTS_QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${equiposStr}${funcionesStr}${ramasStr}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -47,8 +48,6 @@ export const fetchScouts = async (
 export const fetchScout = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-
-    // // const json = await scoutsApi.get("scout").json();
     const { data, status } = await api.get(`/scout/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -93,10 +92,8 @@ export const editScout = async (
   scoutData: ScoutEditParams
 ) => {
   try {
-    console.log({scoutData});
     const token = await SecureStore.getItemAsync("secure_token");
 
-    // // const json = await scoutsApi.get("scout").json();
     const { data, status } = await api.put(`/scout/${scoutId}`, scoutData, {
       headers: {
         "Content-Type": "application/json",

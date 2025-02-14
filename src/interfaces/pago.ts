@@ -25,6 +25,7 @@ export interface PagosQueryParams {
   searchQuery: string;
   equipos: string[];
   progresiones: string[];
+  ramas: string[];
   funciones: string[];
   rendido: "si" | "no" | "";
   tiempoDesde: Date;

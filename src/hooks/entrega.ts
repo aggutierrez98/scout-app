@@ -22,12 +22,9 @@ export const useEntregas = (queryParams: EntregasQueryParams) =>
   useInfiniteQuery({
     queryKey: [
       "entregas",
-      `searchParam${queryParams.searchQuery ?? ""}-equipos=${
-        queryParams.equipos
-      }-progresion=${queryParams.progresiones}-funcion=${
-        queryParams.funciones
-      }-tipoEntrega=${queryParams.tipoEntregasSelected}-tiempoDesde=${
-        queryParams.tiempoDesde
+      `searchParam${queryParams.searchQuery ?? ""}-equipos=${queryParams.equipos
+      }-progresion=${queryParams.progresiones}-funcion=${queryParams.funciones}-ramas=${queryParams.ramas
+      }-tipoEntrega=${queryParams.tipoEntregasSelected}-tiempoDesde=${queryParams.tiempoDesde
       }-tiempoHasta=${queryParams.tiempoHasta}`,
     ],
     queryFn: ({ pageParam }) => fetchEntregas(pageParam, queryParams),

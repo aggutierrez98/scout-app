@@ -23,14 +23,11 @@ export const useDocuments = (queryParams: DocumentosQueryParams) =>
   useInfiniteQuery({
     queryKey: [
       "documents",
-      `searchParam${queryParams.searchQuery ?? ""}-equipos=${
-        queryParams.equipos
-      }-progresion=${queryParams.progresiones}-funcion=${
-        queryParams.funciones
-      }-funcion=${queryParams.funciones}-vence=${
-        queryParams.vence
-      }-tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${
-        queryParams.tiempoHasta
+      `searchParam${queryParams.searchQuery ?? ""}-equipos=${queryParams.equipos
+      }-progresion=${queryParams.progresiones}-funcion=${queryParams.funciones
+      }-ramas=${queryParams.ramas
+      }-funcion=${queryParams.funciones}-vence=${queryParams.vence
+      }-tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${queryParams.tiempoHasta
       }`,
     ],
     queryFn: ({ pageParam }) => fetchDocuments(pageParam, queryParams),

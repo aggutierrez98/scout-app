@@ -27,6 +27,7 @@ export default function DocumentsList({ searchQuery }: Props) {
 		funcion: { funcionesSelected },
 		vence: { vence },
 		tiempo: { tiempoDesde, tiempoHasta },
+		rama: { ramasSelected }
 	} = useMenuContext();
 
 	const {
@@ -39,6 +40,7 @@ export default function DocumentsList({ searchQuery }: Props) {
 	} = useDocuments({
 		equipos: equiposSelected,
 		vence,
+		ramas: ramasSelected,
 		progresiones: progresionesSelected,
 		funciones: funcionesSelected,
 		searchQuery,

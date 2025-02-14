@@ -7,7 +7,7 @@ import {
 	useTheme,
 	withTheme,
 } from "react-native-paper";
-import { useLogout, useRenewLogin } from "hooks";
+import { useGetMe, useLogout } from "hooks";
 import Drawer from "expo-router/drawer";
 import LogoIcon from "components/layout/AppLogoIcon";
 import { View, SafeAreaView } from "react-native";
@@ -16,7 +16,7 @@ import { useSnackBarContext } from "context/SnackBarContext";
 import { EditProvider } from "context/EditContext";
 
 function AppLayout() {
-	const { data: userData } = useRenewLogin();
+	const { data: userData } = useGetMe();
 	const logout = useLogout();
 	const { snackBarText, snackBarMode, visibleSnack, onDismissSnackBar } =
 		useSnackBarContext();

@@ -1,12 +1,13 @@
 import * as SecureStore from "expo-secure-store";
 import { LoginResponse } from "interfaces/scout";
 import {
+  GetMeResponse,
   User,
   UserCreateParams,
   UserModifyParams,
   UsersQueryParams,
 } from "interfaces/auth";
-import { USERS_QUERY_LIMIT, VALID_ROLES } from "utils/constants";
+import { USERS_QUERY_LIMIT } from "utils/constants";
 import api from "./api";
 
 export const fetchUsers = async (
@@ -38,8 +39,6 @@ export const fetchUsers = async (
 export const fetchUser = async (id: string) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-
-    // // const json = await scoutsApi.get("scout").json();
     const { data, status } = await api.get(`/auth/users/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +105,6 @@ export const loginUser = async (userData: {
 export const renewLogin = async () => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-
     if (token) {
       const data = await api.get("/auth/renew", {
         headers: { Authorization: `Bearer ${token}` },
@@ -119,3 +117,20 @@ export const renewLogin = async () => {
     return null;
   }
 };
+
+
+export const getMe = async () => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+    if (token) {
+      const data = await api.get("/auth/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data.data as GetMeResponse;
+    }
+    return null;
+  } catch (error) {
+    await SecureStore.deleteItemAsync("secure_token");
+    return null;
+  }
+}

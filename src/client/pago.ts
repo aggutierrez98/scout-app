@@ -14,6 +14,7 @@ export const fetchPagos = async (
   {
     equipos,
     progresiones,
+    ramas,
     funciones,
     searchQuery,
     metodoPago,
@@ -36,6 +37,7 @@ export const fetchPagos = async (
     }
 
     const equiposStr = getArrSearchParam(equipos, "equipos");
+    const ramasStr = getArrSearchParam(ramas, "ramas");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
     const rendidoStr = rendido
@@ -45,7 +47,7 @@ export const fetchPagos = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${equiposStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${equiposStr}${funcionesStr}${ramasStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",

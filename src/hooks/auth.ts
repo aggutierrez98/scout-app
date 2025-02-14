@@ -11,6 +11,7 @@ import {
 	createUser,
 	fetchUser,
 	fetchUsers,
+	getMe,
 	loginUser,
 	modifyUser,
 	renewLogin,
@@ -27,7 +28,19 @@ export const useRenewLogin = () =>
 	useQuery({
 		queryKey: ["user"],
 		queryFn: renewLogin,
-		retry: false,
+		retry: 0,
+		throwOnError(error, query) {
+			const queryClient = useQueryClient();
+			queryClient.resetQueries();
+			return false;
+		},
+	});
+
+export const useGetMe = () =>
+	useQuery({
+		queryKey: ["user"],
+		queryFn: getMe,
+		retry: 0,
 		throwOnError(error, query) {
 			const queryClient = useQueryClient();
 			queryClient.resetQueries();
@@ -45,22 +58,11 @@ export const useLogin = (
 
 	return useMutation({
 		mutationFn: loginUser,
-		onSuccess: async ({ token, ...data }: LoginResponse) => {
+		onSuccess: async ({ token }: LoginResponse) => {
 			await SecureStore.setItemAsync("secure_token", token);
-			console.log(token, data);
-			queryClient.setQueryData(["user"], () => {
-				return {
-					id: data.id,
-					username: data.username,
-					name: `${data.scout.apellido} ${data.scout.nombre}`,
-					rol: data.role,
-					funcion: data.scout.funcion,
-					dni: data.scout.dni,
-					sexo: data.scout.sexo,
-					telefono: data.scout.telefono,
-					mail: data.scout.mail,
-				};
-			});
+			queryClient.invalidateQueries({
+				queryKey: ["user"]
+			})
 		},
 
 		onError: (data: AxiosError) => {
