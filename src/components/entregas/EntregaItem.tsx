@@ -1,4 +1,4 @@
-import { useEntregaContext } from "context/EntregaContext";
+import { useDialogContext } from "context/DialogContext";
 import { useRouter } from "expo-router";
 import { Entrega } from "interfaces/entrega";
 import React, { Fragment, memo } from "react";
@@ -17,7 +17,7 @@ interface Props {
 
 export default memo(function EntregaItem({ item }: Props) {
   const router = useRouter();
-  const { setIdToDelete, showDialog } = useEntregaContext();
+  const { setIdToDelete, showDialog } = useDialogContext();
 
   const { colors } = useTheme();
 
@@ -36,10 +36,10 @@ export default memo(function EntregaItem({ item }: Props) {
                 item.tipoEntrega.startsWith("PROG")
                   ? "seal"
                   : item.tipoEntrega.startsWith("ESP")
-                  ? "seal-variant"
-                  : item.tipoEntrega.includes("GUIA")
-                  ? "medal-outline"
-                  : "tshirt-crew"
+                    ? "seal-variant"
+                    : item.tipoEntrega.includes("GUIA")
+                      ? "medal-outline"
+                      : "tshirt-crew"
               }
               color={colors.primary}
               size={35}

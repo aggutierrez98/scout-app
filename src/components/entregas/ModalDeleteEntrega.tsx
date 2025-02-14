@@ -1,4 +1,4 @@
-import { useEntregaContext } from "context/EntregaContext";
+import { useDialogContext } from "context/DialogContext";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useDeleteEntrega } from "hooks";
 import React from "react";
@@ -6,7 +6,7 @@ import { Button, Dialog, Portal, Text } from "react-native-paper";
 
 export const ModalDeleteEntrega = () => {
   const { mutateAsync } = useDeleteEntrega();
-  const { hideDialog, idToDelete, modalVisible } = useEntregaContext();
+  const { hideDialog, idToDelete, modalVisible } = useDialogContext();
   const { toogleSnackBar } = useSnackBarContext();
 
   return (

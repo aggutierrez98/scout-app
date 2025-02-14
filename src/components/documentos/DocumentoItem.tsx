@@ -1,4 +1,4 @@
-import { useDocumentoContext } from "context/DocumentoContext";
+import { useDialogContext } from "context/DialogContext";
 import { useRouter } from "expo-router";
 import { Documento } from "interfaces/documento";
 import React, { Fragment, memo } from "react";
@@ -18,7 +18,7 @@ interface Props {
 export default memo(function DocumentoItem({ item }: Props) {
   const router = useRouter();
   const { colors } = useTheme();
-  const { setIdToDelete, showDialog } = useDocumentoContext();
+  const { setIdToDelete, showDialog } = useDialogContext();
 
   return (
     <Fragment key={item.id}>

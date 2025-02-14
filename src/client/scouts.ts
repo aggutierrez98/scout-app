@@ -93,6 +93,7 @@ export const editScout = async (
   scoutData: ScoutEditParams
 ) => {
   try {
+    console.log({scoutData});
     const token = await SecureStore.getItemAsync("secure_token");
 
     // // const json = await scoutsApi.get("scout").json();

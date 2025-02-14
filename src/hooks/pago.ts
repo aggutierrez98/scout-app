@@ -22,15 +22,12 @@ export const usePagos = (queryParams: PagosQueryParams) =>
 	useInfiniteQuery({
 		queryKey: [
 			"pagos",
-			`searchParam${queryParams.searchQuery ?? ""}-equipos=${
-				queryParams.equipos
-			}-metodoPago=${queryParams.metodoPago}-progresion=${
-				queryParams.progresiones
+			`searchParam${queryParams.searchQuery ?? ""}-equipos=${queryParams.equipos
+			}-metodoPago=${queryParams.metodoPago}-progresion=${queryParams.progresiones
 			}-funcion=${queryParams.funciones}
       -rendido=${queryParams.rendido}
-      -tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${
-			queryParams.tiempoHasta
-		}`,
+      -tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${queryParams.tiempoHasta
+			}`,
 		],
 		queryFn: ({ pageParam }) => fetchPagos(pageParam, queryParams),
 		getNextPageParam: (lastPage, allPages) => {

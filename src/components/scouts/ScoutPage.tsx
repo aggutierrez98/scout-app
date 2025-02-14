@@ -10,23 +10,24 @@ import { CustomDropDown } from "components/layout/SelectInput";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useScoutMenuContext } from "context/ScoutsMenuContext";
 import { useEditScout, useScout } from "hooks";
+import { useMenuContext } from "context/MenuContext";
 
 type ScoutParams = {
 	scout: string;
 };
 
-type FormValues = {
-	telefono: string;
-	mail: string;
-	direccion: string;
-	localidad: string;
-	religion: string;
-	funcion: string;
-	equipoId: string;
-	progresionActual: string;
-};
+// // type FormValues = {
+// // 	telefono: string;
+// // 	mail: string;
+// // 	direccion: string;
+// // 	localidad: string;
+// // 	religion: string;
+// // 	funcion: string;
+// // 	equipoId: string;
+// // 	rama: string;
+// // 	progresionActual: string;
+// // };
 export default function ScoutPage() {
 	const theme = useTheme();
 	const { toogleSnackBar } = useSnackBarContext();
@@ -35,14 +36,16 @@ export default function ScoutPage() {
 	const { data, isLoading } = useScout(scoutId);
 	const { mutateAsync, isPending } = useEditScout();
 	const { goBack } = useNavigation();
+	const { isEditing, changeIsEditing } = useEditContext();
 	const {
 		progresion: { progresionList },
 		equipo: { equipoList },
 		funcion: { funcionesList },
+		rama: { ramasList },
 		religionList,
-	} = useScoutMenuContext();
+	} = useMenuContext();
 
-	const formMethods = useForm<FormValues>({
+	const formMethods = useForm({
 		mode: "onBlur",
 		resolver: zodResolver(EditScoutSchema),
 		values: {
@@ -50,13 +53,13 @@ export default function ScoutPage() {
 			funcion: data?.funcion ?? "",
 			localidad: data?.localidad ?? "",
 			mail: data?.mail ?? "",
+			rama: data?.rama ?? "",
 			equipoId: data?.equipoId ?? "",
 			progresionActual: data?.progresionActual ?? "",
 			religion: data?.religion ?? "",
 			telefono: data?.telefono ?? "",
 		},
 	});
-	const { isEditing } = useEditContext();
 
 	return (
 		<ScrollView
@@ -101,6 +104,10 @@ export default function ScoutPage() {
 					<DescriptiveText
 						title="Religion"
 						description={data?.religion}
+					/>
+					<DescriptiveText
+						title="Rama"
+						description={data?.rama}
 					/>
 					<DescriptiveText
 						title="Equipo"
@@ -152,6 +159,12 @@ export default function ScoutPage() {
 						/>
 
 						<CustomDropDown
+							name="rama"
+							label="Rama"
+							list={ramasList}
+						/>
+
+						<CustomDropDown
 							name="progresionActual"
 							label="Progresion"
 							list={progresionList}
@@ -163,13 +176,13 @@ export default function ScoutPage() {
 							contentStyle={{ flexDirection: "row-reverse" }}
 							style={{ marginVertical: 10 }}
 							onPress={formMethods.handleSubmit(async (data) => {
-								for (const key of Object.keys(data)) {
-									if (data[key as keyof FormValues] === "") {
-										(data[
-											key as keyof FormValues
-										] as unknown) = null;
-									}
-								}
+								// for (const key of Object.keys(data)) {
+								// 	if (data[key as keyof FormValues] === "") {
+								// 		(data[
+								// 			key as keyof FormValues
+								// 		] as unknown) = null;
+								// 	}
+								// }
 								const resp = await mutateAsync({
 									id: scoutId,
 									data,
@@ -179,6 +192,7 @@ export default function ScoutPage() {
 										"Scout modificado con exito!",
 										"success",
 									);
+									changeIsEditing()
 									goBack();
 								} else
 									toogleSnackBar(

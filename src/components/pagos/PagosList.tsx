@@ -10,9 +10,10 @@ import { Pago } from "interfaces/pago";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import PagoItem from "./PagoItem";
 import { ModalDeletePago } from "./ModalDeletePago";
-import { usePagoMenuContext } from "context/PagosMenuContext";
+// import { usePagoMenuContext } from "context/PagosMenuContext";
 import { useDeletePago, usePagos } from "hooks";
 import { getFlattenData } from "utils/getFlattenData";
+import { useMenuContext } from "context/MenuContext";
 
 interface Props {
 	searchQuery: string;
@@ -26,7 +27,7 @@ export default function PagosList({ searchQuery }: Props) {
 		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
 		rendido: { rendido },
-	} = usePagoMenuContext();
+	} = useMenuContext();
 	const {
 		data,
 		fetchNextPage,

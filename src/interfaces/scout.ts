@@ -48,6 +48,7 @@ export interface ScoutsQueryParams {
   equipos: string[];
   progresiones: string[];
   funciones: string[];
+  ramas: string[];
 }
 
 export interface ScoutEditParams {

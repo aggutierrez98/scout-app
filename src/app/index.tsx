@@ -9,6 +9,7 @@ import { Text, useTheme } from "react-native-paper";
 export default function Index() {
 	const { data: userData, isLoading } = useRenewLogin();
 	const theme = useTheme();
+	console.log({ userData });
 
 	return (
 		<SafeAreaView

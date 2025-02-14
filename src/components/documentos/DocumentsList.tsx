@@ -11,8 +11,8 @@ import { useDeleteDocumento, useDocuments } from "hooks";
 import { Documento } from "interfaces/documento";
 import { ModalDeleteDocumento } from "./ModalDeleteDocumento";
 import DocumentoItem from "./DocumentoItem";
-import { useDocumentosMenuContext } from "context/DocumentosMenuContext";
 import { getFlattenData } from "utils/getFlattenData";
+import { useMenuContext } from "context/MenuContext";
 
 interface Props {
 	searchQuery: string;
@@ -27,7 +27,7 @@ export default function DocumentsList({ searchQuery }: Props) {
 		funcion: { funcionesSelected },
 		vence: { vence },
 		tiempo: { tiempoDesde, tiempoHasta },
-	} = useDocumentosMenuContext();
+	} = useMenuContext();
 
 	const {
 		data,

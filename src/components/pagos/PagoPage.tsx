@@ -11,8 +11,8 @@ import { CustomDatePicker } from "components/layout/DatePicker";
 import { EditPagoSchema } from "validators/pago";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { usePagoMenuContext } from "context/PagosMenuContext";
 import { useEditPago, usePago } from "hooks";
+import { useMenuContext } from '../../context/MenuContext';
 
 type PagoParams = {
   pago: string;
@@ -38,14 +38,14 @@ export default function PagoPage() {
   const { goBack } = useNavigation();
   const {
     metodoPago: { metodosPagoList },
-  } = usePagoMenuContext();
+  } = useMenuContext();
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
     resolver: zodResolver(EditPagoSchema),
     values: {
       concepto: data?.concepto ?? "",
-      monto: data?.monto ?? "",
+      monto: data?.monto?.toString() ?? "",
       scoutId: data?.scoutId ?? "",
       metodoPago: data?.metodoPago ?? "",
       rendido: !!data?.rendido,
@@ -102,7 +102,7 @@ export default function PagoPage() {
           contentStyle={{ flexDirection: "row-reverse" }}
           style={{ marginVertical: 10 }}
           onPress={formMethods.handleSubmit(async (data) => {
-            const resp = await mutateAsync({ id: pagoId, data });
+            const resp = await mutateAsync({ id: pagoId, data: { ...data, monto: Number(data.monto) } });
             if (resp) {
               toogleSnackBar("Pago modificado con exito!", "success");
               goBack();

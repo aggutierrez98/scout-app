@@ -11,14 +11,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePagoSchema } from "validators/pago";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { usePagoMenuContext } from "context/PagosMenuContext";
+import { useMenuContext } from "context/MenuContext";
 
 type FormValues = {
   scoutId: string;
   fechaPago: Date;
   concepto: string;
   metodoPago: string;
-  monto: string;
+  monto: number;
 };
 
 export default function NewPago() {
@@ -33,7 +33,7 @@ export default function NewPago() {
   const { data: users } = useAllScouts();
   const {
     metodoPago: { metodosPagoList },
-  } = usePagoMenuContext();
+  } = useMenuContext();
 
   if (isSuccess) {
     return <Redirect href="/(drawer)/pagos" />;
@@ -115,7 +115,7 @@ export default function NewPago() {
               }}
               style={{ marginTop: 20 }}
               onPress={formMethods.handleSubmit(async (data) => {
-                const resp = await mutateAsync(data);
+                const resp = await mutateAsync({ ...data, monto: Number(data.monto) });
                 if (resp) toogleSnackBar("Pago creado con exito!", "success");
                 else toogleSnackBar("Error al crear pago", "error");
               })}

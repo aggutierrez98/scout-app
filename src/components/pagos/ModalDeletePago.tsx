@@ -1,4 +1,4 @@
-import { usePagoContext } from "context/PagosContext";
+import { useDialogContext } from "context/DialogContext";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useDeletePago } from "hooks";
 import React from "react";
@@ -6,7 +6,7 @@ import { Button, Dialog, Portal, Text } from "react-native-paper";
 
 export const ModalDeletePago = () => {
   const { mutateAsync } = useDeletePago();
-  const { hideDialog, idToDelete, modalVisible } = usePagoContext();
+  const { hideDialog, idToDelete, modalVisible } = useDialogContext();
   const { toogleSnackBar } = useSnackBarContext();
 
   return (

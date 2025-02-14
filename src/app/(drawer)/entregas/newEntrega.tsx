@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateEntregaSchema } from "validators/entrega";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
-import { useEntregaMenuContext } from "context/EntregasMenuContext";
+import { useMenuContext } from "context/MenuContext";
 
 type FormValues = {
   scoutId: string;
@@ -31,7 +31,7 @@ export default function NewEntrega() {
   const { data: users } = useAllScouts();
   const {
     tipoEntrega: { tipoEntregaList },
-  } = useEntregaMenuContext();
+  } = useMenuContext();
 
   if (isSuccess) {
     return <Redirect href="/(drawer)/entregas" />;

@@ -7,7 +7,9 @@ import { useNavigation } from "expo-router";
 import { CommonActions } from "@react-navigation/native";
 import EntregasList from "components/familiares/EntregasList";
 import EntregasFiltersMenu from "components/entregas/EntregasFiltersMenu";
-import { useEntregaMenuContext } from "context/EntregasMenuContext";
+// import { useEntregaMenuContext } from "context/EntregasMenuContext";
+import { useMenuContext } from "context/MenuContext";
+import FiltersMenu from "components/shared/FiltersMenu";
 
 export default function Entregas() {
   const theme = useTheme();
@@ -19,7 +21,7 @@ export default function Entregas() {
   const [searchQuery, setsearchQuery] = useState("");
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
   const touchable = useRef(null);
-  const { toogleMenuEntregas } = useEntregaMenuContext();
+  const { toogleMenu } = useMenuContext()
 
   return (
     <>
@@ -46,7 +48,7 @@ export default function Entregas() {
 
           <Appbar.Action
             icon="chevron-down"
-            onPressIn={() => toogleMenuEntregas()}
+            onPressIn={() => toogleMenu()}
             ref={touchable}
           />
 
@@ -61,7 +63,7 @@ export default function Entregas() {
             }}
           />
 
-          <EntregasFiltersMenu parentRef={touchable} />
+          <FiltersMenu parentRef={touchable} section="entregas" />
         </Appbar.Header>
 
         <View

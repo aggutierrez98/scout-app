@@ -10,9 +10,10 @@ import { LoadingScreen } from "components/layout/LoadingScreen";
 import { Entrega } from "interfaces/entrega";
 import EntregaItem from "../entregas/EntregaItem";
 import { ModalDeleteEntrega } from "../entregas/ModalDeleteEntrega";
-import { useEntregaMenuContext } from "context/EntregasMenuContext";
+// import { useEntregaMenuContext } from "context/EntregasMenuContext";
 import { useDeleteEntrega, useEntregas } from "hooks";
 import { getFlattenData } from "utils/getFlattenData";
+import { useMenuContext } from "context/MenuContext";
 
 interface Props {
 	searchQuery: string;
@@ -27,7 +28,7 @@ export default function EntregasList({ searchQuery }: Props) {
 		funcion: { funcionesSelected },
 		equipo: { equiposSelected },
 		progresion: { progresionesSelected },
-	} = useEntregaMenuContext();
+	} = useMenuContext();
 
 	const theme = useTheme();
 

@@ -9,7 +9,8 @@ import { FlatList, RefreshControl } from "react-native";
 import { Scout } from "interfaces/scout";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import ScoutItem from "./ScoutItem";
-import { useScoutMenuContext } from "context/ScoutsMenuContext";
+// import { useScoutMenuContext } from "context/ScoutsMenuContext";
+import { useMenuContext } from "context/MenuContext";
 import { useScouts } from "hooks";
 import { getFlattenData } from "utils/getFlattenData";
 
@@ -23,7 +24,8 @@ export default function ScoutsList({ searchQuery }: Props) {
 		progresion: { progresionesSelected },
 		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
-	} = useScoutMenuContext();
+		rama: { ramasSelected },
+	} = useMenuContext();
 	const theme = useTheme();
 
 	const {
@@ -38,6 +40,7 @@ export default function ScoutsList({ searchQuery }: Props) {
 		sexo,
 		progresiones: progresionesSelected,
 		funciones: funcionesSelected,
+		ramas: ramasSelected,
 		searchQuery,
 	});
 

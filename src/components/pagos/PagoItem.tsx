@@ -1,4 +1,4 @@
-import { usePagoContext } from "context/PagosContext";
+import { useDialogContext } from "context/DialogContext";
 import { useRouter } from "expo-router";
 import { Pago } from "interfaces/pago";
 import React, { Fragment, memo } from "react";
@@ -17,7 +17,7 @@ interface Props {
 
 export default memo(function PagoItem({ item }: Props) {
   const router = useRouter();
-  const { setIdToDelete, showDialog } = usePagoContext();
+  const { setIdToDelete, showDialog } = useDialogContext();
 
   const { colors } = useTheme();
 

@@ -1,9 +1,8 @@
 export interface Pago {
   id: string;
   concepto: string;
-  monto: string;
+  monto: number;
   rendido: boolean;
-  // metodoPago: typeof VALID_METODOS_PAGO;
   metodoPago: string;
   scoutId: string;
   fechaPago: string;
@@ -34,7 +33,7 @@ export interface PagosQueryParams {
 
 export interface PagoCreateParams {
   concepto: string;
-  monto: string;
+  monto: number;
   metodoPago: string;
   scoutId: string;
   fechaPago: Date;
@@ -45,6 +44,6 @@ export interface PagoEditParams {
   fechaPago: Date;
   concepto: string;
   metodoPago: string;
-  monto: string;
+  monto: number;
   rendido: boolean;
 }
