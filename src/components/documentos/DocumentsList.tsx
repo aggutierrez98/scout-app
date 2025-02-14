@@ -23,7 +23,7 @@ export default function DocumentsList({ searchQuery }: Props) {
 
 	const {
 		progresion: { progresionesSelected },
-		patrulla: { patrullasSelected },
+		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
 		vence: { vence },
 		tiempo: { tiempoDesde, tiempoHasta },
@@ -37,7 +37,7 @@ export default function DocumentsList({ searchQuery }: Props) {
 		refetch,
 		isRefetching,
 	} = useDocuments({
-		patrullas: patrullasSelected,
+		equipos: equiposSelected,
 		vence,
 		progresiones: progresionesSelected,
 		funciones: funcionesSelected,

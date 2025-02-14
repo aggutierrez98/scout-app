@@ -24,7 +24,7 @@ type FormValues = {
 	localidad: string;
 	religion: string;
 	funcion: string;
-	patrullaId: string;
+	equipoId: string;
 	progresionActual: string;
 };
 export default function ScoutPage() {
@@ -37,7 +37,7 @@ export default function ScoutPage() {
 	const { goBack } = useNavigation();
 	const {
 		progresion: { progresionList },
-		patrulla: { patrullaList },
+		equipo: { equipoList },
 		funcion: { funcionesList },
 		religionList,
 	} = useScoutMenuContext();
@@ -50,7 +50,7 @@ export default function ScoutPage() {
 			funcion: data?.funcion ?? "",
 			localidad: data?.localidad ?? "",
 			mail: data?.mail ?? "",
-			patrullaId: data?.patrullaId ?? "",
+			equipoId: data?.equipoId ?? "",
 			progresionActual: data?.progresionActual ?? "",
 			religion: data?.religion ?? "",
 			telefono: data?.telefono ?? "",
@@ -103,8 +103,8 @@ export default function ScoutPage() {
 						description={data?.religion}
 					/>
 					<DescriptiveText
-						title="Patrulla"
-						description={data?.patrulla?.nombre}
+						title="Equipo"
+						description={data?.equipo?.nombre}
 					/>
 				</>
 			) : (
@@ -146,9 +146,9 @@ export default function ScoutPage() {
 						/>
 
 						<CustomDropDown
-							name="patrullaId"
-							label="Patrulla"
-							list={patrullaList}
+							name="equipoId"
+							label="Equipo"
+							list={equipoList}
 						/>
 
 						<CustomDropDown

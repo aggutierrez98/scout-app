@@ -22,8 +22,8 @@ export const useEntregas = (queryParams: EntregasQueryParams) =>
   useInfiniteQuery({
     queryKey: [
       "entregas",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
+      `searchParam${queryParams.searchQuery ?? ""}-equipos=${
+        queryParams.equipos
       }-progresion=${queryParams.progresiones}-funcion=${
         queryParams.funciones
       }-tipoEntrega=${queryParams.tipoEntregasSelected}-tiempoDesde=${

@@ -78,7 +78,7 @@ export const fetchEntregas = async (
     tiempoDesde,
     tiempoHasta,
     funciones,
-    patrullas,
+    equipos,
     progresiones,
   }: EntregasQueryParams
 ) => {
@@ -95,7 +95,7 @@ export const fetchEntregas = async (
       funcionesToSend.push("AYUDANTE");
     }
 
-    const patrullasStr = getArrSearchParam(patrullas, "patrullas");
+    const equiposStr = getArrSearchParam(equipos, "equipos");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
     const tipoEntregasStr = getArrSearchParam(
@@ -106,7 +106,7 @@ export const fetchEntregas = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${patrullasStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${equiposStr}${progresionesStr}${funcionesStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",

@@ -25,7 +25,7 @@ export default function EntregasList({ searchQuery }: Props) {
 		tiempo: { tiempoDesde, tiempoHasta },
 		tipoEntrega: { tipoEntregasSelected },
 		funcion: { funcionesSelected },
-		patrulla: { patrullasSelected },
+		equipo: { equiposSelected },
 		progresion: { progresionesSelected },
 	} = useEntregaMenuContext();
 
@@ -44,7 +44,7 @@ export default function EntregasList({ searchQuery }: Props) {
 		tiempoDesde,
 		tiempoHasta,
 		funciones: funcionesSelected,
-		patrullas: patrullasSelected,
+		equipos: equiposSelected,
 		progresiones: progresionesSelected,
 	});
 

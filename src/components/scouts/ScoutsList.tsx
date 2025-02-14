@@ -21,7 +21,7 @@ export default function ScoutsList({ searchQuery }: Props) {
 	const {
 		sexo: { sexo },
 		progresion: { progresionesSelected },
-		patrulla: { patrullasSelected },
+		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
 	} = useScoutMenuContext();
 	const theme = useTheme();
@@ -34,7 +34,7 @@ export default function ScoutsList({ searchQuery }: Props) {
 		refetch,
 		isRefetching,
 	} = useScouts({
-		patrullas: patrullasSelected,
+		equipos: equiposSelected,
 		sexo,
 		progresiones: progresionesSelected,
 		funciones: funcionesSelected,

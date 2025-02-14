@@ -6,7 +6,7 @@ import { SCOUTS_QUERY_LIMIT } from "utils/constants";
 
 export const fetchScouts = async (
   pageParam: number,
-  { patrullas, progresiones, funciones, searchQuery, sexo }: ScoutsQueryParams
+  { equipos, progresiones, funciones, searchQuery, sexo }: ScoutsQueryParams
 ) => {
   try {
     const offset = (pageParam - 1) * SCOUTS_QUERY_LIMIT;
@@ -21,14 +21,14 @@ export const fetchScouts = async (
       funcionesToSend.push("AYUDANTE");
     }
 
-    const patrullasStr = getArrSearchParam(patrullas, "patrullas");
+    const equiposStr = getArrSearchParam(equipos, "equipos");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
 
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/scout?offset=${offset}&limit=${SCOUTS_QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${patrullasStr}${funcionesStr}`,
+      `/scout?offset=${offset}&limit=${SCOUTS_QUERY_LIMIT}&nombre=${searchQuery}&sexo=${sexo}${progresionesStr}${equiposStr}${funcionesStr}`,
       {
         headers: {
           "Content-Type": "application/json",

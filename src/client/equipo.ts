@@ -1,12 +1,12 @@
-import { Patrulla } from "interfaces/scout";
+import { Equipo } from "interfaces/scout";
 import * as SecureStore from "expo-secure-store";
 import api from "./api";
 
-export const fetchPatrullas = async () => {
+export const fetchEquipos = async () => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
 
-    const { data, status } = await api.get("/patrulla", {
+    const { data, status } = await api.get("/equipo", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -14,7 +14,7 @@ export const fetchPatrullas = async () => {
       },
     });
 
-    return data as Patrulla[];
+    return data as Equipo[];
   } catch (error) {
     console.log(error);
     return null;

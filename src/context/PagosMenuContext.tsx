@@ -1,4 +1,4 @@
-import { usePatrullas } from "hooks";
+import { useEquipos } from "hooks";
 import { createContext, useContext, useState, ReactNode } from "react";
 import {
   VALID_FUNCTIONS,
@@ -29,10 +29,10 @@ export interface PagoMenuContextProps {
       label: string;
     }[];
   };
-  patrulla: {
-    patrullasSelected: string[];
-    handlePatrullaChange: (arg: string) => void;
-    patrullaList: {
+  equipo: {
+    equiposSelected: string[];
+    handleEquipoChange: (arg: string) => void;
+    equipoList: {
       value: string;
       label: string;
     }[];
@@ -64,7 +64,7 @@ export const PagoMenuProvider = ({
 }: {
   children: ReactNode[] | ReactNode;
 }) => {
-  const { data: patrullasData } = usePatrullas();
+  const { data: equiposData } = useEquipos();
 
   const [showMenu, setShowMenu] = useState(false);
   const [rendido, setRendido] = useState("");
@@ -81,11 +81,11 @@ export const PagoMenuProvider = ({
   }));
   metodosPagoList.unshift({ label: "TODOS", value: "" });
 
-  const [patrullasSelected, setPatrullasSelected] = useState<string[]>([]);
-  const patrullaList =
-    patrullasData?.map((patrulla) => ({
-      label: patrulla.nombre,
-      value: patrulla.id,
+  const [equiposSelected, setEquiposSelected] = useState<string[]>([]);
+  const equipoList =
+    equiposData?.map((equipo) => ({
+      label: equipo.nombre,
+      value: equipo.id,
     })) || [];
 
   const [progresionesSelected, setProgresionesSelected] = useState<string[]>(
@@ -106,11 +106,11 @@ export const PagoMenuProvider = ({
     setShowMenu((show) => !show);
   };
 
-  const handlePatrullaChange = (arg: string) => {
-    if (patrullasSelected.includes(arg)) {
-      setPatrullasSelected(patrullasSelected.filter((item) => item !== arg));
+  const handleEquipoChange = (arg: string) => {
+    if (equiposSelected.includes(arg)) {
+      setEquiposSelected(equiposSelected.filter((item) => item !== arg));
     } else {
-      setPatrullasSelected([...patrullasSelected, arg]);
+      setEquiposSelected([...equiposSelected, arg]);
     }
   };
 
@@ -156,10 +156,10 @@ export const PagoMenuProvider = ({
           progresionList,
           handleProgresionChange,
         },
-        patrulla: {
-          patrullasSelected,
-          patrullaList,
-          handlePatrullaChange,
+        equipo: {
+          equiposSelected,
+          equipoList,
+          handleEquipoChange,
         },
         funcion: {
           funcionesSelected,

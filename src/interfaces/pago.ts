@@ -24,7 +24,7 @@ export interface Scout {
 export interface PagosQueryParams {
   metodoPago: string;
   searchQuery: string;
-  patrullas: string[];
+  equipos: string[];
   progresiones: string[];
   funciones: string[];
   rendido: "si" | "no" | "";

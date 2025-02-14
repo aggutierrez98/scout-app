@@ -22,8 +22,8 @@ export const usePagos = (queryParams: PagosQueryParams) =>
 	useInfiniteQuery({
 		queryKey: [
 			"pagos",
-			`searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-				queryParams.patrullas
+			`searchParam${queryParams.searchQuery ?? ""}-equipos=${
+				queryParams.equipos
 			}-metodoPago=${queryParams.metodoPago}-progresion=${
 				queryParams.progresiones
 			}-funcion=${queryParams.funciones}

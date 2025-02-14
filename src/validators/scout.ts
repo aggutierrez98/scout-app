@@ -22,7 +22,7 @@ export const EditScoutSchema = z.object({
   direccion: z.string({ required_error: "Campo requerido" }).max(100),
   religion: z.enum(VALID_RELIGIONS, { required_error: "Campo requerido" }),
   funcion: z.enum(VALID_FUNCTIONS, { required_error: "Campo requerido" }),
-  patrullaId: z.union([IdSchema.max(10).optional(), z.literal("")]),
+  equipoId: z.union([IdSchema.max(10).optional(), z.literal("")]),
   telefono: z.union([
     z.string().min(8).max(15).regex(numberReg).optional(),
     z.literal(""),

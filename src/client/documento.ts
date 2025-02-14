@@ -56,7 +56,7 @@ export const editDocumento = async (
 export const fetchDocuments = async (
   pageParam: number,
   {
-    patrullas,
+    equipos,
     progresiones,
     funciones,
     searchQuery,
@@ -78,7 +78,7 @@ export const fetchDocuments = async (
       funcionesToSend.push("AYUDANTE");
     }
 
-    const patrullasStr = getArrSearchParam(patrullas, "patrullas");
+    const equiposStr = getArrSearchParam(equipos, "equipos");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
     const venceStr = vence ? `&vence=${vence === "si" ? "true" : "false"}` : "";
@@ -86,7 +86,7 @@ export const fetchDocuments = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/documento?offset=${offset}&limit=${DOCUMENTOS_QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${patrullasStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/documento?offset=${offset}&limit=${DOCUMENTOS_QUERY_LIMIT}&nombre=${searchQuery}${progresionesStr}${equiposStr}${funcionesStr}${venceStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",

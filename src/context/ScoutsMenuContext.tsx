@@ -1,4 +1,4 @@
-import { usePatrullas } from "hooks";
+import { useEquipos } from "hooks";
 import { createContext, useContext, useState, ReactNode } from "react";
 import {
 	VALID_FUNCTIONS,
@@ -25,10 +25,10 @@ export interface ScoutMenuContextProps {
 			label: string;
 		}[];
 	};
-	patrulla: {
-		patrullasSelected: string[];
-		handlePatrullaChange: (arg: string) => void;
-		patrullaList: {
+	equipo: {
+		equiposSelected: string[];
+		handleEquipoChange: (arg: string) => void;
+		equipoList: {
 			value: string;
 			label: string;
 		}[];
@@ -54,7 +54,7 @@ export const ScoutMenuProvider = ({
 }: {
 	children: ReactNode[] | ReactNode;
 }) => {
-	const { data: patrullasData } = usePatrullas();
+	const { data: equiposData } = useEquipos();
 
 	const [showMenu, setShowMenu] = useState(false);
 	const [sexo, setSexo] = useState<string>("");
@@ -78,11 +78,11 @@ export const ScoutMenuProvider = ({
 		setShowMenu((show) => !show);
 	};
 
-	const [patrullasSelected, setPatrullasSelected] = useState<string[]>([]);
-	const patrullaList =
-		patrullasData?.map((patrulla) => ({
-			label: patrulla.nombre,
-			value: patrulla.id,
+	const [equiposSelected, setEquiposSelected] = useState<string[]>([]);
+	const equipoList =
+		equiposData?.map((equipo) => ({
+			label: equipo.nombre,
+			value: equipo.id,
 		})) || [];
 
 	const [progresionesSelected, setProgresionesSelected] = useState<string[]>(
@@ -106,13 +106,13 @@ export const ScoutMenuProvider = ({
 		};
 	});
 
-	const handlePatrullaChange = (arg: string) => {
-		if (patrullasSelected.includes(arg)) {
-			setPatrullasSelected(
-				patrullasSelected.filter((item) => item !== arg),
+	const handleEquipoChange = (arg: string) => {
+		if (equiposSelected.includes(arg)) {
+			setEquiposSelected(
+				equiposSelected.filter((item) => item !== arg),
 			);
 		} else {
-			setPatrullasSelected([...patrullasSelected, arg]);
+			setEquiposSelected([...equiposSelected, arg]);
 		}
 	};
 
@@ -154,10 +154,10 @@ export const ScoutMenuProvider = ({
 					progresionList,
 					handleProgresionChange,
 				},
-				patrulla: {
-					patrullasSelected,
-					patrullaList,
-					handlePatrullaChange,
+				equipo: {
+					equiposSelected,
+					equipoList,
+					handleEquipoChange,
 				},
 				funcion: {
 					funcionesSelected,

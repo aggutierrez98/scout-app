@@ -12,7 +12,7 @@ import { PAGOS_QUERY_LIMIT } from "utils/constants";
 export const fetchPagos = async (
   pageParam: number,
   {
-    patrullas,
+    equipos,
     progresiones,
     funciones,
     searchQuery,
@@ -35,7 +35,7 @@ export const fetchPagos = async (
       funcionesToSend.push("AYUDANTE");
     }
 
-    const patrullasStr = getArrSearchParam(patrullas, "patrullas");
+    const equiposStr = getArrSearchParam(equipos, "equipos");
     const progresionesStr = getArrSearchParam(progresiones, "progresiones");
     const funcionesStr = getArrSearchParam(funcionesToSend, "funciones");
     const rendidoStr = rendido
@@ -45,7 +45,7 @@ export const fetchPagos = async (
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${patrullasStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${equiposStr}${funcionesStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
       {
         headers: {
           "Content-Type": "application/json",

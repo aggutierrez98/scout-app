@@ -23,7 +23,7 @@ export default function PagosList({ searchQuery }: Props) {
 		tiempo: { tiempoDesde, tiempoHasta },
 		metodoPago: { metodoPago },
 		progresion: { progresionesSelected },
-		patrulla: { patrullasSelected },
+		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
 		rendido: { rendido },
 	} = usePagoMenuContext();
@@ -36,7 +36,7 @@ export default function PagosList({ searchQuery }: Props) {
 		isRefetching,
 	} = usePagos({
 		metodoPago,
-		patrullas: patrullasSelected,
+		equipos: equiposSelected,
 		progresiones: progresionesSelected,
 		funciones: funcionesSelected,
 		tiempoDesde,

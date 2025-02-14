@@ -21,7 +21,7 @@ export interface DocumentoData {
 
 export interface DocumentosQueryParams {
   searchQuery: string;
-  patrullas: string[];
+  equipos: string[];
   progresiones: string[];
   funciones: string[];
   vence: string;

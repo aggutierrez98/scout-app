@@ -23,8 +23,8 @@ export const useDocuments = (queryParams: DocumentosQueryParams) =>
   useInfiniteQuery({
     queryKey: [
       "documents",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
+      `searchParam${queryParams.searchQuery ?? ""}-equipos=${
+        queryParams.equipos
       }-progresion=${queryParams.progresiones}-funcion=${
         queryParams.funciones
       }-funcion=${queryParams.funciones}-vence=${

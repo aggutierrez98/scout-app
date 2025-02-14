@@ -47,7 +47,7 @@ export const useLogin = (
 		mutationFn: loginUser,
 		onSuccess: async ({ token, ...data }: LoginResponse) => {
 			await SecureStore.setItemAsync("secure_token", token);
-
+			console.log(token, data);
 			queryClient.setQueryData(["user"], () => {
 				return {
 					id: data.id,

@@ -11,6 +11,7 @@ import {
 import Popover from "react-native-popover-view";
 import { usePagoMenuContext } from "context/PagosMenuContext";
 import { CustomRangeDatePicker } from "components/layout/RangeDatePicker";
+import { AccordionFilter } from "components/layout/AccordionFilter";
 
 export default function PagosFiltersMenu({
   parentRef,
@@ -27,7 +28,7 @@ export default function PagosFiltersMenu({
       handleProgresionChange,
     },
     funcion: { funcionesList, funcionesSelected, handleFuncionChange },
-    patrulla: { patrullasSelected, patrullaList, handlePatrullaChange },
+    equipo: { equiposSelected, equipoList, handleEquipoChange },
     tiempo: { setTiempoDesde, setTiempoHasta, tiempoDesde, tiempoHasta },
     rendido: { rendido, handleRendidoChange },
     trueFalseList,
@@ -59,53 +60,29 @@ export default function PagosFiltersMenu({
           <Divider style={{ marginVertical: 10 }} />
 
           <List.AccordionGroup>
-            <List.Accordion title="Seleccione patrulla" id="1">
-              {patrullaList.map(({ label, value }, index) => (
-                <Chip
-                  key={value + index}
-                  onPress={() => handlePatrullaChange(value)}
-                  style={{ marginVertical: 10, marginHorizontal: 15 }}
-                  selected={patrullasSelected.includes(value)}
-                  showSelectedCheck
-                  showSelectedOverlay={true}
-                  compact
-                >
-                  {label}
-                </Chip>
-              ))}
-            </List.Accordion>
+            <AccordionFilter
+              id="1"
+              text="Seleccion equipo"
+              handleChange={handleEquipoChange}
+              list={equipoList}
+              selected={equiposSelected}
+            />
 
-            <List.Accordion title="Seleccione progresion" id="2">
-              {progresionList.map(({ label, value }, index) => (
-                <Chip
-                  key={value + index}
-                  onPress={() => handleProgresionChange(value)}
-                  style={{ marginVertical: 10, marginHorizontal: 15 }}
-                  selected={progresionesSelected.includes(value)}
-                  showSelectedCheck
-                  showSelectedOverlay={true}
-                  compact
-                >
-                  {label}
-                </Chip>
-              ))}
-            </List.Accordion>
+            <AccordionFilter
+              id="2"
+              text="Seleccione progresion"
+              handleChange={handleProgresionChange}
+              list={progresionList}
+              selected={progresionesSelected}
+            />
 
-            <List.Accordion title="Seleccione funcion" id="3">
-              {funcionesList.map(({ label, value }, index) => (
-                <Chip
-                  key={value + index}
-                  onPress={() => handleFuncionChange(value)}
-                  style={{ marginVertical: 10, marginHorizontal: 15 }}
-                  selected={funcionesSelected.includes(value)}
-                  showSelectedCheck
-                  showSelectedOverlay={true}
-                  compact
-                >
-                  {label}
-                </Chip>
-              ))}
-            </List.Accordion>
+            <AccordionFilter
+              id="3"
+              text="Seleccione funcion"
+              handleChange={handleFuncionChange}
+              list={funcionesList}
+              selected={funcionesSelected}
+            />
 
             <>
               <List.Section>

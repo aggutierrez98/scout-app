@@ -8,8 +8,8 @@ export const useScouts = (queryParams: ScoutsQueryParams) =>
   useInfiniteQuery({
     queryKey: [
       "scouts",
-      `searchParam${queryParams.searchQuery ?? ""}-patrullas=${
-        queryParams.patrullas
+      `searchParam${queryParams.searchQuery ?? ""}-equipos=${
+        queryParams.equipos
       }-sexo=${queryParams.sexo}-progresion=${
         queryParams.progresiones
       }-funcion=${queryParams.funciones}`,
