@@ -1,5 +1,6 @@
 import {
   Tabs,
+  useLocalSearchParams,
   useNavigation,
   usePathname,
   useRouter,
@@ -27,11 +28,11 @@ export default function AppLayout() {
   const pageTitle = pathname.split("/")[1];
   const { dispatch } = useNavigation();
   const { changeIsEditing } = useEditContext();
+
   const touchableScouts = useRef(null);
   const touchablePagos = useRef(null);
   const touchableDocumentos = useRef(null);
   const { back } = useRouter();
-
 
   return (
     <>
@@ -76,13 +77,19 @@ export default function AppLayout() {
                 }}
               />
             )}
-            {segments.length > 3 && pageTitle === "scouts" && (
-              <Appbar.Action
-                icon="pencil-circle"
-                size={35}
-                onPress={() => changeIsEditing()}
-              />
-            )}
+            {segments.length > 3 &&
+              (
+                pageTitle === "scouts" ? (
+                  <Appbar.Action
+                    icon="pencil-circle"
+                    size={35}
+                    onPress={() => changeIsEditing()}
+                  />
+                ) :
+                  <>
+                  </>
+              )
+            }
             {segments.length === 3 &&
               (pageTitle === "scouts" ? (
                 <>

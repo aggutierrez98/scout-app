@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { CreateDocumentoSchema } from "validators/documento";
+import CustomSearchableDropdown from 'components/layout/CustomSearchableDropdown';
 
 type FormValues = {
   scoutId: string;
@@ -79,7 +80,7 @@ export default function NewDocumento() {
               label="Documento presentado"
               list={documentosList}
             />
-            <CustomDropDown
+            <CustomSearchableDropdown
               name="scoutId"
               label="Scout asociado"
               list={scoutsList}

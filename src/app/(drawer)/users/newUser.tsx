@@ -12,6 +12,7 @@ import { CustomDropDown } from "components/layout/SelectInput";
 import { VALID_ROLES } from "utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateUserSchema } from "validators/auth";
+import CustomSearchableDropdown from 'components/layout/CustomSearchableDropdown';
 
 type FormValues = {
 	username: string;
@@ -119,7 +120,7 @@ export default function NewUser() {
 							list={rolList}
 						/>
 
-						<CustomDropDown
+						<CustomSearchableDropdown
 							name="scoutId"
 							label="Scout asociado"
 							list={scoutsList}

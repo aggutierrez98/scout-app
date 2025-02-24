@@ -108,55 +108,57 @@ export default function FamiliaList({ scoutsData, sexo, familiarId }: Props) {
           </View>
         )}
       >
-        {scoutsData?.map((scout) => (
-          <View
-            key={scout.dni}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginLeft: -20,
-            }}
-          >
-            <TouchableRipple
-              onPress={() => {
-                router.push(`/(drawer)/(tabs)/scouts/${scout.id}`);
+        {scoutsData?.map((scout) => {
+          return (
+            <View
+              key={scout.id}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginLeft: -20,
               }}
-              rippleColor="rgba(0, 0, 0, .12)"
             >
-              <List.Item
-                left={() => (
-                  <Icon
-                    name={scout.sexo === "M" ? "human-male" : "human-female"}
-                    color={
-                      scout.sexo === "F"
-                        ? MD3Colors.tertiary70
-                        : MD3Colors.primary70
-                    }
-                    size={25}
-                  />
-                )}
-                right={() => (
-                  <Text style={{ marginLeft: 15 }} variant="titleMedium">
-                    {scout.relacion}
-                  </Text>
-                )}
-                title={`${scout.nombre} ${scout.apellido}`}
-              />
-            </TouchableRipple>
-            {isEditing && (
-              <IconButton
-                icon="cancel"
-                size={20}
+              <TouchableRipple
                 onPress={() => {
-                  setScoutId(scout.id);
-                  showDialogUnrelate();
+                  router.push(`/(drawer)/(tabs)/scouts/${scout.id}`);
                 }}
-              />
-            )}
-          </View>
-        ))}
+                rippleColor="rgba(0, 0, 0, .12)"
+              >
+                <List.Item
+                  left={() => (
+                    <Icon
+                      name={scout.sexo === "M" ? "human-male" : "human-female"}
+                      color={
+                        scout.sexo === "F"
+                          ? MD3Colors.tertiary70
+                          : MD3Colors.primary70
+                      }
+                      size={25}
+                    />
+                  )}
+                  right={() => (
+                    <Text style={{ marginLeft: 15 }} variant="titleMedium">
+                      {scout.relacion}
+                    </Text>
+                  )}
+                  title={`${scout.nombre} ${scout.apellido}`}
+                />
+              </TouchableRipple>
+              {isEditing && (
+                <IconButton
+                  icon="cancel"
+                  size={20}
+                  onPress={() => {
+                    setScoutId(scout.id);
+                    showDialogUnrelate();
+                  }}
+                />
+              )}
+            </View>
+          )
+        })}
 
         {isEditing && (
           <TouchableRipple>

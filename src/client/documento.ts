@@ -4,6 +4,7 @@ import {
   Documento,
   DocumentoCreateParams,
   DocumentoData,
+  DocumentoDowmloadData,
   DocumentoEditParams,
   DocumentosQueryParams,
 } from "interfaces/documento";
@@ -162,3 +163,22 @@ export const deleteDocumento = async (id: string) => {
     return null;
   }
 };
+
+export const getDocumentUrl = async (id: string) => {
+  try {
+    const token = await SecureStore.getItemAsync("secure_token");
+
+    const { data, status } = await api.get(`/documento/${id}?download=true`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data as DocumentoDowmloadData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

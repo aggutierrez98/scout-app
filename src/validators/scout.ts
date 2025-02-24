@@ -13,7 +13,7 @@ export const nanoIdRegex = /^[\w-]+$/;
 
 export const IdSchema = z
   .string({ required_error: "Campo requerido" })
-  .regex(nanoIdRegex, { message: "Campo requerido" });
+  .regex(nanoIdRegex, { message: "Debe ser un valor valido" });
 
 export const EditScoutSchema = z.object({
   localidad: z

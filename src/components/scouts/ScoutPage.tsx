@@ -86,7 +86,7 @@ export default function ScoutPage() {
 					<DescriptiveText title="Mail" description={data?.mail} />
 					<DescriptiveText
 						title="Direccion"
-						description={`${data?.direccion} - ${data?.localidad}`}
+						description={`${data?.direccion || ""} - ${data?.localidad || ""}`}
 					/>
 					<DescriptiveText
 						title="Funcion"

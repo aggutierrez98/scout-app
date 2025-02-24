@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native";
-import { Button, Divider, useTheme } from "react-native-paper";
+import { Appbar, Button, Divider, useTheme } from "react-native-paper";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useScout, useDocumento, useEditDocumento } from "hooks";
+import { useScout, useDocumento, useEditDocumento, useDownloadDocumento } from "hooks";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -9,6 +9,7 @@ import { CustomDatePicker } from "components/layout/DatePicker";
 import { DescriptiveText } from "components/layout/DescriptiveText";
 import { EditDocumentoSchema } from "validators/documento";
 import { useSnackBarContext } from "context/SnackBarContext";
+import * as WebBrowser from "expo-web-browser";
 
 type DocumentoParams = {
   documento: string;
@@ -21,10 +22,11 @@ type FormValues = {
 export default function DocumentoPage() {
   const { toogleSnackBar } = useSnackBarContext();
   const theme = useTheme();
-  const { documento } = useLocalSearchParams<DocumentoParams>();
-  if (!documento) return null;
+  const { documento: documentoId } = useLocalSearchParams<DocumentoParams>();
+  if (!documentoId) return null;
 
-  const { data, isLoading } = useDocumento(documento);
+  const { data, isLoading } = useDocumento(documentoId);
+  const { data: downloadData, isLoading: downloadLoading } = useDownloadDocumento(documentoId);
   const { data: scoutData, isLoading: isLoadingScout } = useScout(
     data?.scoutId ?? ""
   );
@@ -51,11 +53,12 @@ export default function DocumentoPage() {
         },
       ]}
     >
-      {(isLoading || isLoadingScout || isPending) && <LoadingScreen />}
+      {(isLoading || downloadLoading || isLoadingScout || isPending) && <LoadingScreen />}
 
       <DescriptiveText
         title="Documento"
-        description={data ? `${data?.documento.nombre}` : "-"}
+        style={{ maxWidth: "85%" }}
+        description={data ? `${data?.documento.nombre}as` : "-"}
       />
       <DescriptiveText
         title="Vence"
@@ -83,7 +86,7 @@ export default function DocumentoPage() {
           contentStyle={{ flexDirection: "row-reverse" }}
           style={{ marginVertical: 10 }}
           onPress={formMethods.handleSubmit(async (data) => {
-            const resp = await mutateAsync({ id: documento, data });
+            const resp = await mutateAsync({ id: documentoId, data });
             if (resp) {
               toogleSnackBar("Documento modificado con exito!", "success");
               goBack();
@@ -93,6 +96,17 @@ export default function DocumentoPage() {
           Guardar
         </Button>
       </FormProvider>
+
+      <Appbar.Action
+        icon="file-download"
+        size={28}
+        style={{ marginVertical: 10, position: "absolute", top: -10, right: -5, zIndex: 10 }}
+        onPress={() => {
+          if (!downloadData) toogleSnackBar("No existe archivo almacenado del documento", "error");
+          else WebBrowser.openBrowserAsync(downloadData.fileUrl)
+        }
+        }
+      />
     </ScrollView>
   );
 }

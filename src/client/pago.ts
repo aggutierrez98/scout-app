@@ -88,7 +88,6 @@ export const fetchPago = async (id: string) => {
 export const editPago = async (pagoId: string, pagoData: PagoEditParams) => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-
     const { data, status } = await api.put(`/pago/${pagoId}`, pagoData, {
       headers: {
         "Content-Type": "application/json",

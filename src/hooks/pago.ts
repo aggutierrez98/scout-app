@@ -44,11 +44,18 @@ export const usePagos = (queryParams: PagosQueryParams) =>
 export const usePago = (id: string) =>
 	useQuery({ queryKey: ["pago", id], queryFn: () => fetchPago(id) });
 
-export const useEditPago = () =>
-	useMutation({
+export const useEditPago = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
 		mutationFn: ({ id, data }: { id: string; data: PagoEditParams }) =>
 			editPago(id, data),
+		// onSuccess: (data) => {
+		// 	queryClient.invalidateQueries({
+		// 		queryKey: ["pagos"]
+		// 	});
+		// },
 	});
+}
 
 export const useCreatePago = () => {
 	const queryClient = useQueryClient();
@@ -62,7 +69,6 @@ export const useCreatePago = () => {
 
 export const useDeletePago = () => {
 	const queryClient = useQueryClient();
-
 	return useMutation({
 		mutationFn: ({ id }: { id: string }) => deletePago(id),
 		onSuccess: () => {

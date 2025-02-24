@@ -159,7 +159,7 @@ export default function FiltersMenu({
                             </List.Accordion>
                         }
 
-                        {section === "documentos" || section === "pagos" || section === "entregas" &&
+                        {(section === "documentos" || section === "pagos" || section === "entregas") &&
                             <List.Section>
                                 <List.Subheader style={{ marginTop: 10 }}>
                                     Seleccionar fechas

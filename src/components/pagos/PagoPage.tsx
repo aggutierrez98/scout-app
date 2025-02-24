@@ -75,6 +75,7 @@ export default function PagoPage() {
 
       <Divider style={{ marginVertical: 10 }} />
       <FormProvider {...formMethods}>
+
         <CustomTextInput
           name="concepto"
           label="Concepto"
@@ -83,6 +84,7 @@ export default function PagoPage() {
         <CustomTextInput
           name="monto"
           label="Monto"
+          keyboardType="numeric"
           placeholder="Ingrese monto"
         />
 

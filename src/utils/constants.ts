@@ -20,19 +20,19 @@ export const F_RELATIONSHIPS = ["MADRE", "TIA", "HERMANA", "OTRO"] as const;
 
 export const VALID_ENTREGAS_TYPE = [
 	"UNIFORME",
-	"GUIA",
-	"SUBGUIA",
-	"PROGPISTA",
-	"PROGRUMBO",
-	"PROGTRAVESIA",
+	"INSG_GUIA",
+	"INSG_SUBGUIA",
 	"PROMESA",
-	"ESPNATURALEZA",
-	"ESPARTE",
-	"ESPSERVICIO",
-	"ESPESPIRITUALIDAD",
-	"ESPDEPORTES",
-	"ESPCIENCIA",
-	"SUPERACION",
+	"PROG_PISTA",
+	"PROG_RUMBO",
+	"PROG_TRAVESIA",
+	"ESP_NATURALEZA",
+	"ESP_ARTE",
+	"ESP_SERVICIO",
+	"ESP_ESPIRITUALIDAD",
+	"ESP_DEPORTES",
+	"ESP_CIENCIA",
+	"MAX_SUPERACION",
 ] as const;
 
 export const VALID_SEX = ["M", "F"] as const;
@@ -44,12 +44,17 @@ export const VALID_METODOS_PAGO = [
 ] as const;
 
 export const VALID_ROLES = [
-	"ADMIN",
-	"JEFE",
-	"EDUCADOR",
+	"JOVEN",
 	"COLABORADOR",
-	"EXTERNO",
-] as const;
+	"ACOMPAÑANTE",
+	"PADRE_REPRESENTANTE",
+	"AYUDANTE_RAMA",
+	"SUBJEFE_RAMA",
+	"JEFE_RAMA",
+	"SUBJEFE_GRUPO",
+	"JEFE_GRUPO",
+	"ADMINISTRADOR",
+] as const
 
 export const PAGOS_QUERY_LIMIT = 15;
 export const USERS_QUERY_LIMIT = 15;
@@ -72,10 +77,13 @@ export const VALID_ESTADO_CIVIL = [
 ] as const;
 export const VALID_FUNCTIONS = [
 	"JOVEN",
-	"JEFE",
-	"SUBJEFE",
-	"AYUDANTE",
-	"COLABORADOR",
+	"ACOMPAÑANTE",
+	"AYUDANTE_RAMA",
+	"SUBJEFE_RAMA",
+	"JEFE_RAMA",
+	"SUBJEFE_GRUPO",
+	"JEFE_GRUPO",
+	"PADRE_REPRESENTANTE",
 ] as const;
 
 export const VALID_GET_SCOUTS_FILTERS = [
@@ -169,12 +177,10 @@ export const metodosPagoList = VALID_METODOS_PAGO.map((metodoPago: string) => ({
 	label: metodoPago,
 	value: metodoPago,
 }));
-metodosPagoList.unshift({ label: "TODOS", value: "" });
 export const tipoEntregaList = VALID_ENTREGAS_TYPE.map((tipoEntrega: string) => ({
 	label: tipoEntrega,
 	value: tipoEntrega,
 }));
-tipoEntregaList.unshift({ label: "TODOS", value: "" });
 
 export const trueFalseList = [
 	{ label: "Ambos", value: "" },

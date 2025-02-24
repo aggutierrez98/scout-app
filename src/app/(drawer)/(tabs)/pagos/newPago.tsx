@@ -12,6 +12,7 @@ import { CreatePagoSchema } from "validators/pago";
 import { CustomDatePicker } from "components/layout/DatePicker";
 import { useSnackBarContext } from "context/SnackBarContext";
 import { useMenuContext } from "context/MenuContext";
+import CustomSearchableDropdown from "components/layout/CustomSearchableDropdown";
 
 type FormValues = {
   scoutId: string;
@@ -97,7 +98,7 @@ export default function NewPago() {
               list={metodosPagoList}
             />
 
-            <CustomDropDown
+            <CustomSearchableDropdown
               name="scoutId"
               label="Scout asociado"
               list={scoutsList}

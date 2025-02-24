@@ -10,6 +10,7 @@ import {
   fetchDocumento,
   fetchDocuments,
   fetchDocumentsData,
+  getDocumentUrl,
 } from "client/documento";
 import { deleteDocumento } from "../client/documento";
 import { DOCUMENTOS_QUERY_LIMIT } from "utils/constants";
@@ -77,3 +78,9 @@ export const useCreateDocumento = () => {
     },
   });
 };
+
+export const useDownloadDocumento = (id: string) =>
+  useQuery({
+    queryKey: ["documento", id, "download"],
+    queryFn: () => getDocumentUrl(id),
+  });

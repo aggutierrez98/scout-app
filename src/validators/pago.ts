@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { IdSchema } from "./scout";
+import { IdSchema, numberReg } from "./scout";
 import { VALID_METODOS_PAGO } from "utils/constants";
 
 export const EditPagoSchema = z.object({
   concepto: z.string({ required_error: "Campo requerido" }).max(50),
   monto: z
-    .number({ required_error: "Campo requerido" })
+    .string({ required_error: "Campo requerido" })
+    .regex(numberReg)
     .max(99999999),
   metodoPago: z.enum(VALID_METODOS_PAGO),
   fechaPago: z.date({
@@ -16,12 +17,15 @@ export const EditPagoSchema = z.object({
           : defaultError,
     }),
   }),
+  scoutId: IdSchema.max(10),
+  rendido: z.boolean()
 });
 
 export const CreatePagoSchema = z.object({
   concepto: z.string({ required_error: "Campo requerido" }).max(50),
   monto: z
     .string({ required_error: "Campo requerido" })
+    .regex(numberReg)
     .max(99999999),
   // .regex(numberReg)
   metodoPago: z.enum(VALID_METODOS_PAGO, {

@@ -19,6 +19,10 @@ export interface DocumentoData {
   vence: boolean;
 }
 
+export interface DocumentoDowmloadData {
+  fileUrl: string
+}
+
 export interface DocumentosQueryParams {
   searchQuery: string;
   equipos: string[];
