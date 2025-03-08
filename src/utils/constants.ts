@@ -43,16 +43,31 @@ export const VALID_METODOS_PAGO = [
 	"OTRO",
 ] as const;
 
+export enum ROLES {
+	EXTERNO = "EXTERNO",
+	JOVEN = "JOVEN",
+	COLABORADOR = "COLABORADOR",
+	ACOMPAÑANTE = "ACOMPAÑANTE",
+	AYUDANTE_RAMA = "AYUDANTE_RAMA",
+	SUBJEFE_RAMA = "SUBJEFE_RAMA",
+	JEFE_RAMA = "JEFE_RAMA",
+	SUBJEFE_GRUPO = "SUBJEFE_GRUPO",
+	JEFE_GRUPO = "JEFE_GRUPO",
+	PADRE_REPRESENTANTE = "PADRE_REPRESENTANTE",
+	ADMINISTRADOR = "ADMINISTRADOR",
+}
+
 export const VALID_ROLES = [
+	"EXTERNO",
 	"JOVEN",
 	"COLABORADOR",
 	"ACOMPAÑANTE",
-	"PADRE_REPRESENTANTE",
 	"AYUDANTE_RAMA",
 	"SUBJEFE_RAMA",
 	"JEFE_RAMA",
 	"SUBJEFE_GRUPO",
 	"JEFE_GRUPO",
+	"PADRE_REPRESENTANTE",
 	"ADMINISTRADOR",
 ] as const
 
@@ -62,6 +77,7 @@ export const DOCUMENTOS_QUERY_LIMIT = 20;
 export const ENTREGAS_QUERY_LIMIT = 20;
 export const FAMILIARES_QUERY_LIMIT = 20;
 export const SCOUTS_QUERY_LIMIT = 15;
+export const NOTIFICATIONS_QUERY_LIMIT = 30;
 
 export const VALID_RELIGIONS = [
 	"CATOLICA",
@@ -106,6 +122,7 @@ export const VALID_RELATIONSHIPS = [
 
 
 export enum EntregaFromEntregaType {
+	//TODO: Agregar progresiones de otras ramas
 	UNIFORME = "Uniforme Scout",
 	GUIA = "Insignia de Guia de patrulla",
 	SUBGUIA = "Insignia de Subguia de patrulla",
@@ -130,6 +147,7 @@ export const VALID_ESTADOS = [
 
 export const MENU_COMMANDS = ["pagos", "documentos", "scouts", "familiares", "entregas", "cumpleaños"]
 
+//@ts-ignore
 export const SPLIT_STRING = process.env.NODE_ENV === "development" ? " " : ", "
 
 // Number or proxies to skip to limit ips requests by rate-limiter
@@ -187,3 +205,66 @@ export const trueFalseList = [
 	{ label: "Si", value: "si" },
 	{ label: "No", value: "no" },
 ];
+
+export const VALID_TIPOS_EVENTO = ["SALIDA", "ACANTONAMIENTO", "CAMPAMENTO"] as const
+
+export const tipoEventoList = VALID_TIPOS_EVENTO.map((tipoEvento: string) => ({
+	label: tipoEvento,
+	value: tipoEvento,
+}));
+
+
+export const FUNCION_TO_ROLE_MAP = {
+	"JOVEN": "JOVEN",
+	"COLABORADOR": "ACOMPAÑANTE",
+	"ACOMPAÑANTE": "ACOMPAÑANTE",
+	"AYUDANTE_RAMA": "AYUDANTE_RAMA",
+	"SUBJEFE_RAMA": "SUBJEFE_RAMA",
+	"JEFE_RAMA": "JEFE_RAMA",
+	"SUBJEFE_GRUPO": "SUBJEFE_GRUPO",
+	"JEFE_GRUPO": "JEFE_GRUPO",
+	"PADRE_REPRESENTANTE": "PADRE_REPRESENTANTE",
+
+} as const;
+
+export const FUNCIONES_MAP = {
+	"Asist. Zonal Actividades Seguras": "ACOMPAÑANTE",
+	"Asist. Zonal Comunicaciones Institucionales": "ACOMPAÑANTE",
+	"Acompañante": "ACOMPAÑANTE",
+	"Sub-Jefe de Grupo": "SUBJEFE_GRUPO",
+	"Jefe de Grupo": "JEFE_GRUPO",
+	"Ayudante de Castores": "AYUDANTE_RAMA",
+	"Ayudante de Manada": "AYUDANTE_RAMA",
+	"Ayudante de Unidad Scout": "AYUDANTE_RAMA",
+	"Ayudante de Comunidad Caminante": "AYUDANTE_RAMA",
+	"Ayudante de Comunidad Rover": "AYUDANTE_RAMA",
+	"Sub-Jefe de Castores": "SUBJEFE_RAMA",
+	"Sub-Jefe de Manada": "SUBJEFE_RAMA",
+	"Sub-Jefe de Unidad Scout": "SUBJEFE_RAMA",
+	"Sub-Jefe de Comunidad Caminante": "SUBJEFE_RAMA",
+	"Sub-Jefe de Comunidad Rover": "SUBJEFE_RAMA",
+	"Jefe de Castores": "JEFE_RAMA",
+	"Jefe de Manada": "JEFE_RAMA",
+	"Jefe de Unidad Scout": "JEFE_RAMA",
+	"Jefe de Comunidad Caminante": "JEFE_RAMA",
+	"Jefe de Comunidad Rover": "JEFE_RAMA",
+	"Padre representante Castores": "PADRE_REPRESENTANTE",
+	"Padre representante Manada": "PADRE_REPRESENTANTE",
+	"Padre representante Unidad Scout": "PADRE_REPRESENTANTE",
+	"Padre representante Comunidad Caminante": "PADRE_REPRESENTANTE",
+	"Padre representante Comunidad Rover": "PADRE_REPRESENTANTE",
+	"Castor": "JOVEN",
+	"Lobato / Lobezna": "JOVEN",
+	"Scout": "JOVEN",
+	"Caminante": "JOVEN",
+	"Rover": "JOVEN",
+	"Representante Juvenil al Consejo de Grupo": "JOVEN",
+}
+
+export const RAMAS_MAP = {
+	"Castores": "CASTORES",
+	"Lobatos y Lobeznas": "MANADA",
+	"Scouts": "SCOUTS",
+	"Caminantes": "CAMINANTES",
+	"Rovers": "ROVERS"
+} as const

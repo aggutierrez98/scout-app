@@ -1,4 +1,4 @@
-import { Button, Text, useTheme } from "react-native-paper";
+import { Appbar, Button, Text, useTheme } from "react-native-paper";
 import { SafeAreaView, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { LoadingScreen } from "components/layout/LoadingScreen";
@@ -26,7 +26,7 @@ export default function NewDocumento() {
     resolver: zodResolver(CreateDocumentoSchema),
   });
   const { isSuccess, mutateAsync, isPending } = useCreateDocumento();
-  const { data: users } = useAllScouts();
+  const { data: scouts } = useAllScouts();
   const { data: documentosData } = useDocumentsData();
   const documentosList =
     documentosData?.map((documento) => ({
@@ -35,14 +35,12 @@ export default function NewDocumento() {
     })) || [];
 
   const scoutsList =
-    users?.map(({ id, nombre }) => ({
+    scouts?.map(({ id, nombre }) => ({
       label: nombre,
       value: id,
     })) || [];
 
-  if (isSuccess) {
-    return <Redirect href="/(drawer)/pagos" />;
-  }
+  if (isSuccess) return <Redirect href="/(drawer)/documentos" />;
 
   return (
     <>
@@ -55,8 +53,6 @@ export default function NewDocumento() {
           },
         ]}
       >
-        <StatusBar style="auto" />
-
         <ScrollView
           style={[
             {
@@ -102,8 +98,8 @@ export default function NewDocumento() {
               style={{ marginTop: 20 }}
               onPress={formMethods.handleSubmit(async (data) => {
                 const resp = await mutateAsync(data);
-                if (resp) toogleSnackBar("Pago creado con exito!", "success");
-                else toogleSnackBar("Error al crear pago", "error");
+                if (resp) toogleSnackBar("Documento creado con exito!", "success");
+                else toogleSnackBar("Error al crear documento", "error");
               })}
               labelStyle={{
                 fontSize: 17,
@@ -113,7 +109,10 @@ export default function NewDocumento() {
               Guadar
             </Button>
           </FormProvider>
+
         </ScrollView>
+
+        <StatusBar style="auto" />
       </SafeAreaView>
     </>
   );

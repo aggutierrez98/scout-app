@@ -23,10 +23,8 @@ interface Props {
     placeholder?: string;
     list: Item[];
     dropDownStyle?: ViewStyle;
-    dropDownItemSelectedStyle?: ViewStyle;
-    dropDownItemSelectedTextStyle?: TextStyle;
     dropDownItemStyle?: ViewStyle;
-    dropDownItemTextStyle?: TextStyle;
+    dropDownInputStyle?: ViewStyle;
     dropDownContainerStyle?: ViewStyle;
 }
 
@@ -34,6 +32,8 @@ const SearchDropdown = ({
     name,
     label,
     list,
+    dropDownContainerStyle,
+    dropDownInputStyle
 }: Props) => {
     const { colors: {
         background,
@@ -132,8 +132,8 @@ const SearchDropdown = ({
     }, [text]);
 
     return (
-        <View style={{ ...styles.container, marginVertical: 7, }}>
-            <View style={styles.inputContainer}>
+        <View style={{ ...styles.container, ...dropDownContainerStyle }}>
+            <View style={{ ...styles.inputContainer, ...dropDownInputStyle }}>
                 <TextInput
                     ref={inputRef}
                     style={styles.input}

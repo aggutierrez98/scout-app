@@ -1,4 +1,4 @@
-import ListItem from "components/ListItem";
+import ListItem from "components/shared/ListItem";
 import { useRouter } from "expo-router";
 import { Scout } from "interfaces/scout";
 import React, { Fragment, memo } from "react";

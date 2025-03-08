@@ -6,10 +6,10 @@ import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useNavigation } from "expo-router";
 import { CommonActions } from "@react-navigation/native";
 import EntregasList from "components/familiares/EntregasList";
-import EntregasFiltersMenu from "components/entregas/EntregasFiltersMenu";
 // import { useEntregaMenuContext } from "context/EntregasMenuContext";
 import { useMenuContext } from "context/MenuContext";
 import FiltersMenu from "components/shared/FiltersMenu";
+import { NotificationsBell } from "components/layout/NotificationsBell";
 
 export default function Entregas() {
   const theme = useTheme();
@@ -46,6 +46,8 @@ export default function Entregas() {
         >
           <Appbar.Content title="Entregas" />
 
+          <NotificationsBell />
+
           <Appbar.Action
             icon="chevron-down"
             onPressIn={() => toogleMenu()}
@@ -65,6 +67,7 @@ export default function Entregas() {
 
           <FiltersMenu parentRef={touchable} section="entregas" />
         </Appbar.Header>
+
 
         <View
           style={[

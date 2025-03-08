@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
+const errorMsg = __DEV__ ? "El servidor se encuentra desconectado" : "El servidor se encuentra en mantenimiento"
 
 export const ModalServerDisconnected = () => {
 	const [visible, setVisible] = useState(true);
@@ -13,7 +14,7 @@ export const ModalServerDisconnected = () => {
 				<Dialog.Title>Error de servidor</Dialog.Title>
 				<Dialog.Content>
 					<Text variant="bodyMedium">
-						El servidor se encuentra desconectado
+						{errorMsg}
 					</Text>
 				</Dialog.Content>
 				<Dialog.Actions>

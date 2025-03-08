@@ -5,5 +5,6 @@
     "strict": true,
     "module": "esnext",
     "typeRoots": ["./src/types"]
-  }
+  },
+  "include": ["./src"]
 }

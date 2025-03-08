@@ -14,6 +14,7 @@ import { EditFamiliarSchema } from "validators/familiar";
 import { StatusBar } from "expo-status-bar";
 import FamiliaList from "./FamiliaList";
 import { useEditFamiliar, useFamiliar } from "hooks";
+import { NotificationsBell } from "components/layout/NotificationsBell";
 
 type FamiliarParams = {
   familiar: string;

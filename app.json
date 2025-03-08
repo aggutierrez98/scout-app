@@ -3,7 +3,17 @@
     "name": "scout-app",
     "description": "Scout app for the scout team. Developed by Aggutierrez. Used to manage all scout-related information incluiding CRUD operations, complex filters for searching and more.",
     "orientation": "portrait",
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
     "scheme": "scoutapp",
     "slug": "scout-app",
     "splash": {

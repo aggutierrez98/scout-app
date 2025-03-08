@@ -102,6 +102,25 @@ export const loginUser = async (userData: {
   return data;
 };
 
+export const firstLogin = async (userData: {
+  username: string;
+  password: string;
+}) => {
+  try {
+    const { data: firstLoginData } = await api.put(`/auth/firstLogin`, userData, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return firstLoginData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 export const renewLogin = async () => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");

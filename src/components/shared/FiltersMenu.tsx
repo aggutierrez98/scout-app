@@ -25,6 +25,9 @@ export default function FiltersMenu({
     const theme = useTheme();
     const {
         showMenu,
+        scoutSelected,
+        handleScoutSelectedChange,
+        handleScoutIdChange,
         progresion: {
             progresionesSelected,
             progresionList,
@@ -68,37 +71,55 @@ export default function FiltersMenu({
             >
                 <ScrollView>
                     <Text>Seleccione filtros de busqueda</Text>
+                    {scoutSelected &&
+                        <>
+                            <Divider style={{ marginVertical: 10 }} />
+                            <Chip
+                                closeIcon="close"
+                                onClose={() => {
+                                    handleScoutSelectedChange("")
+                                    handleScoutIdChange("")
+                                }}
+                            >
+                                Seleccionado scout: {scoutSelected}
+                            </Chip>
+                        </>
+                    }
                     <Divider style={{ marginVertical: 10 }} />
-
                     <List.AccordionGroup>
-                        <AccordionFilter
-                            id="rama"
-                            text="Seleccion rama"
-                            handleChange={handleRamaChange}
-                            list={ramasList}
-                            selected={ramasSelected}
-                        />
-                        <AccordionFilter
-                            id="equipo"
-                            text="Seleccion equipo"
-                            handleChange={handleEquipoChange}
-                            list={equipoList}
-                            selected={equiposSelected}
-                        />
-                        <AccordionFilter
-                            id="progresion"
-                            text="Seleccione progresion"
-                            handleChange={handleProgresionChange}
-                            list={progresionList}
-                            selected={progresionesSelected}
-                        />
-                        <AccordionFilter
-                            id="funcion"
-                            text="Seleccione funcion"
-                            handleChange={handleFuncionChange}
-                            list={funcionesList}
-                            selected={funcionesSelected}
-                        />
+                        {!scoutSelected && (
+                            <>
+                                <AccordionFilter
+                                    id="rama"
+                                    text="Seleccion rama"
+                                    handleChange={handleRamaChange}
+                                    list={ramasList}
+                                    selected={ramasSelected}
+                                />
+                                <AccordionFilter
+                                    id="equipo"
+                                    text="Seleccion equipo"
+                                    handleChange={handleEquipoChange}
+                                    list={equipoList}
+                                    selected={equiposSelected}
+                                />
+                                <AccordionFilter
+                                    id="progresion"
+                                    text="Seleccione progresion"
+                                    handleChange={handleProgresionChange}
+                                    list={progresionList}
+                                    selected={progresionesSelected}
+                                />
+                                <AccordionFilter
+                                    id="funcion"
+                                    text="Seleccione funcion"
+                                    handleChange={handleFuncionChange}
+                                    list={funcionesList}
+                                    selected={funcionesSelected}
+                                />
+                            </>
+                        )}
+
                         {section === "pagos" &&
                             <>
                                 <List.Section>

@@ -2,13 +2,17 @@ import { useGetMe } from "hooks";
 import LoginForm from "components/auth/LoginForm";
 import LogoIcon from "components/layout/AppLogoIcon";
 import { LoadingScreen } from "components/layout/LoadingScreen";
-import { Redirect } from "expo-router";
+import {
+	Redirect
+} from "expo-router";
 import { View, SafeAreaView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
 export default function Index() {
 	const { data: userData, isLoading } = useGetMe();
-	const theme = useTheme();
+	const { colors } = useTheme();
+
+	if (userData) return <Redirect href="/(drawer)/(tabs)/scouts" />
 
 	return (
 		<SafeAreaView
@@ -18,7 +22,7 @@ export default function Index() {
 					alignItems: "center",
 					justifyContent: "center",
 				},
-				{ backgroundColor: theme.colors.background },
+				{ backgroundColor: colors.background },
 			]}
 		>
 			{isLoading && <LoadingScreen />}
@@ -28,7 +32,7 @@ export default function Index() {
 					flex: 1,
 					alignItems: "center",
 					justifyContent: "center",
-					backgroundColor: theme.colors.background,
+					backgroundColor: colors.background,
 				}}
 			>
 				<View style={{ alignItems: "center", marginBottom: 20 }}>
@@ -45,11 +49,8 @@ export default function Index() {
 					</Text>
 				</View>
 
-				{userData ? (
-					<Redirect href="/(drawer)/(tabs)/scouts" />
-				) : (
-					<LoginForm />
-				)}
+				<LoginForm />
+
 			</View>
 		</SafeAreaView>
 	);

@@ -20,9 +20,10 @@ export interface ScoutEntrega {
 }
 
 export interface EntregasQueryParams {
+  scoutId?: string
   searchQuery: string;
-  tiempoDesde: Date;
-  tiempoHasta: Date;
+  tiempoDesde?: Date;
+  tiempoHasta?: Date;
   tipoEntregasSelected: string[];
   equipos: string[];
   ramas: string[];

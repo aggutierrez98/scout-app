@@ -58,7 +58,7 @@ export default function DocumentoPage() {
       <DescriptiveText
         title="Documento"
         style={{ maxWidth: "85%" }}
-        description={data ? `${data?.documento.nombre}as` : "-"}
+        description={data ? `${data?.documento.nombre}` : "-"}
       />
       <DescriptiveText
         title="Vence"
@@ -110,3 +110,10 @@ export default function DocumentoPage() {
     </ScrollView>
   );
 }
+
+
+// instagram.com
+// facebook.com
+// tiktok.com
+// threads.net
+// x.com

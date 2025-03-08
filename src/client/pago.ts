@@ -12,6 +12,7 @@ import { PAGOS_QUERY_LIMIT } from "utils/constants";
 export const fetchPagos = async (
   pageParam: number,
   {
+    scoutId,
     equipos,
     progresiones,
     ramas,
@@ -43,11 +44,15 @@ export const fetchPagos = async (
     const rendidoStr = rendido
       ? `&rendido=${rendido === "si" ? "true" : "false"}`
       : "";
+    const scoutIdStr = scoutId ? `&scoutId=${scoutId}` : ""
+    const tiempoDesdeStr = tiempoDesde ? `&tiempoDesde=${tiempoDesde.toISOString()}` : ""
+    const tiempoHastaStr = tiempoHasta ? `&tiempoHasta=${tiempoHasta.toISOString()}` : ""
+    const tiempoStr = `${tiempoDesdeStr}${tiempoHastaStr}`
 
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${progresionesStr}${equiposStr}${funcionesStr}${ramasStr}${rendidoStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/pago?offset=${offset}&limit=${PAGOS_QUERY_LIMIT}&nombre=${searchQuery}&concepto=${searchQuery}&metodoPago=${metodoPago}${scoutIdStr}${progresionesStr}${equiposStr}${funcionesStr}${ramasStr}${rendidoStr}${tiempoStr}`,
       {
         headers: {
           "Content-Type": "application/json",

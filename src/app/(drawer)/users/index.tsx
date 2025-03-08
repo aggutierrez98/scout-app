@@ -6,6 +6,7 @@ import { useDebouncedValue } from "hooks/useDebounceValue";
 import UsersList from "components/users/UsersList";
 import { useNavigation } from "expo-router";
 import { CommonActions } from "@react-navigation/native";
+import { NotificationsBell } from "components/layout/NotificationsBell";
 
 export default function Users() {
   const theme = useTheme();
@@ -39,6 +40,8 @@ export default function Users() {
           }}
         >
           <Appbar.Content title="Usuarios" />
+
+          <NotificationsBell />
 
           <Appbar.Action
             icon="plus"

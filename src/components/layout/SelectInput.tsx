@@ -1,8 +1,7 @@
-import { View, StyleSheet, ViewStyle, TextStyle } from "react-native";
+import { View, ViewStyle, TextStyle } from "react-native";
 import { useController } from "react-hook-form";
-import DropDown from "react-native-paper-dropdown";
-import { useState } from "react";
-import { HelperText, useTheme } from "react-native-paper";
+import { Dropdown, MultiSelectDropdown } from "react-native-paper-dropdown";
+import { HelperText, Text, useTheme } from "react-native-paper";
 
 interface Props {
   name: string;
@@ -18,57 +17,57 @@ interface Props {
   dropDownItemStyle?: ViewStyle;
   dropDownItemTextStyle?: TextStyle;
   dropDownContainerStyle?: ViewStyle;
+  multi?: boolean
 }
 
 export const CustomDropDown = ({
   name,
   label,
   list,
+  multi = false,
   placeholder,
   dropDownStyle,
-  dropDownItemSelectedStyle,
-  dropDownItemSelectedTextStyle,
-  dropDownItemStyle,
-  dropDownItemTextStyle,
   dropDownContainerStyle,
 }: Props) => {
-  const [showDropDown, setShowDropDown] = useState(false);
   const {
     field,
     fieldState: { error },
-  } = useController({ name });
+  } = useController({ name, defaultValue: "" });
 
-  const theme = useTheme();
-
-  const handleDDChange = (value: string) => {
+  const handleDDChange = (value?: string | string[]) => {
     field.onChange(value);
   };
   const hasError = Boolean(!!error);
 
   return (
     <View style={{ marginVertical: 7, ...dropDownContainerStyle }}>
-      <DropDown
-        label={label}
-        placeholder={placeholder}
-        mode={"outlined"}
-        visible={showDropDown}
-        showDropDown={() => setShowDropDown(true)}
-        onDismiss={() => setShowDropDown(false)}
-        value={field.value}
-        setValue={handleDDChange}
-        list={list}
-        dropDownStyle={dropDownStyle}
-        dropDownItemSelectedStyle={dropDownItemSelectedStyle}
-        dropDownItemSelectedTextStyle={dropDownItemSelectedTextStyle}
-        dropDownItemStyle={dropDownItemStyle}
-        dropDownItemTextStyle={{
-          color: theme.colors.onPrimary,
-          ...dropDownItemTextStyle,
-        }}
-      />
+      {multi ?
+        <MultiSelectDropdown
+          menuContentStyle={{
+            paddingTop: 0,
+            ...dropDownStyle,
+          }}
+          label={label}
+          placeholder={placeholder}
+          mode={"outlined"}
+          options={list}
+          value={field.value}
+          onSelect={handleDDChange}
+        />
+        :
+
+        <Dropdown
+          label={label}
+          placeholder={placeholder}
+          mode={"outlined"}
+          options={list}
+          value={field.value}
+          onSelect={handleDDChange}
+        />
+      }
+
       <HelperText type="error" visible={hasError}>
         {error?.message?.toString()}
-        {/* {name} ingresado es invalido */}
       </HelperText>
     </View>
   );

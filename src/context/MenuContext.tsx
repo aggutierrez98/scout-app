@@ -1,11 +1,14 @@
 import { useEquipos } from "hooks";
 import { createContext, useContext, useState, ReactNode } from "react";
 import { progresionList, sexoList, funcionesList, religionList, ramasList, tipoEntregaList, metodosPagoList, trueFalseList } from '../utils/constants';
-import { useFocusEffect, useNavigation } from "expo-router";
 
 export interface MenuContextProps {
     showMenu: boolean;
     toogleMenu: () => void;
+    scoutId: string,
+    handleScoutIdChange: (arg: string) => void;
+    scoutSelected: string,
+    handleScoutSelectedChange: (arg: string) => void;
     sexo: {
         sexo: string;
         handleSexoChange: (arg: string) => void;
@@ -93,9 +96,7 @@ export const MenuProvider = ({
 }: {
     children: ReactNode[] | ReactNode;
 }) => {
-
-    const { addListener, removeListener } = useNavigation();
-
+    // const { addListener, removeListener } = useNavigation();
     // useFocusEffect(() => {
     //     addListener("beforeRemove", () => {
     //         toogleMenu()
@@ -104,20 +105,19 @@ export const MenuProvider = ({
     // })
 
     const { data: equiposData } = useEquipos();
+    const [scoutId, setScoutId] = useState("")
+    const [scoutSelected, setScoutSelected] = useState("")
     const [showMenu, setShowMenu] = useState(false);
     const [sexo, setSexo] = useState<string>("");
     const [rendido, setRendido] = useState("");
     const [metodoPago, setMetodoPago] = useState<string>("");
     const dateActual: Date = new Date(Date.now());
-    const date3MesesAntes: Date = new Date(Date.now());
-    date3MesesAntes.setMonth(date3MesesAntes.getMonth() - 5);
-    const [tiempoDesde, setTiempoDesde] = useState(date3MesesAntes);
+    const date1AñoAntes: Date = new Date(Date.now());
+    date1AñoAntes.setFullYear(date1AñoAntes.getFullYear() - 1);
+    const [tiempoDesde, setTiempoDesde] = useState(date1AñoAntes);
     const [tiempoHasta, setTiempoHasta] = useState(dateActual);
     const [vence, setVence] = useState("");
-    const [tipoEntregasSelected, setTipoEntregasSelected] = useState<string[]>(
-        []
-    );
-
+    const [tipoEntregasSelected, setTipoEntregasSelected] = useState<string[]>([]);
     const [equiposSelected, setEquiposSelected] = useState<string[]>([]);
     const equipoList =
         equiposData?.map((equipo) => ({
@@ -131,6 +131,13 @@ export const MenuProvider = ({
     );
     const [funcionesSelected, setFuncionesSelected] = useState<string[]>([]);
     const [ramasSelected, setRamasSelected] = useState<string[]>([]);
+
+    const handleScoutIdChange = (arg: string) => {
+        setScoutId(arg);
+    };
+    const handleScoutSelectedChange = (arg: string) => {
+        setScoutSelected(arg);
+    };
 
     const handleEquipoChange = (arg: string) => {
         if (equiposSelected.includes(arg)) {
@@ -206,6 +213,10 @@ export const MenuProvider = ({
             value={{
                 showMenu,
                 toogleMenu,
+                scoutId,
+                handleScoutIdChange,
+                scoutSelected,
+                handleScoutSelectedChange,
                 sexo: {
                     sexo,
                     sexoList,

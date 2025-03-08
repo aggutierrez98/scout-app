@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { useDebouncedValue } from "hooks/useDebounceValue";
 import FamiliaresList from "components/familiares/FamiliaresList";
+import { NotificationsBell } from "components/layout/NotificationsBell";
 
 export default function Familiares() {
   const theme = useTheme();
@@ -36,7 +37,9 @@ export default function Familiares() {
           }}
         >
           <Appbar.Content title="Familiares" />
+          <NotificationsBell />
         </Appbar.Header>
+
 
         <View
           style={[

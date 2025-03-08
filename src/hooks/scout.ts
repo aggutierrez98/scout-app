@@ -26,10 +26,10 @@ export const useScouts = (queryParams: ScoutsQueryParams) => useInfiniteQuery({
 export const useScout = (id: string) =>
   useQuery({ queryKey: ["scout", id], queryFn: () => fetchScout(id) });
 
-export const useAllScouts = (onlyEducadores?: boolean) =>
+export const useAllScouts = () =>
   useQuery({
     queryKey: ["scouts", "all"],
-    queryFn: () => fetchAllScouts(onlyEducadores),
+    queryFn: () => fetchAllScouts(),
   });
 
 export const useEditScout = () =>
@@ -37,3 +37,4 @@ export const useEditScout = () =>
     mutationFn: ({ id, data }: { id: string; data: ScoutEditParams }) =>
       editScout(id, data),
   });
+

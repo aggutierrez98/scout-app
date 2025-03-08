@@ -42,6 +42,7 @@ export default function UserPage() {
   if (!userId) return null;
   const { data, isLoading } = useUser(userId);
   const { mutateAsync } = useModifyUser();
+  const datos = data?.scout || data?.familiar
 
   const formMethods = useForm<FormValues>({
     mode: "onBlur",
@@ -91,18 +92,18 @@ export default function UserPage() {
       />
       <Divider style={{ marginBottom: 10 }} />
 
-      {data?.scout ? (
+      {datos ? (
         <>
           <Text style={{ fontSize: 25 }}>
-            {data?.scout.apellido ?? ""} {data?.scout.nombre ?? ""}
+            {datos.apellido ?? ""} {datos.nombre ?? ""}
           </Text>
 
           <Divider style={{ marginBottom: 10 }} />
 
-          <DescriptiveText title="DNI" description={data?.scout.dni ?? ""} />
+          <DescriptiveText title="DNI" description={datos.dni ?? ""} />
           <DescriptiveText
             title="Funcion"
-            description={data?.scout.funcion ?? ""}
+            description={datos && 'funcion' in datos ? datos.funcion : "FAMILIAR"}
           />
         </>
       ) : (

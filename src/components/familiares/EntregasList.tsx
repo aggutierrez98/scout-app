@@ -23,6 +23,7 @@ export default function EntregasList({ searchQuery }: Props) {
 	const { isPending } = useDeleteEntrega();
 
 	const {
+		scoutId,
 		tiempo: { tiempoDesde, tiempoHasta },
 		tipoEntrega: { tipoEntregasSelected },
 		funcion: { funcionesSelected },
@@ -41,6 +42,7 @@ export default function EntregasList({ searchQuery }: Props) {
 		refetch,
 		isRefetching,
 	} = useEntregas({
+		scoutId,
 		searchQuery,
 		tipoEntregasSelected,
 		tiempoDesde,

@@ -21,6 +21,7 @@ interface Props {
 
 export default function PagosList({ searchQuery }: Props) {
 	const {
+		scoutId,
 		tiempo: { tiempoDesde, tiempoHasta },
 		metodoPago: { metodoPago },
 		progresion: { progresionesSelected },
@@ -37,6 +38,7 @@ export default function PagosList({ searchQuery }: Props) {
 		refetch,
 		isRefetching,
 	} = usePagos({
+		scoutId,
 		metodoPago,
 		equipos: equiposSelected,
 		progresiones: progresionesSelected,

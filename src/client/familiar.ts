@@ -79,6 +79,28 @@ export const fetchFamiliares = async (
 	}
 };
 
+export const fetchFamiliaresScout = async (scoutId: string,) => {
+	try {
+		const token = await SecureStore.getItemAsync("secure_token");
+
+		const { data, status } = await api.get(
+			`/familiar?scoutId=${scoutId}`,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+
+		return data as Familiar[];
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+};
+
 export const relateFamiliar = async (
 	familiarId: string,
 	familiarData: FamiliarRelateParams,
@@ -122,6 +144,33 @@ export const unrelateFamiliar = async (
 			},
 		);
 		return data as Familiar;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+};
+
+
+export const fetchAllFamiliares = async () => {
+	try {
+		const token = await SecureStore.getItemAsync("secure_token");
+
+		// // const json = await scoutsApi.get("scout").json();
+		const { data } = await api.get(
+			`/familiar/?select=nombre,apellido,id,uuid&existingUser=false`,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return data as {
+			id: string;
+			nombre: string;
+			apellido: string
+		}[];
 	} catch (error) {
 		console.log(error);
 		return null;

@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   createDocumento,
+  fillDocumento,
   editDocumento,
   fetchDocumento,
   fetchDocuments,
@@ -17,8 +18,14 @@ import { DOCUMENTOS_QUERY_LIMIT } from "utils/constants";
 import {
   DocumentoCreateParams,
   DocumentoEditParams,
+  DocumentoFillParams,
   DocumentosQueryParams,
 } from "interfaces/documento";
+import { useTheme } from "react-native-paper";
+import { useGetMe } from "./auth";
+import { UseFormSetError } from "react-hook-form";
+import { AxiosError } from "axios";
+import { useSnackBarContext } from '../context/SnackBarContext';
 
 export const useDocuments = (queryParams: DocumentosQueryParams) =>
   useInfiniteQuery({
@@ -29,7 +36,7 @@ export const useDocuments = (queryParams: DocumentosQueryParams) =>
       }-ramas=${queryParams.ramas
       }-funcion=${queryParams.funciones}-vence=${queryParams.vence
       }-tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${queryParams.tiempoHasta
-      }`,
+      }-scoutId=${queryParams.scoutId}`,
     ],
     queryFn: ({ pageParam }) => fetchDocuments(pageParam, queryParams),
     getNextPageParam: (lastPage, allPages) => {
@@ -75,6 +82,46 @@ export const useCreateDocumento = () => {
     mutationFn: (data: DocumentoCreateParams) => createDocumento(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documentos"] });
+    },
+  });
+};
+
+export const useFillDocumento = (
+  setError: UseFormSetError<{
+    familiarId: string;
+    signature: string;
+  }>,
+
+) => {
+  const { dark } = useTheme()
+  const { data } = useGetMe()
+  const familiarId = data?.familiar?.id
+  const queryClient = useQueryClient();
+  const { toogleSnackBar } = useSnackBarContext();
+  return useMutation({
+    mutationFn: (data: Omit<DocumentoFillParams, "theme">) => fillDocumento({ ...data, theme: dark ? "dark" : "light", familiarId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documentos"] });
+    },
+    // throwOnError: true,
+    onError: (data: AxiosError) => {
+      if (data.code === "ERR_NETWORK") {
+        setError("root", {
+          type: "server",
+          message: "Servidor no disponible",
+        });
+      }
+      else if (data.response) {
+        const { name, message } = data.response.data as {
+          name: string,
+          message: string
+        }
+
+        if (name === "BAD_PARAMETERS") {
+          const errorMessage = message.split("\n")[1].split("]: ")[1]
+          toogleSnackBar(errorMessage, "error");
+        }
+      }
     },
   });
 };

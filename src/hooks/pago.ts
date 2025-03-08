@@ -28,7 +28,7 @@ export const usePagos = (queryParams: PagosQueryParams) =>
 			}-funcion=${queryParams.funciones}
       -rendido=${queryParams.rendido}
       -tiempoDesde=${queryParams.tiempoDesde}-tiempoHasta=${queryParams.tiempoHasta
-			}`,
+			}-scoutId=${queryParams.scoutId}`,
 		],
 		queryFn: ({ pageParam }) => fetchPagos(pageParam, queryParams),
 		getNextPageParam: (lastPage, allPages) => {

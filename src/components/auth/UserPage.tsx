@@ -4,10 +4,12 @@ import { StatusBar } from "expo-status-bar";
 import { useGetMe } from "hooks";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import { DescriptiveText } from "components/layout/DescriptiveText";
+import { NotificationsBell } from "components/layout/NotificationsBell";
 
 export default function UserPage() {
   const theme = useTheme();
   const { data, isLoading } = useGetMe();
+  const datos = data?.scout || data?.familiar
 
   return (
     <>
@@ -51,38 +53,38 @@ export default function UserPage() {
             />
             <Divider style={{ marginBottom: 10 }} />
 
-            {data.scout ? (
+            {datos ? (
               <>
                 <DescriptiveText
                   title="Nombre"
-                  description={`${data.scout.apellido} ${data.scout.nombre}`}
+                  description={`${datos.apellido} ${datos.nombre}`}
                 />
                 <DescriptiveText title="ROL" description={data.role} />
                 <DescriptiveText
                   title="Funcion"
-                  description={data.scout.funcion}
+                  description={datos && 'funcion' in datos ? datos.funcion : "FAMILIAR"}
                 />
 
                 <Divider style={{ marginVertical: 10 }} />
 
-                <DescriptiveText title="DNI" description={data.scout.dni} />
+                <DescriptiveText title="DNI" description={datos.dni} />
                 <DescriptiveText
                   title="Edad"
-                  description={`${data.scout.edad} Años`}
+                  description={`${datos.edad} Años`}
                 />
                 <DescriptiveText
                   title="Sexo"
                   description={
-                    data.scout.sexo === "M" ? "Masculino" : "Femenino"
+                    datos.sexo === "M" ? "Masculino" : "Femenino"
                   }
                 />
-                <DescriptiveText title="Mail" description={data.scout.mail} />
+                <DescriptiveText title="Mail" description={datos.mail} />
               </>
             ) : (
               <Text
                 style={{ textAlign: "center", fontSize: 20, marginTop: 10 }}
               >
-                No hay data de scout para el usuario
+                No hay datos registrados para el usuario
               </Text>
             )}
           </ScrollView>

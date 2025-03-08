@@ -26,18 +26,43 @@ export const CreateUserSchema = z.object({
       }
     },
   }),
-  scoutId: IdSchema.max(10),
+  scoutId: IdSchema.max(10).optional(),
+  familiarId: IdSchema.max(10).optional(),
   username: z
     .string({ required_error: "Nombre de usuario requerido" })
     .min(8, "Debe tener al menos 8 caracteres")
     .max(20, "Debe tener como maximo 20 caracteres")
     .regex(lettersReg, "Debe contener solo letras"),
-  password: z
-    .string({ required_error: "Contraseña requerida" })
-    .regex(
-      passRegex,
-      "Debe contener letras en mayuscula, miniscula, numeros y entre 8 y 12 caracteres"
-    ),
+
+}).superRefine((args, ctx) => {
+  if (args.familiarId && args.scoutId) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["familiarId"],
+      fatal: true,
+      message: "Seleccionar solamente scout o familiar (NO ambas).",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["scoutId"],
+      fatal: true,
+      message: "Seleccionar solamente scout o familiar (NO ambas).",
+    });
+  }
+  if (!args.familiarId && !args.scoutId) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["familiarId"],
+      fatal: true,
+      message: "Debe seleccionar un scout/familiar asociado",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["scoutId"],
+      fatal: true,
+      message: "Debe seleccionar un scout/familiar asociado",
+    });
+  }
 });
 
 export const LoginUserSchema = z.object({
@@ -46,10 +71,40 @@ export const LoginUserSchema = z.object({
     .min(8, "Debe tener al menos 8 caracteres")
     .max(20, "Debe tener como maximo 20 caracteres")
     .regex(lettersReg, "Debe contener solo letras"),
+  password: z.string({ required_error: "Contraseña requerida" })
+});
+
+export const FirstLoginUserSchema = z.object({
+  username: z
+    .string({ required_error: "Nombre de usuario requerido" })
+    .min(8, "Debe tener al menos 8 caracteres")
+    .max(20, "Debe tener como maximo 20 caracteres")
+    .regex(lettersReg, "Debe contener solo letras"),
   password: z
     .string({ required_error: "Contraseña requerida" })
     .regex(
       passRegex,
       "Debe contener letras en mayuscula, miniscula, numeros y entre 8 y 12 caracteres"
     ),
+  passwordConfirm: z
+    .string({ required_error: "Confirmacion de contraseña requerida" })
+    .regex(
+      passRegex,
+      "Debe contener letras en mayuscula, miniscula, numeros y entre 8 y 12 caracteres"
+    )
+}).superRefine((args, ctx) => {
+  if (args.passwordConfirm !== args.password) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["password"],
+      fatal: true,
+      message: "Las contraseñas deben coincidir",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["passwordConfirm"],
+      fatal: true,
+      message: "Las contraseñas deben coincidir",
+    });
+  }
 });

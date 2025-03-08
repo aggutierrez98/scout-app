@@ -3,6 +3,8 @@ import { useDebouncedValue } from "hooks/useDebounceValue";
 import { useState } from "react";
 import { SafeAreaView } from "react-native";
 import DocumentsList from "components/documentos/DocumentsList";
+import { useMenuContext } from "context/MenuContext";
+import { useDocuments } from '../../../../hooks/documento';
 
 export default function Documentos() {
   const theme = useTheme();
@@ -12,7 +14,6 @@ export default function Documentos() {
   };
   const [searchQuery, setsearchQuery] = useState("");
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
-
   return (
     <SafeAreaView
       style={[

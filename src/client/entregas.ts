@@ -73,6 +73,7 @@ export const editEntrega = async (
 export const fetchEntregas = async (
   pageParam: number,
   {
+    scoutId,
     searchQuery,
     tipoEntregasSelected,
     tiempoDesde,
@@ -104,11 +105,15 @@ export const fetchEntregas = async (
       tipoEntregasSelected,
       "tipoEntrega"
     );
+    const scoutIdStr = scoutId ? `&scoutId=${scoutId}` : ""
+    const tiempoDesdeStr = tiempoDesde ? `&tiempoDesde=${tiempoDesde.toISOString()}` : ""
+    const tiempoHastaStr = tiempoHasta ? `&tiempoHasta=${tiempoHasta.toISOString()}` : ""
+    const tiempoStr = `${tiempoDesdeStr}${tiempoHastaStr}`
 
     const token = await SecureStore.getItemAsync("secure_token");
 
     const { data, status } = await api.get(
-      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${equiposStr}${progresionesStr}${funcionesStr}${ramasStr}${tipoEntregasStr}&tiempoDesde=${tiempoDesde.toISOString()}&tiempoHasta=${tiempoHasta.toISOString()}`,
+      `/entrega?offset=${offset}&limit=${ENTREGAS_QUERY_LIMIT}&nombre=${searchQuery}${scoutIdStr}${equiposStr}${progresionesStr}${funcionesStr}${ramasStr}${tipoEntregasStr}${tiempoStr}`,
       {
         headers: {
           "Content-Type": "application/json",

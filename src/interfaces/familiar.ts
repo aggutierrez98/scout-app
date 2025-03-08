@@ -15,6 +15,11 @@ export interface Familiar {
   estadoCivil?: string;
 }
 
+export interface FamiliarWithRelacion extends Familiar {
+  relacion: string;
+}
+
+
 export interface ScoutWithRelation extends Scout {
   relacion: string;
 }

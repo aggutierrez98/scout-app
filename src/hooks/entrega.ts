@@ -25,7 +25,7 @@ export const useEntregas = (queryParams: EntregasQueryParams) =>
       `searchParam${queryParams.searchQuery ?? ""}-equipos=${queryParams.equipos
       }-progresion=${queryParams.progresiones}-funcion=${queryParams.funciones}-ramas=${queryParams.ramas
       }-tipoEntrega=${queryParams.tipoEntregasSelected}-tiempoDesde=${queryParams.tiempoDesde
-      }-tiempoHasta=${queryParams.tiempoHasta}`,
+      }-tiempoHasta=${queryParams.tiempoHasta}-scoutId=${queryParams.scoutId}`,
     ],
     queryFn: ({ pageParam }) => fetchEntregas(pageParam, queryParams),
     getNextPageParam: (lastPage, allPages) => {

@@ -4,19 +4,20 @@ import {
 	useQuery,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { UseFormSetError } from "react-hook-form";
+import { UseFormSetError, UseFormSetValue } from "react-hook-form";
 import * as SecureStore from "expo-secure-store";
 import { AxiosError } from "axios";
 import {
 	createUser,
 	fetchUser,
 	fetchUsers,
+	firstLogin,
 	getMe,
 	loginUser,
 	modifyUser,
 	renewLogin,
 } from "client/auth";
-import { LoginResponse } from "interfaces/scout";
+import { FirstLoginResponse, LoginResponse } from "interfaces/scout";
 import { USERS_QUERY_LIMIT } from "utils/constants";
 import {
 	UserCreateParams,
@@ -64,7 +65,6 @@ export const useLogin = (
 				queryKey: ["user"]
 			})
 		},
-
 		onError: (data: AxiosError) => {
 			if (data.code === "ERR_NETWORK") {
 				setError("root", {
@@ -79,6 +79,31 @@ export const useLogin = (
 				setError("password", {
 					type: "credentials",
 					message: "Credenciales invalidas",
+				});
+			}
+		},
+	});
+};
+
+export const useFirstLogin = (
+	setError: UseFormSetError<{
+		username: string;
+		password: string;
+	}>,
+) => {
+	return useMutation({
+		mutationFn: firstLogin,
+		onError: (data: AxiosError) => {
+			if (data.code === "ERR_NETWORK") {
+				setError("root", {
+					type: "server",
+					message: "Servidor no disponible",
+				});
+			}
+			else if (data.response) {
+				setError("username", {
+					type: "credentials",
+					message: "El nombre de usuario ingresado no es valido",
 				});
 			}
 		},

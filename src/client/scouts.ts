@@ -62,13 +62,11 @@ export const fetchScout = async (id: string) => {
   }
 };
 
-export const fetchAllScouts = async (onlyEducadores?: boolean) => {
+export const fetchAllScouts = async () => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
-
-    // // const json = await scoutsApi.get("scout").json();
     const { data } = await api.get(
-      `/scout/all${onlyEducadores ? "Educadores" : "Scouts"}`,
+      `/scout/?select=nombre,apellido,id,uuid&existingUser=false`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +78,9 @@ export const fetchAllScouts = async (onlyEducadores?: boolean) => {
     return data as {
       id: string;
       nombre: string;
+      apellido: string
     }[];
+
   } catch (error) {
     console.log(error);
     return null;

@@ -13,6 +13,7 @@ import { ModalDeleteDocumento } from "./ModalDeleteDocumento";
 import DocumentoItem from "./DocumentoItem";
 import { getFlattenData } from "utils/getFlattenData";
 import { useMenuContext } from "context/MenuContext";
+import { ModalDocumentoAction } from "./ModalDocumentoAction";
 
 interface Props {
 	searchQuery: string;
@@ -20,8 +21,10 @@ interface Props {
 
 export default function DocumentsList({ searchQuery }: Props) {
 	const { isPending } = useDeleteDocumento();
+	const theme = useTheme();
 
 	const {
+		scoutId,
 		progresion: { progresionesSelected },
 		equipo: { equiposSelected },
 		funcion: { funcionesSelected },
@@ -38,6 +41,7 @@ export default function DocumentsList({ searchQuery }: Props) {
 		refetch,
 		isRefetching,
 	} = useDocuments({
+		scoutId,
 		equipos: equiposSelected,
 		vence,
 		ramas: ramasSelected,
@@ -47,8 +51,6 @@ export default function DocumentsList({ searchQuery }: Props) {
 		tiempoDesde,
 		tiempoHasta,
 	});
-
-	const theme = useTheme();
 
 	return (
 		<>
@@ -108,6 +110,8 @@ export default function DocumentsList({ searchQuery }: Props) {
 			</List.Section>
 
 			<ModalDeleteDocumento />
+
+			<ModalDocumentoAction />
 		</>
 	);
 }

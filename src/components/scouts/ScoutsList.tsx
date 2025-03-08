@@ -9,7 +9,6 @@ import { FlatList, RefreshControl } from "react-native";
 import { Scout } from "interfaces/scout";
 import { LoadingScreen } from "components/layout/LoadingScreen";
 import ScoutItem from "./ScoutItem";
-// import { useScoutMenuContext } from "context/ScoutsMenuContext";
 import { useMenuContext } from "context/MenuContext";
 import { useScouts } from "hooks";
 import { getFlattenData } from "utils/getFlattenData";

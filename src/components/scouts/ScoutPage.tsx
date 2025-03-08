@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native";
 import { Button, Divider, Text, useTheme } from "react-native-paper";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEditContext } from "context/EditContext";
 import { useForm, FormProvider } from "react-hook-form";
 import { CustomTextInput } from "components/layout/TextInput";
@@ -14,6 +14,7 @@ import { useEditScout, useScout } from "hooks";
 import { useMenuContext } from "context/MenuContext";
 import { formatEmptyStrings } from "utils/formatEmptyStrings";
 import { ScoutEditParams } from "interfaces/scout";
+import ScoutFamiliaList from "components/familiares/ScoutFamiliaList";
 
 type ScoutParams = {
 	scout: string;
@@ -34,7 +35,11 @@ export default function ScoutPage() {
 		funcion: { funcionesList },
 		rama: { ramasList },
 		religionList,
+		handleScoutIdChange,
+		handleScoutSelectedChange,
 	} = useMenuContext();
+	const router = useRouter()
+
 
 	const formMethods = useForm({
 		mode: "onBlur",
@@ -104,6 +109,59 @@ export default function ScoutPage() {
 						title="Equipo"
 						description={data?.equipo?.nombre}
 					/>
+					<Divider style={{ marginVertical: 10, marginTop: 20 }} />
+					<Button
+						style={{ marginVertical: 10 }}
+						mode="outlined"
+						icon="file-document-outline"
+						textColor={theme.colors.primary}
+						labelStyle={{
+							fontSize: 16,
+						}}
+						onPress={async () => {
+							handleScoutIdChange(scoutId)
+							handleScoutSelectedChange(`${data?.apellido} ${data?.nombre}`)
+							router.push(`/(drawer)/documentos`);
+						}}
+					>
+						Ver documentos del scout
+					</Button>
+					<Button
+						style={{ marginVertical: 10 }}
+						mode="outlined"
+						icon="cash-multiple"
+						textColor={theme.colors.primary}
+						labelStyle={{
+							fontSize: 16,
+						}}
+						onPress={async () => {
+							handleScoutIdChange(scoutId)
+							handleScoutSelectedChange(`${data?.apellido} ${data?.nombre}`)
+							router.push(`/(drawer)/pagos`);
+						}}
+					>
+						Ver pagos del scout
+					</Button>
+
+					<Button
+						style={{ marginVertical: 10 }}
+						mode="outlined"
+						icon="medal"
+						textColor={theme.colors.primary}
+						labelStyle={{
+							fontSize: 16,
+						}}
+						onPress={async () => {
+							handleScoutIdChange(scoutId)
+							handleScoutSelectedChange(`${data?.apellido} ${data?.nombre}`)
+							router.push(`/(drawer)/entregas`);
+						}}
+					>
+						Ver entregas del scout
+					</Button>
+
+					<Divider style={{ marginVertical: 10 }} />
+					<ScoutFamiliaList data={data?.familiares || []} />
 				</>
 			) : (
 				<>
@@ -190,6 +248,8 @@ export default function ScoutPage() {
 					</FormProvider>
 				</>
 			)}
+
+
 		</ScrollView>
 	);
 }

@@ -6,8 +6,10 @@ import {
 } from "@tanstack/react-query";
 import {
   editFamiliar,
+  fetchAllFamiliares,
   fetchFamiliar,
   fetchFamiliares,
+  fetchFamiliaresScout,
   relateFamiliar,
   unrelateFamiliar,
 } from "client/familiar";
@@ -23,8 +25,7 @@ export const useFamiliares = (queryParams: FamiliaresQueryParams) =>
   useInfiniteQuery({
     queryKey: [
       "familiares",
-      `searchParam${queryParams.searchQuery ?? ""}-searchQuery=${
-        queryParams.searchQuery
+      `searchParam${queryParams.searchQuery ?? ""}-searchQuery=${queryParams.searchQuery
       }`,
     ],
     queryFn: ({ pageParam }) => fetchFamiliares(pageParam, queryParams),
@@ -36,6 +37,12 @@ export const useFamiliares = (queryParams: FamiliaresQueryParams) =>
       return nextPage;
     },
     initialPageParam: 1,
+  });
+
+export const useFamiliaresScout = (scoutId: string) =>
+  useQuery({
+    queryKey: ["familiares", "scout", scoutId],
+    queryFn: () => fetchFamiliaresScout(scoutId),
   });
 
 export const useFamiliar = (id: string) =>
@@ -81,3 +88,9 @@ export const useUnrelateFamiliar = () => {
     },
   });
 };
+
+export const useAllFamiliares = () =>
+  useQuery({
+    queryKey: ["familiares", "all"],
+    queryFn: () => fetchAllFamiliares(),
+  });
