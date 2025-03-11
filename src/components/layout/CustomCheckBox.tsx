@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useController, UseControllerProps } from "react-hook-form";
 import { View } from "react-native";
-import { Checkbox, CheckboxItemProps } from "react-native-paper";
+import { Checkbox, CheckboxItemProps, HelperText } from "react-native-paper";
 
 interface Props extends Omit<CheckboxItemProps, "status">, UseControllerProps {
     label: string;
@@ -15,8 +15,10 @@ export const CustomCheckBox = ({
 }: Props) => {
     const {
         field,
-        fieldState: { error },
+        fieldState: { error, },
     } = useController({ name, defaultValue: false });
+
+    const hasError = Boolean(!!error);
 
     return (
         <View>
@@ -26,6 +28,10 @@ export const CustomCheckBox = ({
                 onPress={() => field.onChange(!field.value)
                 }
             />
+
+            <HelperText type="error" visible={hasError}>
+                {error?.message?.toString()}
+            </HelperText>
         </View>
     )
 }

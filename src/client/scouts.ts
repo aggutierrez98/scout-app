@@ -66,7 +66,7 @@ export const fetchAllScouts = async () => {
   try {
     const token = await SecureStore.getItemAsync("secure_token");
     const { data } = await api.get(
-      `/scout/?select=nombre,apellido,id,uuid&existingUser=false`,
+      `/scout/?select=nombre,apellido,id,uuid&existingUser=false&limit=0`,
       {
         headers: {
           "Content-Type": "application/json",

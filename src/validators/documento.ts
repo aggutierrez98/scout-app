@@ -75,4 +75,19 @@ export const FillDocumentoSchema = z.object({
   tipoEvento: z.enum(VALID_TIPOS_EVENTO).optional(),
   retiraSolo: z.boolean().optional(),
   retiraPersonas: z.array(z.string()).optional()
+}).superRefine((args, ctx) => {
+  if (!args.retiraSolo && args.retiraPersonas?.length === 0) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["retiraSolo"],
+      fatal: true,
+      message: "Debe seleccionar si se retira solo o las personas autorizadas a retirar al scout.",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["retiraPersonas"],
+      fatal: true,
+      message: "Debe seleccionar si se retira solo o las personas autorizadas a retirar al scout.",
+    });
+  }
 })

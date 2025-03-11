@@ -2,23 +2,18 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "environment": "development"
     },
     "internal": {
       "distribution": "internal",
-      "env": {
-        "EXPO_PUBLIC_API_URL": "https://scout-api-w8ee.onrender.com/api"
-      }
+      "environment": "preview"
     },
     "production": {
-      "env": {
-        "EXPO_PUBLIC_API_URL": "https://scout-api-w8ee.onrender.com/api"
-      }
+      "environment": "production"
     },
     "test": {
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://10.0.2.2:8080/api"
-      }
+      "environment": "development"
     }
   }
 }
