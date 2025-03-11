@@ -11,6 +11,14 @@ export interface Documento {
   scoutId: string;
   fechaPresentacion: string;
   fechaCreacion: string;
+  fileUrl?: string
+}
+
+export interface FillResponse {
+  msg: string,
+  data: {
+    data: string
+  }
 }
 
 export interface DocumentoData {
@@ -48,6 +56,7 @@ export interface DocumentoCreateParams {
   documentoId: string;
   fechaPresentacion?: Date;
   uploadId?: string
+  documentoFilled?: string
   // filled?: boolean
 }
 
@@ -55,9 +64,9 @@ export interface DocumentoFillParams {
   scoutId: string;
   documentoId: string;
   familiarId?: string
-  fechaPresentacion: Date;
-  signature: string
-  theme: "light" | "dark"
+  fechaPresentacion?: Date;
+  signature?: string
+  theme?: "light" | "dark"
   cicloActividades?: string
   rangoDistanciaPermiso?: string
   lugarEvento?: string
@@ -68,9 +77,17 @@ export interface DocumentoFillParams {
   retiraPersonas?: string[]
   aclaraciones?: string
 }
-
-export interface UploadDocumentoResponse {
-  data: {
-    uploadId: string
-  }
+export interface DocumentoSignParams {
+  documentoId: string;
+  fechaPresentacion?: Date;
+  signature?: string
+  theme?: "light" | "dark"
+  documentoFilled?: string
 }
+export interface DocumentoUploadParams {
+  scoutId: string;
+  documentoId: string;
+  documentoFilled: string
+  fechaPresentacion?: Date;
+}
+

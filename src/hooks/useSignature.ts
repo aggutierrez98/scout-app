@@ -1,22 +1,21 @@
 import { useState } from "react";
 
-export const useSignature = () => {
+export const useSignature = (onSignature?: () => Promise<void>) => {
     const [getSignaturePad, setSignaturePad] = useState(false);
     const [signatureBase64, setSignatureBase64] = useState("");
-    const [signatureArrayBuffer, setSignatureArrayBuffer] = useState<Blob>();
     const getSignature = () => {
         setSignaturePad(true);
     }
 
-    const handleSignature = (signature: string) => {
+    const handleSignature = async (signature: string) => {
         setSignatureBase64(signature);
         setSignaturePad(false);
+        if (onSignature) await onSignature()
     }
 
     return {
         handleSignature,
         getSignature,
-        signatureArrayBuffer,
         getSignaturePad,
         signatureBase64,
     }

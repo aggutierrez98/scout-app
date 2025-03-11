@@ -43,6 +43,7 @@ export const useFamiliaresScout = (scoutId: string) =>
   useQuery({
     queryKey: ["familiares", "scout", scoutId],
     queryFn: () => fetchFamiliaresScout(scoutId),
+    enabled: !!scoutId
   });
 
 export const useFamiliar = (id: string) =>

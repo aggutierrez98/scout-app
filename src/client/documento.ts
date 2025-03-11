@@ -7,12 +7,15 @@ import {
   DocumentoDowmloadData,
   DocumentoEditParams,
   DocumentoFillParams,
+  DocumentoSignParams,
   DocumentosQueryParams,
-  UploadDocumentoResponse,
+  DocumentoUploadParams,
+  FillResponse,
 } from "interfaces/documento";
 import { DOCUMENTOS_QUERY_LIMIT } from "utils/constants";
 import api from "./api";
 import { isAxiosError } from "axios";
+import * as FileSystem from "expo-file-system";
 
 export const fetchDocumento = async (id: string) => {
   try {
@@ -220,6 +223,63 @@ export const fillDocumento = async (documentoData: DocumentoFillParams) => {
   );
 
   const { data } = await api.post(`/documento/fill`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data as FillResponse;
+}
+
+export const signDocumento = async (documentoData: DocumentoSignParams) => {
+  const token = await SecureStore.getItemAsync("secure_token");
+  const formData = new FormData();
+  formData.append("documentoId", documentoData.documentoId);
+  if (documentoData.signature && documentoData.theme) {
+    formData.append("signature", {
+      uri: documentoData.signature,
+      name: "signature.png",
+      type: "image/png",
+    } as any);
+    formData.append("theme", documentoData.theme);
+  }
+
+  if (documentoData.documentoFilled) {
+    const fileUri = `${FileSystem.cacheDirectory}temp.pdf`
+    await FileSystem.writeAsStringAsync(fileUri, documentoData.documentoFilled, { encoding: FileSystem.EncodingType.Base64 });
+    formData.append("documentoFilled", {
+      uri: fileUri,
+      name: "document.pdf",
+      type: "application/pdf",
+    } as any);
+  }
+
+  const { data } = await api.post(`/documento/sign`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data as FillResponse;
+}
+
+export const uploadDocumento = async (documentoData: DocumentoUploadParams) => {
+  const token = await SecureStore.getItemAsync("secure_token");
+
+  const formData = new FormData();
+  formData.append("documentoId", documentoData.documentoId);
+  formData.append("scoutId", documentoData.scoutId);
+  const fileUri = `${FileSystem.cacheDirectory}temp.pdf`
+  await FileSystem.writeAsStringAsync(fileUri, documentoData.documentoFilled, { encoding: FileSystem.EncodingType.Base64 });
+  formData.append("documentoFilled", {
+    uri: fileUri,
+    name: "document.pdf",
+    type: "application/pdf",
+  } as any);
+
+  const { data } = await api.post(`/documento/upload`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',

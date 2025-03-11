@@ -1,10 +1,8 @@
-import { useState } from 'react';
-import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Signature from 'react-native-signature-canvas';
 
 interface Props {
-    handleSignature: (arg: string) => void
+    handleSignature: (arg: string) => Promise<void> | void
 }
 export const SignaturePage = ({ handleSignature }: Props) => {
     const { colors, roundness } = useTheme()
@@ -56,11 +54,14 @@ export const SignaturePage = ({ handleSignature }: Props) => {
         <Signature
             webStyle={style}
             bgHeight={700}
-            onOK={(sig) => handleSignature(sig)}
+            onOK={async (sig) => {
+                await handleSignature(sig)
+            }}
             onEmpty={() => console.log('___onEmpty')}
             descriptionText="Firma"
             clearText="Limpiar"
             confirmText="Guardar"
+            minWidth={1}
             backgroundColor={colors.surface}
             penColor={colors.onPrimary}
         />

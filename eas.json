@@ -7,12 +7,12 @@
     "internal": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://3.90.147.118.nip.io/api"
+        "EXPO_PUBLIC_API_URL": "https://scout-api-w8ee.onrender.com/api"
       }
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://3.90.147.118.nip.io/api"
+        "EXPO_PUBLIC_API_URL": "https://scout-api-w8ee.onrender.com/api"
       }
     },
     "test": {

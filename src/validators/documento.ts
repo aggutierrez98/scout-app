@@ -65,6 +65,7 @@ export const FillDocumentoSchema = z.object({
   documentoId: IdSchema.max(10),
   familiarId: IdSchema.max(10).optional(),
   signature: z.string().optional(),
+  documentoFilled: z.string().optional(),
   cicloActividades: z.string().regex(numberReg).optional().default((new Date()).getFullYear().toString()),
   rangoDistanciaPermiso: z.string().optional().default("5 km"),
   aclaraciones: z.string().optional(),

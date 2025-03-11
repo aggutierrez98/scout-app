@@ -1,7 +1,7 @@
 import { View, ViewStyle, TextStyle } from "react-native";
 import { useController } from "react-hook-form";
 import { Dropdown, MultiSelectDropdown } from "react-native-paper-dropdown";
-import { HelperText, Text, useTheme } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 
 interface Props {
   name: string;
@@ -32,7 +32,7 @@ export const CustomDropDown = ({
   const {
     field,
     fieldState: { error },
-  } = useController({ name, defaultValue: "" });
+  } = useController({ name, defaultValue: [] });
 
   const handleDDChange = (value?: string | string[]) => {
     field.onChange(value);

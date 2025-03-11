@@ -12,6 +12,8 @@ import {
   fetchDocuments,
   fetchDocumentsData,
   getDocumentUrl,
+  signDocumento,
+  uploadDocumento,
 } from "client/documento";
 import { deleteDocumento } from "../client/documento";
 import { DOCUMENTOS_QUERY_LIMIT } from "utils/constants";
@@ -19,7 +21,9 @@ import {
   DocumentoCreateParams,
   DocumentoEditParams,
   DocumentoFillParams,
+  DocumentoSignParams,
   DocumentosQueryParams,
+  DocumentoUploadParams,
 } from "interfaces/documento";
 import { useTheme } from "react-native-paper";
 import { useGetMe } from "./auth";
@@ -104,6 +108,79 @@ export const useFillDocumento = (
       queryClient.invalidateQueries({ queryKey: ["documentos"] });
     },
     // throwOnError: true,
+    onError: (data: AxiosError) => {
+      if (data.code === "ERR_NETWORK") {
+        setError("root", {
+          type: "server",
+          message: "Servidor no disponible",
+        });
+      }
+      else if (data.response) {
+        const { name, message } = data.response.data as {
+          name: string,
+          message: string
+        }
+
+        if (name === "BAD_PARAMETERS") {
+          const errorMessage = message.split("\n")[1].split("]: ")[1]
+          toogleSnackBar(errorMessage, "error");
+        }
+      }
+    },
+  });
+};
+
+export const useSignDocumento = (
+  setError: UseFormSetError<{
+    familiarId: string;
+    signature: string;
+  }>,
+
+) => {
+  const { dark } = useTheme()
+  const queryClient = useQueryClient();
+  const { toogleSnackBar } = useSnackBarContext();
+  return useMutation({
+    mutationFn: (data: Omit<DocumentoSignParams, "theme">) => signDocumento({ ...data, theme: dark ? "dark" : "light" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documentos"] });
+    },
+    onError: (data: AxiosError) => {
+      if (data.code === "ERR_NETWORK") {
+        setError("root", {
+          type: "server",
+          message: "Servidor no disponible",
+        });
+      }
+      else if (data.response) {
+        const { name, message } = data.response.data as {
+          name: string,
+          message: string
+        }
+
+        if (name === "BAD_PARAMETERS") {
+          const errorMessage = message.split("\n")[1].split("]: ")[1]
+          toogleSnackBar(errorMessage, "error");
+        }
+      }
+    },
+  });
+};
+
+export const useUploadDocumento = (
+  setError: UseFormSetError<{
+    familiarId: string;
+    signature: string;
+  }>,
+
+) => {
+  const queryClient = useQueryClient();
+  const { toogleSnackBar } = useSnackBarContext();
+  return useMutation({
+    mutationFn: (data: DocumentoUploadParams) => uploadDocumento(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documentos"] });
+    },
     onError: (data: AxiosError) => {
       if (data.code === "ERR_NETWORK") {
         setError("root", {
